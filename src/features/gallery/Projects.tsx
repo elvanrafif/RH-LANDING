@@ -1,7 +1,12 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { PROJECTS } from '../../data/projects';
+import { Project } from '../../types';
 
-export const Projects: React.FC = () => {
+interface ProjectsProps {
+  onOpenProject: (project: Project) => void;
+}
+
+export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
   const railRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const [canPrev, setCanPrev] = useState(false);
@@ -48,7 +53,7 @@ export const Projects: React.FC = () => {
           {PROJECTS.map((p, i) => (
             <a key={p.id} className="project" href={`#project-${p.id}`} onClick={(e) => {
               e.preventDefault();
-              window.dispatchEvent(new CustomEvent("rh:open-project", { detail: { id: p.id } }));
+              onOpenProject(p);
             }} data-cursor="Lihat proyek">
               <div className="project__media">
                 <img src={p.img} alt={`${p.title} ${p.titleAccent}`} loading="lazy" />

@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { HeroVersion } from '../../types';
 
 interface NavProps {
   onNav: (target: string) => void;
+  heroVersion: HeroVersion;
 }
 
-export const Nav: React.FC<NavProps> = ({ onNav }) => {
+export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
   const [scrolled, setScrolled] = useState(window.scrollY > window.innerHeight * 0.85);
   const [hidden, setHidden] = useState(false);
-  const [heroDark, setHeroDark] = useState(false);
+  const heroDark = heroVersion === "2";
   const lastY = useRef(0);
 
   useEffect(() => {
-    const saved = (window as any).__TWEAKS__ || {};
-    setHeroDark(saved.heroVersion === "2");
-
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > window.innerHeight * 0.85);
@@ -23,12 +22,6 @@ export const Nav: React.FC<NavProps> = ({ onNav }) => {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  useEffect(() => {
-    const onChange = (e: any) => setHeroDark(e.detail.version === "2");
-    window.addEventListener("rh:hero-version", onChange);
-    return () => window.removeEventListener("rh:hero-version", onChange);
   }, []);
 
   const cls = [

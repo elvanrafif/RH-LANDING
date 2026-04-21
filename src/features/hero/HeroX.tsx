@@ -44,7 +44,7 @@ export const HeroX: React.FC = () => {
           <div key={i} className={`heroX__tile heroX__tile--${t.cls}`} style={{ "--d": `${0.6 + i * 0.12}s` } as any} data-parallax={t.depth}>
             <div className="heroX__tile-inner">
               <img src={t.src} alt="" loading="eager" />
-              <span className="heroX__tile-label mono mono-sm">${t.label}</span>
+              <span className="heroX__tile-label mono mono-sm">{t.label}</span>
             </div>
           </div>
         ))}

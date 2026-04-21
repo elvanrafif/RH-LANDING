@@ -70,19 +70,22 @@ function App() {
     document.body.dataset.heroVersion = heroVersion;
   }, [heroVersion]);
 
-  // Listen for project open events
+  // Project open handler
+  const onOpenProject = (p: Project) => {
+    if ((window as any).__lenis) {
+      (window as any).__lenis.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo({ top: 0, behavior: "instant" as any });
+    }
+    setActiveProject(p);
+  };
+
+  // Listen for global open-project events (e.g. from ProjectDetail "Next" button)
   useEffect(() => {
     const onOpen = (e: any) => {
       const id = e.detail?.id;
       const p = PROJECTS.find((x) => x.id === id);
-      if (p) {
-        if ((window as any).__lenis) {
-          (window as any).__lenis.scrollTo(0, { immediate: true });
-        } else {
-          window.scrollTo({ top: 0, behavior: "instant" as any });
-        }
-        setActiveProject(p);
-      }
+      if (p) onOpenProject(p);
     };
     window.addEventListener("rh:open-project", onOpen);
     return () => window.removeEventListener("rh:open-project", onOpen);
@@ -138,18 +141,20 @@ function App() {
           skipSplash={splashDone && !splashExiting}
         />
       )}
+      <ProjectDetail project={activeProject} onClose={() => setActiveProject(null)} />
+      
       <Cursor />
-      <Nav onNav={onNav} />
+      <Nav onNav={onNav} heroVersion={heroVersion} />
+      
       {heroVersion === "2" ? <HeroTwo /> : <HeroX />}
       <Marquee />
       <About />
       <Stats />
       <Services />
-      <Projects />
+      <Projects onOpenProject={onOpenProject} />
       <Contact />
       <Footer />
       <Tweaks />
-      <ProjectDetail project={activeProject} onClose={() => setActiveProject(null)} />
 
       {/* Page transition overlay */}
       <div id="page-transition" className="page-transition" aria-hidden="true">

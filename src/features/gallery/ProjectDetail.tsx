@@ -17,7 +17,10 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
     document.body.style.overflow = "hidden";
     (window as any).__lenis?.stop();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { lightbox !== null ? setLightbox(null) : onClose(); }
+      if (e.key === "Escape") { 
+        if (lightbox !== null) setLightbox(null);
+        else onClose(); 
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => {
@@ -58,7 +61,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
             <span className="pd__sep">/</span>
             <span>Proyek</span>
             <span className="pd__sep">/</span>
-            <span className="pd__muted">№ ${String(idx + 1).padStart(2, "0")}</span>
+            <span className="pd__muted">№ {String(idx + 1).padStart(2, "0")}</span>
           </div>
           <button className="pd__close" onClick={onClose} aria-label="Tutup">
             <span className="mono">Tutup</span>
@@ -130,7 +133,10 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
         </section>
 
         <section className="pd__next" onClick={() => {
-          window.dispatchEvent(new CustomEvent("rh:open-project", { detail: { id: next.id } }));
+          onClose(); // Close current then open next
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent("rh:open-project", { detail: { id: next.id } }));
+          }, 400);
         }} data-cursor="Proyek selanjutnya →">
           <div className="pd__next-inner">
             <span className="mono pd__muted">Proyek selanjutnya — № {String(((idx + 1) % PROJECTS.length) + 1).padStart(2, "0")}</span>
