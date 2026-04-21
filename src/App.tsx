@@ -94,7 +94,10 @@ function App() {
       <ProjectDetail project={activeProject} onClose={() => setActiveProject(null)} />
       
       <Cursor />
-      <Nav onNav={onNav} heroVersion={heroVersion} />
+      
+      {!activeProject && (heroVersion !== "2" || splashDone) && (
+        <Nav onNav={onNav} heroVersion={heroVersion} />
+      )}
       
       {heroVersion === "2" ? <HeroTwo /> : <HeroX />}
       <Marquee />
