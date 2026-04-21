@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import './HeroTwo.css';
 import heroBg from '../../assets/hero-bg.png';
 
 export const HeroTwo: React.FC = () => {

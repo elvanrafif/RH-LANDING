@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import './SplashScreen.css';
 
 interface SplashScreenProps {
   onDone: () => void;

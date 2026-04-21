@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import './Cursor.css';
 
 export const Cursor: React.FC = () => {
   useEffect(() => {

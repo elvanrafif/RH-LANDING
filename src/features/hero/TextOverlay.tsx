@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import './TextOverlay.css';
 
 interface TextOverlayProps {
   isExiting?: boolean;

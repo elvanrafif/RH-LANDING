@@ -1,4 +1,5 @@
 import React from 'react';
+import './Stats.css';
 import { STATS } from '../data/projects';
 import { useCounter } from '../hooks/useCounter';
 

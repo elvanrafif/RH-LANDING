@@ -1,4 +1,5 @@
 import React from 'react';
+import './About.css';
 import { useReveal } from '../hooks/useReveal';
 
 export const About: React.FC = () => {

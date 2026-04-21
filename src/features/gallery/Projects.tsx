@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import './Projects.css';
 import { PROJECTS } from '../../data/projects';
 import { Project } from '../../types';
 

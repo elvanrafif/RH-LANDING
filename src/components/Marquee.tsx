@@ -1,4 +1,5 @@
 import React from 'react';
+import './Marquee.css';
 import { MARQUEE_WORDS } from '../data/projects';
 
 export const Marquee: React.FC = () => {

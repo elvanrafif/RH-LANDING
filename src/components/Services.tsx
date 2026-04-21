@@ -1,4 +1,5 @@
 import React from 'react';
+import './Services.css';
 import { SERVICES } from '../data/projects';
 
 export const Services: React.FC = () => {

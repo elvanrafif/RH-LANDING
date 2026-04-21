@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './HeroX.css';
 import { useHeroAnimation } from './useHeroAnimation';
 import { useCounter } from '../../hooks/useCounter';
 

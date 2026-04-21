@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Tweaks.css';
 import { HeroVersion, Tweak } from '../types';
 
 export const Tweaks: React.FC = () => {

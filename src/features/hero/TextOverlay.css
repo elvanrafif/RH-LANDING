@@ -1,0 +1,105 @@
+/* ── Text Overlay: shared between splash and hero ── */
+
+/* Splash mode: 6-column grid so R sits above S, H sits above T */
+.text-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9001; /* above splash (9000) */
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  align-content: center;
+  padding: 0 var(--gutter) clamp(6px, 1vw, 16px);
+}
+
+/* RH only: chars become direct grid children → R in col 1, H in col 2 */
+.text-overlay:not(.text-overlay--hero) .h2__row--rh {
+  display: contents;
+}
+.text-overlay:not(.text-overlay--hero) .h2__row--rh .h2__cw {
+  grid-row: 1;
+  align-self: end;
+}
+
+/* STUDIO: full-width flex row spanning all 6 columns — space-between stretches S to O */
+.text-overlay:not(.text-overlay--hero) .h2__row--studio {
+  display: flex;
+  grid-column: 1 / -1;
+  grid-row: 2;
+  justify-content: space-between;
+}
+
+/* Hero mode: flex-row split — rows come back as visible flex containers */
+.text-overlay--hero {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 var(--gutter) clamp(20px, 3vw, 44px);
+}
+
+/* Must come after `.text-overlay .h2__row` to win the cascade */
+.text-overlay--hero .h2__row {
+  display: flex;
+}
+
+/* RH dempet di hero */
+.text-overlay--hero .h2__row--rh {
+  flex-shrink: 0;
+}
+
+/* STUDIO groups tight on right — font-size sama dengan splash agar FLIP pure translation */
+.text-overlay--hero .h2__row--studio {
+  justify-content: flex-start;
+  gap: 0.01em;
+}
+
+/* Rows */
+.h2__row {
+  display: flex;
+  align-items: baseline;
+  font-family: var(--font-display);
+  color: #F5F1EB;
+  line-height: .88;
+}
+.h2__row--rh {
+  font-size: clamp(100px, 19vw, 290px);
+  letter-spacing: -0.03em;
+  gap: 6px;
+}
+.h2__row--studio {
+  font-size: clamp(56px, 13vw, 196px);
+  font-style: normal;
+  letter-spacing: 0;
+  justify-content: space-between;
+}
+
+/* Per-character fade + rise */
+.h2__cw {
+  display: inline-block;
+  vertical-align: bottom;
+  will-change: transform;
+}
+.h2__c {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: h2-char-in .8s cubic-bezier(.16,1,.3,1) forwards;
+  animation-delay: calc(var(--i, 0) * 80ms + 400ms);
+  transition: color .2s ease, transform .3s cubic-bezier(.16,1,.3,1);
+}
+@keyframes h2-char-in {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Allow hover on characters even though parent overlay has pointer-events: none */
+.text-overlay .h2__cw,
+.footer__float .h2__cw { pointer-events: auto; }
+
+/* Letter hover — only after animation settles */
+.h2__cw:hover .h2__c {
+  color: var(--accent);
+  transform: translateY(-6px);
+  animation: none;
+  opacity: 1;
+}

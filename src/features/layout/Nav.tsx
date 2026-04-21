@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { HeroVersion } from '../../types';
+import "./Nav.css";
 
 interface NavProps {
   onNav: (target: string) => void;

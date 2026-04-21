@@ -1,0 +1,57 @@
+@media (hover: hover) and (pointer: fine) {
+  body { cursor: none; }
+  a, button, input, textarea, [data-cursor] { cursor: none; }
+}
+.cursor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  display: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .cursor { display: block; }
+}
+.cursor__dot, .cursor__ring {
+  position: absolute;
+  top: 0; left: 0;
+  border-radius: 999px;
+  transform: translate3d(-50%, -50%, 0);
+  pointer-events: none;
+}
+.cursor__dot {
+  width: 6px; height: 6px;
+  background: var(--fg);
+  transition: transform .2s var(--ease-out), opacity .2s;
+}
+.cursor__ring {
+  width: 32px; height: 32px;
+  border: 1px solid var(--fg);
+  transition: width .35s var(--ease-out), height .35s var(--ease-out), background .2s, border-color .2s, opacity .2s;
+}
+.cursor.is-hover .cursor__ring {
+  width: 72px; height: 72px;
+  background: var(--accent);
+  border-color: var(--accent);
+  mix-blend-mode: multiply;
+}
+[data-mode="dark"] .cursor.is-hover .cursor__ring {
+  mix-blend-mode: screen;
+}
+.cursor.is-dark .cursor__dot { background: #F5F1EB; }
+.cursor.is-dark .cursor__ring { border-color: #F5F1EB; }
+.cursor.is-hover .cursor__dot { opacity: 0; }
+.cursor__label {
+  position: absolute;
+  top: 0; left: 0;
+  transform: translate3d(-50%, -50%, 0);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bg);
+  opacity: 0;
+  transition: opacity .25s;
+  white-space: nowrap;
+}
+.cursor.is-hover .cursor__label { opacity: 1; }

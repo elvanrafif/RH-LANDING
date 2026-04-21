@@ -1,0 +1,101 @@
+.splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+}
+
+/* Layer 1: background hitam */
+.splash__bg {
+  position: absolute;
+  inset: 0;
+  background: #0D0A08;
+  z-index: 1;
+  transition: opacity 0s;
+}
+.splash__bg--exit {
+  transition: opacity 0.85s cubic-bezier(.4,0,.2,1);
+  opacity: 0;
+}
+
+/* Layer 2: grid canvas */
+.splash__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  transition: opacity 0s;
+}
+.splash__canvas--exit {
+  transition: opacity 0.7s 1s ease;
+  opacity: 0;
+}
+
+/* Layer 3: teks RH STUDIO — shared, tidak ikut exit */
+.splash__text {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 var(--gutter) clamp(6px, 1vw, 16px);
+  pointer-events: none;
+}
+
+/* splash text exit — fade bersama bg */
+.splash__text--exit {
+  transition: opacity 0.85s cubic-bezier(.4,0,.2,1);
+  opacity: 0;
+}
+
+/* Progress bar — di luar layer stack, fade bersama bg */
+.splash__progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(245, 241, 235, 0.05);
+  z-index: 4;
+  transition: opacity 0s;
+}
+.splash__progress--exit {
+  transition: opacity 0.85s ease;
+  opacity: 0;
+}
+.splash__progress-fill {
+  height: 100%;
+  width: 0;
+  background: linear-gradient(to right, transparent, #C9A96E 50%, transparent);
+  transition: width 2s cubic-bezier(.4,0,.2,1);
+}
+.splash__progress-fill--go {
+  width: 100%;
+}
+
+/* hero bg image — mulai hidden, reveal bersama splash exit */
+.h2__bg-img--hidden {
+  opacity: 0 !important;
+  transition: none !important;
+}
+.h2__bg-img--reveal {
+  opacity: 1 !important;
+  transition: opacity 1.2s cubic-bezier(.4,0,.2,1) !important;
+  filter: brightness(1.05) saturate(1.05) !important;
+}
+
+/* char animation paused until splashDone */
+.h2__c--paused {
+  animation-play-state: paused !important;
+}
+.h2__c--playing {
+  animation-play-state: running !important;
+}
+/* skip animation — langsung visible, dipakai HeroTwo setelah splash selesai */
+.h2__c--settled {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+}

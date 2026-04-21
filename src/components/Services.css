@@ -1,0 +1,64 @@
+.services__head {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 60px;
+}
+.services__head-num { grid-column: 1 / span 2; }
+.services__head-title {
+  grid-column: 3 / span 7;
+  font-family: var(--font-display);
+  font-size: clamp(40px, 6vw, 96px);
+  line-height: .95;
+  letter-spacing: -0.02em;
+}
+.services__head-meta { grid-column: 11 / span 2; justify-self: end; text-align: right; }
+
+.service-row {
+  display: grid;
+  grid-template-columns: 60px 1fr 1.2fr 0.9fr 80px;
+  gap: clamp(16px, 2vw, 40px);
+  padding: 36px 0;
+  border-top: 1px solid var(--line);
+  align-items: center;
+  cursor: pointer;
+  transition: padding .5s var(--ease), background .5s var(--ease);
+  position: relative;
+}
+.service-row:last-child { border-bottom: 1px solid var(--line); }
+.service-row:hover {
+  padding-inline: 24px;
+  background: var(--cream-2);
+}
+.service-row__num { font-family: var(--font-mono); color: var(--muted); font-size: 12px; }
+.service-row__title {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3.5vw, 48px);
+  line-height: 1;
+  letter-spacing: -0.01em;
+  transition: color .4s var(--ease), transform .4s var(--ease);
+}
+.service-row:hover .service-row__title { color: var(--accent); font-style: italic; }
+.service-row__desc { color: var(--ink-2); line-height: 1.55; max-width: 42ch; }
+.service-row__tag { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+.service-row__arrow {
+  justify-self: end;
+  width: 48px; height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  display: grid; place-items: center;
+  transition: background .4s var(--ease), border-color .4s var(--ease), color .4s var(--ease);
+}
+.service-row:hover .service-row__arrow {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--cream);
+}
+.service-row__arrow svg { transition: transform .4s var(--ease); }
+.service-row:hover .service-row__arrow svg { transform: translate(3px, -3px); }
+
+@media (max-width: 880px) {
+  .service-row { grid-template-columns: 40px 1fr 40px; }
+  .service-row__desc, .service-row__tag { display: none; }
+}

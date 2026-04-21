@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import './Footer.css';
 
 export const Footer: React.FC = () => {
   const footerRef = useRef<HTMLElement>(null);
