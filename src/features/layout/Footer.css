@@ -3,7 +3,41 @@
   color: var(--cream);
   padding: clamp(60px, 8vw, 100px) var(--gutter) 32px;
 }
-.footer__big em { color: var(--accent); font-style: italic; }
+.footer__big-clip {
+  /* height set dynamically by JS to match floating text row */
+}
+
+/* Floating fixed text — mirrors .text-overlay--hero but anchored to bottom */
+.footer__float {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 var(--gutter) clamp(20px, 3vw, 44px);
+}
+.footer__float-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.04em;
+  width: 100%;
+  justify-content: space-between;
+}
+.footer__float .h2__row {
+  color: #F5F1EB;
+}
+.footer__big-studio {
+  flex: 1;
+  justify-content: flex-end;
+  gap: 0.01em;
+}
+.footer__float .h2__row--studio {
+  justify-content: flex-end;
+}
+
 .footer__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
