@@ -12,7 +12,7 @@ const TILES = [
 
 export const HeroX: React.FC = () => {
   const [loaded, setLoaded] = useState(false);
-  const heroRef = useHeroAnimation(loaded);
+  const heroRef = useHeroAnimation();
 
   const [projectsCount, projectsRef] = useCounter(86);
   const [yearsCount, yearsRef] = useCounter(12);

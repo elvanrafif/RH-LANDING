@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-export const useHeroAnimation = (loaded: boolean) => {
+export const useHeroAnimation = ( ) => {
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
