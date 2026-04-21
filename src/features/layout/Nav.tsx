@@ -34,18 +34,21 @@ export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
   return (
     <nav className={cls}>
       <div className={heroDark ? "nav__inner nav__inner--slim" : "nav__inner"}>
-        {!heroDark && (
-          <a href="#top" className="nav__logo" onClick={(e) => { e.preventDefault(); onNav("top"); }}>
-            <span className="nav__logo-mark" aria-hidden="true">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <rect x="1" y="1" width="20" height="20" stroke="currentColor" strokeWidth="1.1"/>
-                <path d="M1 8 H21 M8 1 V21" stroke="currentColor" strokeWidth="1.1"/>
-                <circle cx="8" cy="8" r="1.6" fill="currentColor"/>
-              </svg>
-            </span>
-            <span className="nav__logo-text">RH Studio<sup>®</sup></span>
-          </a>
-        )}
+        <div className="nav__col-left">
+          {!heroDark && (
+            <a href="#top" className="nav__logo" onClick={(e) => { e.preventDefault(); onNav("top"); }}>
+              <span className="nav__logo-mark" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+                  <rect x="1" y="1" width="20" height="20" stroke="currentColor" strokeWidth="1.1"/>
+                  <path d="M1 8 H21 M8 1 V21" stroke="currentColor" strokeWidth="1.1"/>
+                  <circle cx="8" cy="8" r="1.6" fill="currentColor"/>
+                </svg>
+              </span>
+              <span className="nav__logo-text">RH Studio<sup>®</sup></span>
+            </a>
+          )}
+        </div>
+        
         <div className="nav__links">
           <a href="#about"    className="nav__link" onClick={(e) => { e.preventDefault(); onNav("about"); }}>
             <span className="nav__link-num">01</span><span>Studio</span>
@@ -59,6 +62,10 @@ export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
           <a href="#contact"  className="nav__link" onClick={(e) => { e.preventDefault(); onNav("contact"); }}>
             <span className="nav__link-num">04</span><span>Kontak</span>
           </a>
+        </div>
+
+        <div className="nav__col-right">
+          {/* Spacer for centering links */}
         </div>
       </div>
     </nav>
