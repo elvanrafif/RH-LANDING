@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import './HeroTwo.css';
-import heroBg from '../../assets/hero-bg.png';
+import heroBg from '../../assets/hero-bg.webp';
 
 export const HeroTwo: React.FC = () => {
   const bgRef = useRef<HTMLImageElement>(null);
