@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLenis } from './hooks/useLenis';
 import { useTweaks } from './hooks/useTweaks';
 import { useAppHandlers } from './hooks/useAppHandlers';
@@ -28,6 +28,9 @@ function App() {
   useLenis();
   const tweaks = useTweaks();
   const heroVersion = tweaks.heroVersion;
+
+  const handleSplashDone = useCallback(() => setSplashDone(true), []);
+  const handleSplashExiting = useCallback(() => setSplashExiting(true), []);
 
   const {
     activeProject,
@@ -81,8 +84,8 @@ function App() {
     <React.Fragment>
       {heroVersion === "2" && !splashDone && (
         <SplashScreen
-          onDone={() => setSplashDone(true)}
-          onExiting={() => setSplashExiting(true)}
+          onDone={handleSplashDone}
+          onExiting={handleSplashExiting}
         />
       )}
       {heroVersion === "2" && (
@@ -95,9 +98,7 @@ function App() {
       
       <Cursor />
       
-      {!activeProject && (heroVersion !== "2" || splashDone) && (
-        <Nav onNav={onNav} heroVersion={heroVersion} />
-      )}
+      {!activeProject && <Nav onNav={onNav} heroVersion={heroVersion} />}
       
       {heroVersion === "2" ? <HeroTwo /> : <HeroX />}
       <Marquee />
