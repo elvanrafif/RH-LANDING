@@ -108,7 +108,7 @@ function App() {
       <Projects onOpenProject={onOpenProject} />
       <Contact />
       <Footer />
-      <Tweaks />
+      {/* <Tweaks /> */}
 
       {/* Page transition overlay */}
       <div id="page-transition" className="page-transition" aria-hidden="true">

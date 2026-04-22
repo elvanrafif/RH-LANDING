@@ -208,7 +208,7 @@ export const PROJECTS: Project[] = [
 ];
 
 export const SERVICES: Service[] = [
-  { num: "01", title: "Arsitektur Residensial", en: "Residential Architecture", desc: "Rumah tinggal yang dirancang untuk iklim tropis, lanskap lokal, dan cara hidup pemiliknya.", tag: "Ground-up · Renovation" },
+  { num: "01", title: "Arsitektur<br/>Residensial", en: "Residential Architecture", desc: "Rumah tinggal yang dirancang untuk iklim tropis, lanskap lokal, dan cara hidup pemiliknya.", tag: "Ground-up · Renovation" },
   { num: "02", title: "Desain Interior", en: "Interior Design", desc: "Ruang dalam yang tenang — memadukan material alami, pencahayaan lembut, dan detail yang sunyi.", tag: "Turnkey · Furnishing" },
   { num: "03", title: "Konsultasi Lanskap", en: "Landscape Consulting", desc: "Taman dan halaman yang tumbuh bersama rumah, menghubungkan penghuni dengan alam di sekitar.", tag: "Garden · Courtyard" },
   { num: "04", title: "Pengawasan Pembangunan", en: "Construction Supervision", desc: "Mengawasi kualitas material dan ketepatan detail di lapangan, dari awal hingga serah terima.", tag: "Full-service" },

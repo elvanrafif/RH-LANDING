@@ -21,7 +21,7 @@ export const Services: React.FC = () => {
           <div key={s.num} className="service-row" data-cursor="Selengkapnya →">
             <div className="service-row__num">{s.num}</div>
             <div>
-              <div className="service-row__title">{s.title}</div>
+              <div className="service-row__title" dangerouslySetInnerHTML={{ __html: s.title }}></div>
               <div className="mono" style={{color: "var(--muted)", marginTop: 6}}>{s.en}</div>
             </div>
             <div className="service-row__desc">{s.desc}</div>

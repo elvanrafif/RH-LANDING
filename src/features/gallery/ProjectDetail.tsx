@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Lenis from 'lenis';
 import './ProjectDetail.css';
 import { Project } from '../../types';
 import { PROJECTS } from '../../data/projects';
@@ -17,16 +18,40 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
     const prev = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     (window as any).__lenis?.stop();
+
+    // Initialize Lenis for modal scroll
+    const scrollEl = scrollRef.current;
+    let modalLenis: Lenis | null = null;
+    if (scrollEl && window.matchMedia('(prefers-reduced-motion: reduce)').matches === false) {
+      modalLenis = new Lenis({
+        duration: 1.5,
+        easing: (t) => 1 - Math.pow(1 - t, 4),
+        smoothWheel: true,
+        wheelMultiplier: 0.85,
+        touchMultiplier: 1.5,
+        wrapper: scrollEl,
+        content: scrollEl,
+      });
+
+      function raf(time: number) {
+        modalLenis?.raf(time);
+        requestAnimationFrame(raf);
+      }
+      requestAnimationFrame(raf);
+    }
+
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") { 
+      if (e.key === "Escape") {
         if (lightbox !== null) setLightbox(null);
-        else onClose(); 
+        else onClose();
       }
     };
     window.addEventListener("keydown", onKey);
+
     return () => {
       document.body.style.overflow = prev;
       (window as any).__lenis?.start();
+      modalLenis?.destroy();
       window.removeEventListener("keydown", onKey);
     };
   }, [project, onClose, lightbox]);
@@ -35,13 +60,8 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
     if (!project) return;
     const el = scrollRef.current;
     if (!el) return;
-    const stopProp = (e: any) => e.stopPropagation();
-    el.addEventListener("wheel", stopProp);
-    el.addEventListener("touchmove", stopProp);
-    return () => {
-      el.removeEventListener("wheel", stopProp);
-      el.removeEventListener("touchmove", stopProp);
-    };
+    // Scroll is now handled by Lenis, so we don't need stopPropagation
+    return () => {};
   }, [project]);
 
   if (!project) return null;
