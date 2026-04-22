@@ -17,7 +17,6 @@ import { Services } from './components/Services';
 import { Projects } from './features/gallery/Projects';
 import { Contact } from './components/Contact';
 import { Footer } from './features/layout/Footer';
-import { Tweaks } from './components/Tweaks';
 import { ProjectDetail } from './features/gallery/ProjectDetail';
 
 function App() {
