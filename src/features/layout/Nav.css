@@ -18,6 +18,7 @@
   color: #F5F1EB;
 }
 .nav.is-hidden { transform: translateY(-110%); }
+.nav.is-menu-open { z-index: 9101; }
 
 .nav.nav--dark {
   color: #F5F1EB;
@@ -103,11 +104,13 @@
 .nav.nav--dark .nav__link-num { color: #C96F4A; }
 
 
+/* Mobile overlay — di luar <nav>, bebas dari stacking context backdrop-filter */
+.nav__overlay {
+  display: none;
+}
 @media (max-width: 860px) {
-  .nav__inner {
-    grid-template-columns: 1fr auto;
-  }
-  .nav__links {
+  .nav__overlay {
+    display: flex;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
     background: var(--ink);
@@ -115,26 +118,44 @@
     justify-content: center;
     align-items: center;
     gap: 40px;
-    z-index: 100;
-    opacity: 0;
+    z-index: 9100;
+    clip-path: inset(0 0 100% 0);
     pointer-events: none;
-    transition: opacity .5s var(--ease);
+    transition: clip-path .65s cubic-bezier(0.76, 0, 0.24, 1);
   }
-  .is-menu-open .nav__links {
-    opacity: 1;
+  .nav__overlay--open {
+    clip-path: inset(0 0 0% 0);
     pointer-events: auto;
   }
-  .nav__link {
+  .nav__overlay .nav__link {
     font-size: 32px;
     font-family: var(--font-display);
     text-transform: none;
     letter-spacing: -0.01em;
+    color: #F5F1EB;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity .4s var(--ease), transform .4s var(--ease);
+  }
+  .nav__overlay--open .nav__link { opacity: 1; transform: translateY(0); }
+  .nav__overlay--open .nav__link:nth-child(1) { transition-delay: .18s; }
+  .nav__overlay--open .nav__link:nth-child(2) { transition-delay: .25s; }
+  .nav__overlay--open .nav__link:nth-child(3) { transition-delay: .32s; }
+  .nav__overlay--open .nav__link:nth-child(4) { transition-delay: .39s; }
+}
+
+@media (max-width: 860px) {
+  .nav__inner {
+    grid-template-columns: 1fr auto;
+  }
+  .nav__links {
+    display: none;
   }
   .nav__toggle {
     display: flex;
   }
   .nav__col-right {
-    z-index: 101;
+    z-index: 9101;
   }
   .nav__mobile-logo {
     display: block;

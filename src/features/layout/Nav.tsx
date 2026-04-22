@@ -27,12 +27,12 @@ export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock scroll when menu is open
   useEffect(() => {
+    const lenis = (window as any).__lenis;
     if (menuOpen) {
-      document.body.style.overflow = 'hidden';
+      lenis?.stop();
     } else {
-      document.body.style.overflow = '';
+      lenis?.start();
     }
   }, [menuOpen]);
 
@@ -44,46 +44,60 @@ export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
     menuOpen ? "is-menu-open" : "",
   ].filter(Boolean).join(" ");
 
+  const overlayCls = `nav__overlay${menuOpen ? ' nav__overlay--open' : ''}`;
+
   const handleNav = (id: string) => {
     setMenuOpen(false);
     onNav(id);
   };
 
-  return (
-    <nav className={cls}>
-      <div className="nav__inner">
-        <div className="nav__col-left">
-        </div>
-        
-        <div className="nav__links">
-          <a href="#about"    className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("about"); }}>
-            <span className="nav__link-num">01</span><span>Studio</span>
-          </a>
-          <a href="#services" className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("services"); }}>
-            <span className="nav__link-num">02</span><span>Layanan</span>
-          </a>
-          <a href="#projects" className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("projects"); }}>
-            <span className="nav__link-num">03</span><span>Proyek</span>
-          </a>
-          <a href="#contact"  className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("contact"); }}>
-            <span className="nav__link-num">04</span><span>Kontak</span>
-          </a>
-        </div>
+  const links = (
+    <>
+      <a href="#about"    className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("about"); }}>
+        <span className="nav__link-num">01</span><span>Studio</span>
+      </a>
+      <a href="#services" className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("services"); }}>
+        <span className="nav__link-num">02</span><span>Layanan</span>
+      </a>
+      <a href="#projects" className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("projects"); }}>
+        <span className="nav__link-num">03</span><span>Proyek</span>
+      </a>
+      <a href="#contact"  className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("contact"); }}>
+        <span className="nav__link-num">04</span><span>Kontak</span>
+      </a>
+    </>
+  );
 
-        <div className="nav__col-right">
-          <button 
-            className="nav__toggle" 
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Toggle menu"
-          >
-            <span className="nav__toggle-label">{menuOpen ? "Tutup" : "Menu"}</span>
-            <div className="nav__toggle-icon">
-              <span></span>
-              <span></span>
-            </div>
-          </button>
+  return (
+    <>
+      <nav className={cls}>
+        <div className="nav__inner">
+          <div className="nav__col-left" />
+
+          <div className="nav__links">
+            {links}
+          </div>
+
+          <div className="nav__col-right">
+            <button
+              className="nav__toggle"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Toggle menu"
+            >
+              <span className="nav__toggle-label">{menuOpen ? "Tutup" : "Menu"}</span>
+              <div className="nav__toggle-icon">
+                <span></span>
+                <span></span>
+              </div>
+            </button>
+          </div>
         </div>
+      </nav>
+
+      {/* Mobile overlay — sibling to nav, tidak terpengaruh stacking context nav */}
+      <div className={overlayCls}>
+        {links}
       </div>
-    </nav>
+    </>
   );
 };

@@ -90,9 +90,7 @@ export const Footer: React.FC = () => {
           </div>
         </div>
         <div className="footer__bottom">
-          <span>© 2014 – 2026 RH Studio</span>
-          <span>Ikatan Arsitek Indonesia · Anggota IAI-DKI</span>
-          <span>Dirancang di Jakarta</span>
+          <span>©2026 RH Studio</span>
         </div>
       </footer>
     </>

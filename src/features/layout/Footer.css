@@ -59,7 +59,7 @@
 .footer__col a:hover { color: var(--accent); }
 .footer__bottom {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding-top: 24px;
   border-top: 1px solid #2a241f;
   color: #8A7F72;
