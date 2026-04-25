@@ -32,6 +32,20 @@
   to   { transform: scale(1.08) translate(-1.5%, -1%); }
 }
 
+/* Radial vignette — dark edges, clear centre */
+.h2__vignette {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 80% 75% at 50% 42%,
+    transparent 30%,
+    rgba(13, 10, 8, 0.45) 65%,
+    rgba(13, 10, 8, 0.80) 85%,
+    rgba(13, 10, 8, 0.92) 100%
+  );
+}
+
 .h2__overlay {
   position: absolute;
   inset: 0;

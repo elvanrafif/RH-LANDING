@@ -26,6 +26,7 @@ export const HeroTwo: React.FC = () => {
           src={heroBg}
           alt=""
         />
+        <div className="h2__vignette" />
         <div className="h2__overlay" />
       </figure>
 
