@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './HeroX.css';
 import { useHeroAnimation } from './useHeroAnimation';
 import { useCounter } from '../../hooks/useCounter';
@@ -12,6 +13,7 @@ const TILES = [
 ];
 
 export const HeroX: React.FC = () => {
+  const { t } = useTranslation();
   const [loaded, setLoaded] = useState(false);
   const heroRef = useHeroAnimation();
 
@@ -32,11 +34,11 @@ export const HeroX: React.FC = () => {
       <div className="heroX__topbar">
         <div className="heroX__meta">
           <span className="mono">RH Studio Architects</span>
-          <span className="mono heroX__muted">Est. MMXIV · Jakarta / Bali</span>
+          <span className="mono heroX__muted">{t('hero.topbar_est')}</span>
         </div>
         <div className="heroX__meta heroX__meta--right">
           <span className="mono">06°12′S · 106°49′E</span>
-          <span className="mono heroX__muted">Edisi №01 / 2026</span>
+          <span className="mono heroX__muted">{t('hero.topbar_edition')}</span>
         </div>
       </div>
 
@@ -54,28 +56,28 @@ export const HeroX: React.FC = () => {
       <div className="heroX__type">
         <div className="heroX__eyebrow mono">
           <span className="heroX__eyebrow-dot"></span>
-          <span>Studio Arsitektur &amp; Interior Tropis</span>
+          <span>{t('hero.eyebrow')}</span>
         </div>
 
         <h1 className="heroX__title display">
           <span className="heroX__line">
-            <span className="heroX__word" style={{ "--wd": "0.15s" } as any}>Kami</span>
+            <span className="heroX__word" style={{ "--wd": "0.15s" } as any}>{t('hero.line1_w1')}</span>
             {" "}
-            <span className="heroX__word" style={{ "--wd": "0.22s" } as any}>merancang</span>
+            <span className="heroX__word" style={{ "--wd": "0.22s" } as any}>{t('hero.line1_w2')}</span>
           </span>
           <span className="heroX__line heroX__line--2">
-            <span className="heroX__word" style={{ "--wd": "0.3s" } as any}>rumah</span>
+            <span className="heroX__word" style={{ "--wd": "0.3s" } as any}>{t('hero.line2_w1')}</span>
             {" "}
             <span className="heroX__amp display italic" style={{ "--wd": "0.38s" } as any}>&amp;</span>
             {" "}
-            <span className="heroX__word heroX__word--accent italic" style={{ "--wd": "0.46s" } as any}>ruang</span>
+            <span className="heroX__word heroX__word--accent italic" style={{ "--wd": "0.46s" } as any}>{t('hero.line2_w3')}</span>
           </span>
           <span className="heroX__line heroX__line--3">
-            <span className="heroX__word" style={{ "--wd": "0.54s" } as any}>yang</span>
+            <span className="heroX__word" style={{ "--wd": "0.54s" } as any}>{t('hero.line3_pre')}</span>
             {" "}
             <span className="heroX__rotator" style={{ "--wd": "0.62s" } as any}>
               <span className="heroX__rotator-track">
-                {["tenang.", "membumi.", "terang.", "puitis.", "tenang."].map((w, i) => (
+                {(t('hero.rotating', { returnObjects: true }) as string[]).map((w, i) => (
                   <span key={i} className="heroX__rotator-item italic">{w}</span>
                 ))}
               </span>
@@ -87,27 +89,27 @@ export const HeroX: React.FC = () => {
       <div className="heroX__foot">
         <p className="heroX__lede">
           <span className="heroX__lede-mark">⟶</span>
-          Praktik arsitektur kontemporer yang berakar pada iklim tropis — tenang, berdasar konteks, dan dibuat dengan tangan selama dua belas tahun.
+          {t('hero.lede')}
         </p>
 
         <div className="heroX__counters">
           <div className="heroX__counter" ref={projectsRef}>
             <span className="heroX__counter-num display">{projectsCount}</span>
-            <span className="mono heroX__muted">Proyek selesai</span>
+            <span className="mono heroX__muted">{t('hero.counter_projects')}</span>
           </div>
           <div className="heroX__counter" ref={yearsRef}>
             <span className="heroX__counter-num display">{yearsCount}<sup className="heroX__counter-sup">+</sup></span>
-            <span className="mono heroX__muted">Tahun berkarya</span>
+            <span className="mono heroX__muted">{t('hero.counter_years')}</span>
           </div>
         </div>
 
-        <a href="#projects" className="heroX__cta" data-cursor="Lihat karya" onClick={(e) => {
+        <a href="#projects" className="heroX__cta" data-cursor={t('hero.cta_cursor')} onClick={(e) => {
           e.preventDefault();
           const el = document.getElementById("projects");
           if (el) window.scrollTo({top: el.offsetTop - 20, behavior: "smooth"});
         }}>
           <span className="heroX__cta-ring"></span>
-          <span className="heroX__cta-label mono">Telusuri Karya</span>
+          <span className="heroX__cta-label mono">{t('hero.cta')}</span>
           <svg className="heroX__cta-arrow" width="18" height="18" viewBox="0 0 18 18" fill="none">
             <path d="M4 14 L14 4 M14 4 H6 M14 4 V12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="square"/>
           </svg>
@@ -115,7 +117,7 @@ export const HeroX: React.FC = () => {
       </div>
 
       <div className="heroX__scroll">
-        <span className="mono heroX__muted">(Scroll)</span>
+        <span className="mono heroX__muted">{t('hero.scroll')}</span>
         <span className="heroX__scroll-rail"><span className="heroX__scroll-dot"></span></span>
       </div>
     </section>

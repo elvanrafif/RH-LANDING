@@ -1,7 +1,9 @@
 import React, { useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './Footer.css';
 
 export const Footer: React.FC = () => {
+  const { t } = useTranslation();
   const footerRef = useRef<HTMLElement>(null);
   const floatRef  = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
@@ -67,30 +69,30 @@ export const Footer: React.FC = () => {
         <div ref={spacerRef} className="footer__big-clip" aria-hidden="true" />
         <div className="footer__grid">
           <div className="footer__col">
-            <h4>Studio</h4>
+            <h4>{t('footer.col_studio')}</h4>
             <p>Jl. Senopati No. 42<br/>Jakarta Selatan 12190<br/>Indonesia</p>
           </div>
           <div className="footer__col">
-            <h4>Kontak</h4>
+            <h4>{t('footer.col_contact')}</h4>
             <a href="mailto:halo@rhstudio.id">halo@rhstudio.id</a>
             <a href="tel:+622175904412">+62 21 7590 4412</a>
           </div>
           <div className="footer__col">
-            <h4>Sosial</h4>
+            <h4>{t('footer.col_social')}</h4>
             <a href="#">Instagram</a>
             <a href="#">Behance</a>
             <a href="#">LinkedIn</a>
           </div>
           <div className="footer__col">
-            <h4>Navigasi</h4>
-            <a href="#about">Studio</a>
-            <a href="#services">Layanan</a>
-            <a href="#projects">Proyek</a>
-            <a href="#contact">Kontak</a>
+            <h4>{t('footer.col_nav')}</h4>
+            <a href="#about">{t('footer.nav_studio')}</a>
+            <a href="#services">{t('footer.nav_services')}</a>
+            <a href="#projects">{t('footer.nav_projects')}</a>
+            <a href="#contact">{t('footer.nav_contact')}</a>
           </div>
         </div>
         <div className="footer__bottom">
-          <span>©2026 RH Studio</span>
+          <span>{t('footer.copyright')}</span>
         </div>
       </footer>
     </>

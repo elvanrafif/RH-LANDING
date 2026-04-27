@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Lenis from 'lenis';
 import './ProjectDetail.css';
 import { Project } from '../../types';
@@ -64,10 +65,15 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
     return () => {};
   }, [project]);
 
+  const { t, i18n } = useTranslation();
+
   if (!project) return null;
   const p = project;
   const idx = PROJECTS.findIndex((x) => x.id === p.id);
   const next = PROJECTS[(idx + 1) % PROJECTS.length];
+  const isEn = i18n.language === 'en';
+  const brief    = isEn ? p.brief_en    : p.brief;
+  const chapters = isEn ? p.chapters_en : p.chapters;
 
   return (
     <div className="pd" role="dialog" aria-modal="true" aria-label={`${p.title} ${p.titleAccent}`}>
@@ -80,12 +86,12 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
           <div className="mono pd__crumbs">
             <span>RH Studio</span>
             <span className="pd__sep">/</span>
-            <span>Proyek</span>
+            <span>{t('pd.crumbs_projects')}</span>
             <span className="pd__sep">/</span>
             <span className="pd__muted">№ {String(idx + 1).padStart(2, "0")}</span>
           </div>
-          <button className="pd__close" onClick={onClose} aria-label="Tutup">
-            <span className="mono">Tutup</span>
+          <button className="pd__close" onClick={onClose} aria-label={t('pd.close')}>
+            <span className="mono">{t('pd.close')}</span>
             <span className="pd__close-x" aria-hidden="true">
               <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
                 <path d="M3 3 L15 15 M15 3 L3 15" stroke="currentColor" strokeWidth="1.1"/>
@@ -103,34 +109,34 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
             {p.title}<br/>
             <em className="italic">{p.titleAccent}.</em>
           </h1>
-          <p className="pd__lede">{p.brief}</p>
+          <p className="pd__lede">{brief}</p>
         </header>
 
-        <figure className="pd__figure pd__figure--lead" onClick={() => setLightbox(0)} data-cursor="Perbesar">
+        <figure className="pd__figure pd__figure--lead" onClick={() => setLightbox(0)} data-cursor={t('pd.zoom_cursor')}>
           <img src={p.gallery[0]} alt="" />
-          <figcaption className="mono pd__muted">01 — Tampak utama · {p.location}</figcaption>
+          <figcaption className="mono pd__muted">01 — {t('pd.main_view')} · {p.location}</figcaption>
         </figure>
 
         <section className="pd__specs">
-          <div className="pd__spec"><span className="mono pd__muted">Klien</span><span>{p.client}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">Lokasi</span><span>{p.location}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">Luas</span><span>{p.area}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">Tahun</span><span>{p.year}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">Durasi</span><span>{p.duration}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">Tim</span><span>{p.team}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">Status</span><span>{p.status}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">Tipe</span><span>{p.type}</span></div>
+          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_client')}</span><span>{p.client}</span></div>
+          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_location')}</span><span>{p.location}</span></div>
+          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_area')}</span><span>{p.area}</span></div>
+          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_year')}</span><span>{p.year}</span></div>
+          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_duration')}</span><span>{p.duration}</span></div>
+          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_team')}</span><span>{p.team}</span></div>
+          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_status')}</span><span>{p.status}</span></div>
+          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_type')}</span><span>{p.type}</span></div>
         </section>
 
         <section className="pd__chapters">
-          {p.chapters.map((c, i) => (
+          {chapters.map((c, i) => (
             <div key={i} className="pd__chapter">
-              <div className="pd__chapter-num mono">0{i + 1} — Bab</div>
+              <div className="pd__chapter-num mono">0{i + 1} — {t('pd.chapter_label')}</div>
               <div className="pd__chapter-body">
                 <h3 className="pd__chapter-title display italic">{c.title}</h3>
                 <p>{c.body}</p>
               </div>
-              <figure className="pd__chapter-fig" onClick={() => setLightbox(i + 1)} data-cursor="Perbesar">
+              <figure className="pd__chapter-fig" onClick={() => setLightbox(i + 1)} data-cursor={t('pd.zoom_cursor')}>
                 <img src={p.gallery[(i + 1) % p.gallery.length]} alt="" loading="lazy"/>
                 <figcaption className="mono pd__muted">0{i + 2} — {c.title}</figcaption>
               </figure>
@@ -140,12 +146,12 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
 
         <section className="pd__gallery">
           <div className="pd__gallery-head">
-            <span className="mono pd__muted">Galeri</span>
-            <span className="mono pd__muted">{p.gallery.length} gambar</span>
+            <span className="mono pd__muted">{t('pd.gallery')}</span>
+            <span className="mono pd__muted">{t('pd.images', { count: p.gallery.length })}</span>
           </div>
           <div className="pd__gallery-grid">
             {p.gallery.map((src, i) => (
-              <figure key={i} className={`pd__gallery-item pd__gallery-item--${i % 3}`} onClick={() => setLightbox(i)} data-cursor="Perbesar">
+              <figure key={i} className={`pd__gallery-item pd__gallery-item--${i % 3}`} onClick={() => setLightbox(i)} data-cursor={t('pd.zoom_cursor')}>
                 <img src={src} alt="" loading="lazy"/>
                 <figcaption className="mono pd__muted">{String(i + 1).padStart(2, "0")}</figcaption>
               </figure>
@@ -158,9 +164,9 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
           setTimeout(() => {
             window.dispatchEvent(new CustomEvent("rh:open-project", { detail: { id: next.id } }));
           }, 400);
-        }} data-cursor="Proyek selanjutnya →">
+        }} data-cursor={t('pd.next_project_cursor')}>
           <div className="pd__next-inner">
-            <span className="mono pd__muted">Proyek selanjutnya — № {String(((idx + 1) % PROJECTS.length) + 1).padStart(2, "0")}</span>
+            <span className="mono pd__muted">{t('pd.next_label')} — № {String(((idx + 1) % PROJECTS.length) + 1).padStart(2, "0")}</span>
             <div className="pd__next-title display">
               {next.title} <em className="italic">{next.titleAccent}.</em>
             </div>
@@ -170,19 +176,19 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
         </section>
 
         <footer className="pd__foot">
-          <span className="mono pd__muted">RH Studio · Arsitek &amp; Interior</span>
-          <button className="mono pd__back" onClick={onClose}>↑ Kembali ke beranda</button>
+          <span className="mono pd__muted">{t('pd.footer_text')}</span>
+          <button className="mono pd__back" onClick={onClose}>{t('pd.back')}</button>
         </footer>
       </div>
 
       {lightbox != null && (
         <div className="pd__lightbox" onClick={() => setLightbox(null)}>
           <img src={p.gallery[lightbox]} alt=""/>
-          <button className="pd__lightbox-close mono" onClick={() => setLightbox(null)}>Tutup ✕</button>
+          <button className="pd__lightbox-close mono" onClick={() => setLightbox(null)}>{t('pd.lightbox_close')}</button>
           <div className="pd__lightbox-nav mono">
-            <button onClick={(e) => { e.stopPropagation(); setLightbox((lightbox - 1 + p.gallery.length) % p.gallery.length); }}>← Sebelumnya</button>
+            <button onClick={(e) => { e.stopPropagation(); setLightbox((lightbox - 1 + p.gallery.length) % p.gallery.length); }}>{t('pd.lightbox_prev')}</button>
             <span>{String(lightbox + 1).padStart(2, "0")} / {String(p.gallery.length).padStart(2, "0")}</span>
-            <button onClick={(e) => { e.stopPropagation(); setLightbox((lightbox + 1) % p.gallery.length); }}>Selanjutnya →</button>
+            <button onClick={(e) => { e.stopPropagation(); setLightbox((lightbox + 1) % p.gallery.length); }}>{t('pd.lightbox_next')}</button>
           </div>
         </div>
       )}

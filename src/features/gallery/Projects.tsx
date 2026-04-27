@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './Projects.css';
 import { PROJECTS } from '../../data/projects';
 import { Project } from '../../types';
@@ -8,6 +9,7 @@ interface ProjectsProps {
 }
 
 export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
+  const { t } = useTranslation();
   const railRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
   const [canPrev, setCanPrev] = useState(false);
@@ -39,13 +41,13 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
   return (
     <section id="projects" className="projects">
       <div className="projects__head">
-        <div className="projects__head-label mono"><span className="kicker">03 / Karya</span></div>
+        <div className="projects__head-label mono"><span className="kicker">{t('projects.kicker')}</span></div>
         <h2 className="projects__head-title">
-          Dua belas <em style={{color: "var(--accent)", fontStyle: "italic"}}>karya</em><br/>pilihan, 2021–2025.
+          {t('projects.title_before')} <em style={{color: "var(--accent)", fontStyle: "italic"}}>{t('projects.title_accent')}</em><br/>{t('projects.title_after')}
         </h2>
         <div className="projects__head-meta mono">
-          <div>Selected works</div>
-          <div>{String(PROJECTS.length).padStart(2, "0")} proyek</div>
+          <div>{t('projects.meta_label')}</div>
+          <div>{t('projects.meta_count', { count: String(PROJECTS.length).padStart(2, "0") })}</div>
         </div>
       </div>
 
@@ -55,7 +57,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
             <a key={p.id} className="project" href={`#project-${p.id}`} onClick={(e) => {
               e.preventDefault();
               onOpenProject(p);
-            }} data-cursor="Lihat proyek">
+            }} data-cursor={t('projects.view_cursor')}>
               <div className="project__media">
                 <img src={p.img} alt={`${p.title} ${p.titleAccent}`} loading="lazy" />
                 <span className="project__tag">{p.type}</span>
@@ -75,17 +77,17 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
         </div>
 
         <div className="projects__controls">
-          <div className="mono" style={{color: "#8A7F72"}}>Seret, geser, atau gunakan panah</div>
+          <div className="mono" style={{color: "#8A7F72"}}>{t('projects.drag_hint')}</div>
           <div className="projects__progress">
             <div className="projects__progress-fill" style={{width: `${Math.max(0.08, progress) * 100}%`}}></div>
           </div>
           <div className="projects__arrows">
-            <button className="projects__arrow" onClick={() => scrollBy(-1)} disabled={!canPrev} aria-label="Sebelumnya">
+            <button className="projects__arrow" onClick={() => scrollBy(-1)} disabled={!canPrev} aria-label={t('projects.prev')}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M10 2L4 8L10 14" stroke="currentColor" strokeWidth="1.2"/>
               </svg>
             </button>
-            <button className="projects__arrow" onClick={() => scrollBy(1)} disabled={!canNext} aria-label="Selanjutnya">
+            <button className="projects__arrow" onClick={() => scrollBy(1)} disabled={!canNext} aria-label={t('projects.next')}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <path d="M6 2L12 8L6 14" stroke="currentColor" strokeWidth="1.2"/>
               </svg>
