@@ -12,10 +12,9 @@ export interface Project {
   duration: string;
   team: string;
   brief: string;
-  chapters: {
-    title: string;
-    body: string;
-  }[];
+  brief_en: string;
+  chapters: { title: string; body: string }[];
+  chapters_en: { title: string; body: string }[];
   gallery: string[];
 }
 
@@ -24,6 +23,7 @@ export interface Service {
   title: string;
   en: string;
   desc: string;
+  desc_en: string;
   tag: string;
 }
 

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { HeroVersion } from '../../types';
 import "./Nav.css";
 
@@ -8,6 +9,7 @@ interface NavProps {
 }
 
 export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
+  const { t, i18n } = useTranslation();
   const [scrolled, setScrolled] = useState(window.scrollY > window.innerHeight * 0.85);
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -51,19 +53,23 @@ export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
     onNav(id);
   };
 
+  const toggleLang = () => {
+    i18n.changeLanguage(i18n.language === 'id' ? 'en' : 'id');
+  };
+
   const links = (
     <>
       <a href="#about"    className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("about"); }}>
-        <span className="nav__link-num">01</span><span>Studio</span>
+        <span className="nav__link-num">01</span><span>{t('nav.studio')}</span>
       </a>
       <a href="#services" className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("services"); }}>
-        <span className="nav__link-num">02</span><span>Layanan</span>
+        <span className="nav__link-num">02</span><span>{t('nav.services')}</span>
       </a>
       <a href="#projects" className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("projects"); }}>
-        <span className="nav__link-num">03</span><span>Proyek</span>
+        <span className="nav__link-num">03</span><span>{t('nav.projects')}</span>
       </a>
       <a href="#contact"  className="nav__link" onClick={(e) => { e.preventDefault(); handleNav("contact"); }}>
-        <span className="nav__link-num">04</span><span>Kontak</span>
+        <span className="nav__link-num">04</span><span>{t('nav.contact')}</span>
       </a>
     </>
   );
@@ -80,11 +86,18 @@ export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
 
           <div className="nav__col-right">
             <button
+              className="nav__lang mono"
+              onClick={toggleLang}
+              aria-label="Toggle language"
+            >
+              {i18n.language === 'id' ? 'ID' : 'EN'}
+            </button>
+            <button
               className="nav__toggle"
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
             >
-              <span className="nav__toggle-label">{menuOpen ? "Tutup" : "Menu"}</span>
+              <span className="nav__toggle-label">{menuOpen ? t('nav.close') : t('nav.menu')}</span>
               <div className="nav__toggle-icon">
                 <span></span>
                 <span></span>
@@ -94,7 +107,6 @@ export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
         </div>
       </nav>
 
-      {/* Mobile overlay — sibling to nav, tidak terpengaruh stacking context nav */}
       <div className={overlayCls}>
         {links}
       </div>
