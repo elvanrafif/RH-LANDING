@@ -1,3 +1,4 @@
+/* ── Splash root ─────────────────────────────────────────────── */
 .splash {
   position: fixed;
   inset: 0;
@@ -5,97 +6,91 @@
   pointer-events: none;
 }
 
-/* Layer 1: background hitam */
-.splash__bg {
+/* ── Cream panels (cover full screen, split on exit) ─────────── */
+.splash__top-panel,
+.splash__bottom-panel {
   position: absolute;
-  inset: 0;
-  background: #0D0A08;
-  z-index: 1;
-  transition: opacity 0s;
-}
-.splash__bg--exit {
-  transition: opacity 0.85s cubic-bezier(.4,0,.2,1);
-  opacity: 0;
+  left: 0;
+  right: 0;
+  background: #F5F1EB;
+  z-index: 9000;
+  transition: transform 0.9s cubic-bezier(.76, 0, .24, 1);
 }
 
-/* Layer 2: grid canvas */
-.splash__canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  transition: opacity 0s;
-}
-.splash__canvas--exit {
-  transition: opacity 0.7s 1s ease;
-  opacity: 0;
+.splash__top-panel {
+  top: 0;
+  height: 50vh;
+  transform: translateY(0);
 }
 
-/* Layer 3: teks RH STUDIO — shared, tidak ikut exit */
-.splash__text {
-  position: absolute;
+.splash__bottom-panel {
+  bottom: 0;
+  height: 50vh;
+  transform: translateY(0);
+}
+
+.splash__top-panel--exit {
+  transform: translateY(-100%);
+}
+
+.splash__bottom-panel--exit {
+  transform: translateY(100%);
+}
+
+/* ── Logo wrap — centered, above panels ──────────────────────── */
+.splash__logo-wrap {
+  position: fixed;
   inset: 0;
-  z-index: 3;
+  z-index: 9001;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  padding: 0 var(--gutter) clamp(6px, 1vw, 16px);
   pointer-events: none;
 }
 
-/* splash text exit — fade bersama bg */
-.splash__text--exit {
-  transition: opacity 0.85s cubic-bezier(.4,0,.2,1);
-  opacity: 0;
+/* ── Logo image — mask-driven diagonal sweep ─────────────────── */
+.splash__logo {
+  --p: -30%;
+  width: clamp(140px, 18vw, 220px);
+  height: auto;
+  display: block;
+  mask-image: linear-gradient(
+    135deg,
+    black var(--p),
+    transparent calc(var(--p) + 30%)
+  );
+  -webkit-mask-image: linear-gradient(
+    135deg,
+    black var(--p),
+    transparent calc(var(--p) + 30%)
+  );
 }
 
-/* Progress bar — di luar layer stack, fade bersama bg */
-.splash__progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: rgba(245, 241, 235, 0.05);
-  z-index: 4;
-  transition: opacity 0s;
-}
-.splash__progress--exit {
-  transition: opacity 0.85s ease;
-  opacity: 0;
-}
-.splash__progress-fill {
-  height: 100%;
-  width: 0;
-  background: linear-gradient(to right, transparent, #C9A96E 50%, transparent);
-  transition: width 2s cubic-bezier(.4,0,.2,1);
-}
-.splash__progress-fill--go {
-  width: 100%;
+.splash__logo--sweep-out {
+  mask-image: linear-gradient(
+    135deg,
+    transparent var(--p),
+    black calc(var(--p) + 30%)
+  );
+  -webkit-mask-image: linear-gradient(
+    135deg,
+    transparent var(--p),
+    black calc(var(--p) + 30%)
+  );
 }
 
-/* hero bg image — mulai hidden, reveal bersama splash exit */
+/* ── Hero bg — stay hidden until splash exits ────────────────── */
 .h2__bg-img--hidden {
   opacity: 0 !important;
   transition: none !important;
 }
+
 .h2__bg-img--reveal {
   opacity: 1 !important;
-  transition: opacity 1.2s cubic-bezier(.4,0,.2,1) !important;
-  filter: brightness(1.05) saturate(1.05) !important;
+  transition: opacity 0.8s cubic-bezier(.4, 0, .2, 1) !important;
 }
 
-/* char animation paused until splashDone */
-.h2__c--paused {
-  animation-play-state: paused !important;
-}
-.h2__c--playing {
-  animation-play-state: running !important;
-}
-/* skip animation — langsung visible, dipakai HeroTwo setelah splash selesai */
-.h2__c--settled {
-  opacity: 1 !important;
-  transform: none !important;
-  animation: none !important;
-}
+/* ── TextOverlay char animation paused until splashDone ──────── */
+.h2__c--paused   { animation-play-state: paused !important; }
+.h2__c--playing  { animation-play-state: running !important; }
+.h2__c--settled  { opacity: 1 !important; transform: none !important; animation: none !important; }
