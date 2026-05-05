@@ -50,10 +50,17 @@
   pointer-events: none;
 }
 
+/* ── Logo group — stacks both clipped images at same position ── */
+.splash__logo-group {
+  display: grid;
+  width: clamp(220px, 28vw, 380px);
+}
+
 /* ── Logo image — mask-driven diagonal sweep ─────────────────── */
 .splash__logo {
   --p: -30%;
-  width: clamp(220px, 28vw, 380px);
+  grid-area: 1 / 1;
+  width: 100%;
   height: auto;
   display: block;
   will-change: mask-image;
@@ -67,6 +74,15 @@
     black var(--p),
     transparent calc(var(--p) + 30%)
   );
+}
+
+/* Clip each image to its logo section — overlap at boundary to avoid gap */
+.splash__logo--section-top {
+  clip-path: inset(0 0 38% 0);
+}
+
+.splash__logo--section-bottom {
+  clip-path: inset(60% 0 0 0);
 }
 
 .splash__logo--sweep-out {
