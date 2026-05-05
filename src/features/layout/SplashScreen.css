@@ -58,7 +58,7 @@
 
 /* ── Logo image — mask-driven diagonal sweep ─────────────────── */
 .splash__logo {
-  --p: -30%;
+  --p: -70%;
   grid-area: 1 / 1;
   width: 100%;
   height: auto;

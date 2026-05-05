@@ -71,8 +71,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
 
     const TOP_IN  = 3500;
     const BOT_IN  = 3200;
-    const TOP_OUT = 1800;
-    const BOT_OUT = 1600;
+    const TOP_OUT = 3500;
+    const BOT_OUT = 3200;
 
     // ── Sweep In ─────────────────────────────────────────────────
     // Top: t=0ms. Bottom: t=400ms. Hold 400ms after BOTH done.
