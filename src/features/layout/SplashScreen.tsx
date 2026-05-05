@@ -23,7 +23,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
     let rafId: number;
 
     function easeInOut(t: number) {
-      return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     }
 
     function animateSweep(duration: number, onComplete: () => void) {
@@ -45,19 +45,19 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
     const heroImg = document.querySelector('.h2__bg-img');
     if (heroImg) heroImg.classList.add('h2__bg-img--hidden');
 
-    // Phase 1 — Sweep In (1200ms)
+    // Phase 1 — Sweep In (2200ms)
     logo.style.setProperty('--p', '-30%');
-    animateSweep(1200, () => {
+    animateSweep(2200, () => {
 
-      // Phase 2 — Hold (600ms)
+      // Phase 2 — Hold (800ms)
       holdTimerRef.current = setTimeout(() => {
 
-        // Phase 3 — Sweep Out (1000ms)
+        // Phase 3 — Sweep Out (1800ms) + Phase 4 Split fires simultaneously on complete
         logo.style.setProperty('--p', '-30%');
         logo.classList.add('splash__logo--sweep-out');
-        animateSweep(1000, () => {
+        animateSweep(1800, () => {
 
-          // Phase 4 — Split
+          // Phase 4 — Split (fires at exact same moment sweep out ends)
           onExiting();
           top.classList.add('splash__top-panel--exit');
           bottom.classList.add('splash__bottom-panel--exit');
@@ -70,7 +70,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
           doneTimerRef.current = setTimeout(() => onDone(), 900);
         });
 
-      }, 600);
+      }, 800);
     });
 
     return () => {
