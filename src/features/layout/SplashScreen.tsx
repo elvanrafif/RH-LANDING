@@ -69,40 +69,68 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
     const heroImg = document.querySelector('.h2__bg-img');
     if (heroImg) heroImg.classList.add('h2__bg-img--hidden');
 
-    // Phase 1a — Sweep In: top section (2500ms)
-    sweepEl(logoTop, rafTop, 2500, false, undefined, () => {
+    const TOP_IN  = 2500;
+    const BOT_IN  = 2200;
+    const TOP_OUT = 1800;
+    const BOT_OUT = 1600;
 
-      // Phase 1b — Sweep In: bottom section (2000ms), starts 1000ms after top done
-      t1.current = setTimeout(() => {
-        sweepEl(logoBottom, rafBot, 2000, false, undefined, () => {
+    // ── Sweep In ─────────────────────────────────────────────────
+    // Top starts immediately. Bottom starts at top's midpoint.
+    // Hold fires only when BOTH are done.
+    let topInDone = false;
+    let botInDone = false;
 
-          // Phase 2 — Hold (800ms)
-          t2.current = setTimeout(() => {
+    function onBothInDone() {
+      if (!topInDone || !botInDone) return;
+      // Phase 2 — Hold (800ms)
+      t2.current = setTimeout(() => {
 
-            // Phase 3a — Sweep Out: top section (1800ms)
-            sweepEl(logoTop, rafTop, 1800, true, undefined, () => {
+        // ── Sweep Out ───────────────────────────────────────────
+        // Same cascade: top starts, bottom starts at top's midpoint.
+        // Split fires when BOTH visually gone.
+        let topOutVisualDone = false;
+        let botOutVisualDone = false;
 
-              // Phase 3b — Sweep Out: bottom section (1500ms), 600ms after top done
-              t3.current = setTimeout(() => {
-                sweepEl(logoBottom, rafBot, 1500, true, () => {
+        function onBothOutVisualDone() {
+          if (!topOutVisualDone || !botOutVisualDone) return;
+          onExiting();
+          topPanel.classList.add('splash__top-panel--exit');
+          botPanel.classList.add('splash__bottom-panel--exit');
+          if (heroImg) {
+            heroImg.classList.remove('h2__bg-img--hidden');
+            heroImg.classList.add('h2__bg-img--reveal');
+          }
+          t4.current = setTimeout(() => onDone(), 900);
+        }
 
-                  // Phase 4 — Split fires when bottom visually gone
-                  onExiting();
-                  topPanel.classList.add('splash__top-panel--exit');
-                  botPanel.classList.add('splash__bottom-panel--exit');
-                  if (heroImg) {
-                    heroImg.classList.remove('h2__bg-img--hidden');
-                    heroImg.classList.add('h2__bg-img--reveal');
-                  }
-                  t4.current = setTimeout(() => onDone(), 900);
-                });
-              }, 600);
-            });
-
-          }, 800);
+        sweepEl(logoTop, rafTop, TOP_OUT, true, () => {
+          topOutVisualDone = true;
+          onBothOutVisualDone();
         });
-      }, 1000);
+
+        // Bottom out starts at top's midpoint
+        t3.current = setTimeout(() => {
+          sweepEl(logoBottom, rafBot, BOT_OUT, true, () => {
+            botOutVisualDone = true;
+            onBothOutVisualDone();
+          });
+        }, TOP_OUT / 2);
+
+      }, 800);
+    }
+
+    sweepEl(logoTop, rafTop, TOP_IN, false, undefined, () => {
+      topInDone = true;
+      onBothInDone();
     });
+
+    // Bottom in starts at top's midpoint
+    t1.current = setTimeout(() => {
+      sweepEl(logoBottom, rafBot, BOT_IN, false, undefined, () => {
+        botInDone = true;
+        onBothInDone();
+      });
+    }, TOP_IN / 2);
 
     return () => {
       cancelled = true;
