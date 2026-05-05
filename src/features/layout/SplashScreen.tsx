@@ -11,6 +11,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
   const logoRef   = useRef<HTMLImageElement>(null);
   const topRef    = useRef<HTMLDivElement>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
+  const holdTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const doneTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     const logo   = logoRef.current;
@@ -48,7 +50,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
     animateSweep(1200, () => {
 
       // Phase 2 — Hold (600ms)
-      setTimeout(() => {
+      holdTimerRef.current = setTimeout(() => {
 
         // Phase 3 — Sweep Out (1000ms)
         logo.style.setProperty('--p', '-30%');
@@ -65,7 +67,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
             heroImg.classList.add('h2__bg-img--reveal');
           }
 
-          setTimeout(() => onDone(), 900);
+          doneTimerRef.current = setTimeout(() => onDone(), 900);
         });
 
       }, 600);
@@ -73,6 +75,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
 
     return () => {
       cancelAnimationFrame(rafId);
+      if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+      if (doneTimerRef.current) clearTimeout(doneTimerRef.current);
       if (heroImg) heroImg.classList.remove('h2__bg-img--hidden');
     };
   }, [onDone, onExiting]);
