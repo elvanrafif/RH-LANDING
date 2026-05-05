@@ -26,12 +26,21 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
       return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
     }
 
-    function animateSweep(duration: number, onComplete: () => void) {
+    function animateSweep(
+      duration: number,
+      onComplete: () => void,
+      onVisuallyDone?: () => void
+    ) {
       const start = performance.now();
+      let visualFired = false;
       function tick() {
         const progress = Math.min(1, (performance.now() - start) / duration);
         const p = -30 + easeInOut(progress) * 160; // -30% → 130%
         logo.style.setProperty('--p', `${p}%`);
+        if (!visualFired && p >= 100 && onVisuallyDone) {
+          visualFired = true;
+          onVisuallyDone();
+        }
         if (progress < 1) {
           rafId = requestAnimationFrame(tick);
         } else {
@@ -45,29 +54,28 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
     const heroImg = document.querySelector('.h2__bg-img');
     if (heroImg) heroImg.classList.add('h2__bg-img--hidden');
 
-    // Phase 1 — Sweep In (2200ms)
+    // Phase 1 — Sweep In (3000ms)
     logo.style.setProperty('--p', '-30%');
-    animateSweep(2200, () => {
+    animateSweep(3000, () => {
 
       // Phase 2 — Hold (800ms)
       holdTimerRef.current = setTimeout(() => {
 
-        // Phase 3 — Sweep Out (1800ms) + Phase 4 Split fires simultaneously on complete
+        // Phase 3 — Sweep Out (2500ms)
+        // Phase 4 Split fires the moment logo is visually gone (p ≥ 100%), not at easing end
         logo.style.setProperty('--p', '-30%');
         logo.classList.add('splash__logo--sweep-out');
-        animateSweep(1800, () => {
-
-          // Phase 4 — Split (fires at exact same moment sweep out ends)
+        animateSweep(2500, () => {
+          doneTimerRef.current = setTimeout(() => onDone(), 900);
+        }, () => {
+          // Fires when logo is visually fully transparent — simultaneous with visual end
           onExiting();
           top.classList.add('splash__top-panel--exit');
           bottom.classList.add('splash__bottom-panel--exit');
-
           if (heroImg) {
             heroImg.classList.remove('h2__bg-img--hidden');
             heroImg.classList.add('h2__bg-img--reveal');
           }
-
-          doneTimerRef.current = setTimeout(() => onDone(), 900);
         });
 
       }, 800);
