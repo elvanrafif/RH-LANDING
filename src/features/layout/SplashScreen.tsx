@@ -111,7 +111,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
             botOutDone = true;
             onBothOutDone();
           });
-        }, 400);
+        }, 300);
 
       }, 400);
     }
@@ -122,13 +122,13 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
       onBothInDone();
     });
 
-    // Bottom starts at t=400ms
+    // Bottom starts at t=300ms
     t1.current = setTimeout(() => {
       sweepEl(logoBottom, rafBot, BOT_IN, false, undefined, () => {
         botInDone = true;
         onBothInDone();
       });
-    }, 400);
+    }, 300);
 
     return () => {
       cancelled = true;
