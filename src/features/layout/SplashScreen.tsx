@@ -29,8 +29,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
     const rafBot = { id: 0 };
     let cancelled = false;
 
-    function easeInOut(t: number) {
-      return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    function easeOut(t: number) {
+      return 1 - Math.pow(1 - t, 3);
     }
 
     function sweepEl(
@@ -51,7 +51,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
       function tick() {
         if (cancelled) return;
         const progress = Math.min(1, (performance.now() - start) / duration);
-        const p = -70 + easeInOut(progress) * 200; // -70% → 130%
+        const p = -70 + easeOut(progress) * 200; // -70% → 130%
         el.style.setProperty('--p', `${p}%`);
         if (!visualFired && p >= 100 && onVisuallyDone) {
           visualFired = true;
