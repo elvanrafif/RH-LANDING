@@ -67,12 +67,12 @@
   mask-image: linear-gradient(
     90deg,
     black var(--p),
-    transparent calc(var(--p) + 30%)
+    transparent calc(var(--p) + 70%)
   );
   -webkit-mask-image: linear-gradient(
     90deg,
     black var(--p),
-    transparent calc(var(--p) + 30%)
+    transparent calc(var(--p) + 70%)
   );
 }
 

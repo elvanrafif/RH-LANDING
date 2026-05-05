@@ -51,7 +51,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
       function tick() {
         if (cancelled) return;
         const progress = Math.min(1, (performance.now() - start) / duration);
-        const p = -30 + easeInOut(progress) * 160; // -30% → 130%
+        const p = -70 + easeInOut(progress) * 200; // -70% → 130%
         el.style.setProperty('--p', `${p}%`);
         if (!visualFired && p >= 100 && onVisuallyDone) {
           visualFired = true;
@@ -69,8 +69,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
     const heroImg = document.querySelector('.h2__bg-img');
     if (heroImg) heroImg.classList.add('h2__bg-img--hidden');
 
-    const TOP_IN  = 2500;
-    const BOT_IN  = 2200;
+    const TOP_IN  = 3500;
+    const BOT_IN  = 3200;
     const TOP_OUT = 1800;
     const BOT_OUT = 1600;
 
