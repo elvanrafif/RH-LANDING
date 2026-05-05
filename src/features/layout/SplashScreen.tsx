@@ -75,24 +75,22 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
     const BOT_OUT = 1600;
 
     // ── Sweep In ─────────────────────────────────────────────────
-    // Top starts immediately. Bottom starts at top's midpoint.
-    // Hold fires only when BOTH are done.
+    // Top: t=0ms. Bottom: t=400ms. Hold 400ms after BOTH done.
     let topInDone = false;
     let botInDone = false;
 
     function onBothInDone() {
       if (!topInDone || !botInDone) return;
-      // Phase 2 — Hold (800ms)
       t2.current = setTimeout(() => {
 
         // ── Sweep Out ───────────────────────────────────────────
-        // Same cascade: top starts, bottom starts at top's midpoint.
-        // Split fires when BOTH visually gone.
-        let topOutVisualDone = false;
-        let botOutVisualDone = false;
+        // Top: immediately. Bottom: 400ms later.
+        // Split when BOTH visually gone.
+        let topOutDone = false;
+        let botOutDone = false;
 
-        function onBothOutVisualDone() {
-          if (!topOutVisualDone || !botOutVisualDone) return;
+        function onBothOutDone() {
+          if (!topOutDone || !botOutDone) return;
           onExiting();
           topPanel.classList.add('splash__top-panel--exit');
           botPanel.classList.add('splash__bottom-panel--exit');
@@ -104,33 +102,33 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
         }
 
         sweepEl(logoTop, rafTop, TOP_OUT, true, () => {
-          topOutVisualDone = true;
-          onBothOutVisualDone();
+          topOutDone = true;
+          onBothOutDone();
         });
 
-        // Bottom out starts at top's midpoint
         t3.current = setTimeout(() => {
           sweepEl(logoBottom, rafBot, BOT_OUT, true, () => {
-            botOutVisualDone = true;
-            onBothOutVisualDone();
+            botOutDone = true;
+            onBothOutDone();
           });
-        }, TOP_OUT / 2);
+        }, 400);
 
-      }, 800);
+      }, 400);
     }
 
+    // Top starts at t=0
     sweepEl(logoTop, rafTop, TOP_IN, false, undefined, () => {
       topInDone = true;
       onBothInDone();
     });
 
-    // Bottom in starts at top's midpoint
+    // Bottom starts at t=400ms
     t1.current = setTimeout(() => {
       sweepEl(logoBottom, rafBot, BOT_IN, false, undefined, () => {
         botInDone = true;
         onBothInDone();
       });
-    }, TOP_IN / 2);
+    }, 400);
 
     return () => {
       cancelled = true;
