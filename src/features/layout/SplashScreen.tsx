@@ -13,6 +13,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
   const topPanelRef   = useRef<HTMLDivElement>(null);
   const bottomPanelRef = useRef<HTMLDivElement>(null);
 
+  const t0 = useRef<ReturnType<typeof setTimeout> | null>(null);
   const t1 = useRef<ReturnType<typeof setTimeout> | null>(null);
   const t2 = useRef<ReturnType<typeof setTimeout> | null>(null);
   const t3 = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -116,25 +117,30 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
       }, 400);
     }
 
-    // Top starts at t=0
-    sweepEl(logoTop, rafTop, TOP_IN, false, undefined, () => {
-      topInDone = true;
-      onBothInDone();
-    });
+    // Brief blank screen before sweep in
+    t0.current = setTimeout(() => {
 
-    // Bottom starts at t=300ms
-    t1.current = setTimeout(() => {
-      sweepEl(logoBottom, rafBot, BOT_IN, false, undefined, () => {
-        botInDone = true;
+      // Top starts at t=0
+      sweepEl(logoTop, rafTop, TOP_IN, false, undefined, () => {
+        topInDone = true;
         onBothInDone();
       });
-    }, 300);
+
+      // Bottom starts at t=300ms
+      t1.current = setTimeout(() => {
+        sweepEl(logoBottom, rafBot, BOT_IN, false, undefined, () => {
+          botInDone = true;
+          onBothInDone();
+        });
+      }, 300);
+
+    }, 400);
 
     return () => {
       cancelled = true;
       cancelAnimationFrame(rafTop.id);
       cancelAnimationFrame(rafBot.id);
-      [t1, t2, t3, t4].forEach(r => { if (r.current) clearTimeout(r.current); });
+      [t0, t1, t2, t3, t4].forEach(r => { if (r.current) clearTimeout(r.current); });
       if (heroImg) heroImg.classList.remove('h2__bg-img--hidden');
     };
   }, [onDone, onExiting]);
