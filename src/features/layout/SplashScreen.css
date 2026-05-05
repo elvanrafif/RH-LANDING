@@ -15,6 +15,7 @@
   background: #F5F1EB;
   z-index: 9000;
   transition: transform 0.9s cubic-bezier(.76, 0, .24, 1);
+  will-change: transform;
 }
 
 .splash__top-panel {
@@ -54,6 +55,7 @@
   width: clamp(140px, 18vw, 220px);
   height: auto;
   display: block;
+  will-change: mask-image;
   mask-image: linear-gradient(
     135deg,
     black var(--p),
