@@ -72,7 +72,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
     // Phase 1a — Sweep In: top section (2500ms)
     sweepEl(logoTop, rafTop, 2500, false, undefined, () => {
 
-      // Phase 1b — Sweep In: bottom section (2000ms), starts 400ms after top done
+      // Phase 1b — Sweep In: bottom section (2000ms), starts 1000ms after top done
       t1.current = setTimeout(() => {
         sweepEl(logoBottom, rafBot, 2000, false, undefined, () => {
 
@@ -82,7 +82,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
             // Phase 3a — Sweep Out: top section (1800ms)
             sweepEl(logoTop, rafTop, 1800, true, undefined, () => {
 
-              // Phase 3b — Sweep Out: bottom section (1500ms), 300ms after top done
+              // Phase 3b — Sweep Out: bottom section (1500ms), 600ms after top done
               t3.current = setTimeout(() => {
                 sweepEl(logoBottom, rafBot, 1500, true, () => {
 
@@ -96,12 +96,12 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
                   }
                   t4.current = setTimeout(() => onDone(), 900);
                 });
-              }, 300);
+              }, 600);
             });
 
           }, 800);
         });
-      }, 400);
+      }, 1000);
     });
 
     return () => {
