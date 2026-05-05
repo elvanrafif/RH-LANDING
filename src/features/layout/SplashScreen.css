@@ -16,6 +16,7 @@
   z-index: 9200;
   transition: transform 0.9s cubic-bezier(.76, 0, .24, 1);
   will-change: transform;
+  pointer-events: all;
 }
 
 .splash__top-panel {
