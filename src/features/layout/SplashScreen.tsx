@@ -10,6 +10,7 @@ interface SplashScreenProps {
 export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting }) => {
   const logoTopRef    = useRef<HTMLImageElement>(null);
   const logoBottomRef = useRef<HTMLImageElement>(null);
+  const logoShineRef  = useRef<HTMLDivElement>(null);
   const topPanelRef   = useRef<HTMLDivElement>(null);
   const bottomPanelRef = useRef<HTMLDivElement>(null);
 
@@ -22,16 +23,35 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
   useEffect(() => {
     const logoTop    = logoTopRef.current;
     const logoBottom = logoBottomRef.current;
+    const logoShine  = logoShineRef.current;
     const topPanel   = topPanelRef.current;
     const botPanel   = bottomPanelRef.current;
-    if (!logoTop || !logoBottom || !topPanel || !botPanel) return;
+    if (!logoTop || !logoBottom || !logoShine || !topPanel || !botPanel) return;
 
-    const rafTop = { id: 0 };
-    const rafBot = { id: 0 };
+    const rafTop   = { id: 0 };
+    const rafBot   = { id: 0 };
+    const rafShine = { id: 0 };
     let cancelled = false;
 
     function easeOut(t: number) {
       return 1 - Math.pow(1 - t, 3);
+    }
+
+    function easeInOut(t: number) {
+      return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
+    }
+
+    function runShine() {
+      const duration = 1800;
+      const start = performance.now();
+      function tick() {
+        if (cancelled) return;
+        const progress = Math.min(1, (performance.now() - start) / duration);
+        const p = -50 + easeInOut(progress) * 200; // -50% → 150%
+        logoShine.style.setProperty('--shine-p', `${p}%`);
+        if (progress < 1) rafShine.id = requestAnimationFrame(tick);
+      }
+      rafShine.id = requestAnimationFrame(tick);
     }
 
     function sweepEl(
@@ -82,6 +102,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
 
     function onBothInDone() {
       if (!topInDone || !botInDone) return;
+      runShine();
       t2.current = setTimeout(() => {
 
         // ── Sweep Out ───────────────────────────────────────────
@@ -140,6 +161,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
       cancelled = true;
       cancelAnimationFrame(rafTop.id);
       cancelAnimationFrame(rafBot.id);
+      cancelAnimationFrame(rafShine.id);
       [t0, t1, t2, t3, t4].forEach(r => { if (r.current) clearTimeout(r.current); });
       if (heroImg) heroImg.classList.remove('h2__bg-img--hidden');
     };
@@ -153,6 +175,11 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
         <div className="splash__logo-group">
           <img ref={logoTopRef}    className="splash__logo splash__logo--section-top"    src={rhLogo} alt="RH Studio" />
           <img ref={logoBottomRef} className="splash__logo splash__logo--section-bottom" src={rhLogo} alt="" />
+          <div
+            ref={logoShineRef}
+            className="splash__logo-shine"
+            style={{ maskImage: `url(${rhLogo})`, WebkitMaskImage: `url(${rhLogo})` }}
+          />
         </div>
       </div>
     </div>
