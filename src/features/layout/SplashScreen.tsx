@@ -41,14 +41,14 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
       return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
     }
 
-    function runShine() {
+    function runShine(el: HTMLDivElement) {
       const duration = 1800;
       const start = performance.now();
       function tick() {
         if (cancelled) return;
         const progress = Math.min(1, (performance.now() - start) / duration);
         const p = -50 + easeInOut(progress) * 200; // -50% → 150%
-        logoShine.style.setProperty('--shine-p', `${p}%`);
+        el.style.setProperty('--shine-p', `${p}%`);
         if (progress < 1) rafShine.id = requestAnimationFrame(tick);
       }
       rafShine.id = requestAnimationFrame(tick);
@@ -102,7 +102,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
 
     function onBothInDone() {
       if (!topInDone || !botInDone) return;
-      runShine();
+      runShine(logoShine);
       t2.current = setTimeout(() => {
 
         // ── Sweep Out ───────────────────────────────────────────
@@ -114,8 +114,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
         function onBothOutDone() {
           if (!topOutDone || !botOutDone) return;
           onExiting();
-          topPanel.classList.add('splash__top-panel--exit');
-          botPanel.classList.add('splash__bottom-panel--exit');
+          topPanel!.classList.add('splash__top-panel--exit');
+          botPanel!.classList.add('splash__bottom-panel--exit');
           if (heroImg) {
             heroImg.classList.remove('h2__bg-img--hidden');
             heroImg.classList.add('h2__bg-img--reveal');
@@ -123,13 +123,13 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
           t4.current = setTimeout(() => onDone(), 900);
         }
 
-        sweepEl(logoTop, rafTop, TOP_OUT, true, () => {
+        sweepEl(logoTop!, rafTop, TOP_OUT, true, () => {
           topOutDone = true;
           onBothOutDone();
         });
 
         t3.current = setTimeout(() => {
-          sweepEl(logoBottom, rafBot, BOT_OUT, true, () => {
+          sweepEl(logoBottom!, rafBot, BOT_OUT, true, () => {
             botOutDone = true;
             onBothOutDone();
           });
