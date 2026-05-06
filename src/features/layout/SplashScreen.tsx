@@ -102,7 +102,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
 
     function onBothInDone() {
       if (!topInDone || !botInDone) return;
-      runShine(logoShine);
+      runShine(logoShine!);
       t2.current = setTimeout(() => {
 
         // ── Sweep Out ───────────────────────────────────────────
