@@ -1,9 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Project, HeroVersion } from '../types';
-import { PROJECTS } from '../data/projects';
+import { useProjects } from '../data/projectsApi';
 
 export const useAppHandlers = (heroVersion: HeroVersion, splashExiting: boolean, splashDone: boolean) => {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const projects = useProjects();
 
   // Lock scroll while splash is active
   useEffect(() => {
@@ -46,25 +47,25 @@ export const useAppHandlers = (heroVersion: HeroVersion, splashExiting: boolean,
   useEffect(() => {
     const onOpen = (e: any) => {
       const id = e.detail?.id;
-      const p = PROJECTS.find((x) => x.id === id);
+      const p = projects.find((x) => x.id === id);
       if (p) onOpenProject(p);
     };
     window.addEventListener("rh:open-project", onOpen);
     return () => window.removeEventListener("rh:open-project", onOpen);
-  }, [onOpenProject]);
+  }, [onOpenProject, projects]);
 
   // Open/close in sync with browser navigation (Back/Forward) and
   // direct links carrying a #project-N hash.
   useEffect(() => {
     const applyHash = () => {
       const match = window.location.hash.match(/^#project-(\d+)$/);
-      const p = match ? PROJECTS.find((x) => x.id === Number(match[1])) : null;
+      const p = match ? projects.find((x) => x.id === Number(match[1])) : null;
       setActiveProject(p || null);
     };
     window.addEventListener("popstate", applyHash);
     applyHash();
     return () => window.removeEventListener("popstate", applyHash);
-  }, []);
+  }, [projects]);
 
   // Smooth scroll with transition
   const onNav = useCallback((id: string) => {

@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Projects.css';
-import { PROJECTS } from '../../data/projects';
+import { useProjects } from '../../data/projectsApi';
 import { Project } from '../../types';
 
 interface ProjectsProps {
@@ -9,6 +9,7 @@ interface ProjectsProps {
 }
 
 export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
+  const PROJECTS = useProjects();
   const { t } = useTranslation();
   const railRef = useRef<HTMLDivElement>(null);
   const [progress, setProgress] = useState(0);
