@@ -92,6 +92,7 @@ const id = {
       error_required: "Wajib diisi",
       error_email: "Email tidak valid",
       error_message: "Ceritakan proyek Anda",
+      submit_error: "Gagal mengirim — coba lagi",
     },
   },
   footer: {

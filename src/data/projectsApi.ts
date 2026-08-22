@@ -4,8 +4,9 @@ import type { Project } from '../types';
 // In dev this goes through the Vite proxy (see vite.config.ts) so requests stay
 // same-origin; in production the site and Directus are separate hosts and the
 // server's CORS_ORIGIN allows it. Overridable per environment either way.
-const BASE = import.meta.env.VITE_DIRECTUS_URL
+export const CMS_URL = import.meta.env.VITE_DIRECTUS_URL
   ?? (import.meta.env.DEV ? '/cms' : 'https://cms.rhstudioarsitek.my.id');
+const BASE = CMS_URL;
 
 const asset = (id: string, width?: number) =>
   `${BASE}/assets/${id}${width ? `?width=${width}` : ''}`;

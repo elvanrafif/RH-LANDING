@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Contact.css';
+import { CMS_URL } from '../data/projectsApi';
 
 export const Contact: React.FC = () => {
   const { t } = useTranslation();
-  const [form, setForm] = useState({ name: "", email: "", project: "residential", budget: "", message: "" });
+  const [form, setForm] = useState({ name: "", email: "", project: "residential", budget: "", message: "", website: "" });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [state, setState] = useState("idle");
 
@@ -20,7 +21,7 @@ export const Contact: React.FC = () => {
     return () => window.removeEventListener('rh:set-project-type', onSetType);
   }, []);
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs: {[key: string]: string} = {};
     if (!form.name.trim()) errs.name = t('contact.form.error_required');
@@ -29,14 +30,32 @@ export const Contact: React.FC = () => {
     if (!form.message.trim()) errs.message = t('contact.form.error_message');
     setErrors(errs);
     if (Object.keys(errs).length) return;
+
+    const reset = () => setTimeout(() => {
+      setState("idle");
+      setForm({ name: "", email: "", project: "residential", budget: "", message: "", website: "" });
+    }, 3000);
+
+    // A bot that fills every field trips the honeypot. Show it the same
+    // success it would have got, so it has nothing to probe against.
+    if (form.website) { setState("sent"); reset(); return; }
+
     setState("sending");
-    setTimeout(() => {
+    try {
+      const { website: _honeypot, ...payload } = form;
+      const res = await fetch(`${CMS_URL}/items/inquiries`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error(`Directus ${res.status}`);
       setState("sent");
-      setTimeout(() => {
-        setState("idle");
-        setForm({ name: "", email: "", project: "residential", budget: "", message: "" });
-      }, 3000);
-    }, 900);
+      reset();
+    } catch (err) {
+      console.error('[contact] gagal mengirim:', err);
+      setState("error");
+      setTimeout(() => setState("idle"), 5000);
+    }
   };
 
   const projectTypes = [
@@ -126,11 +145,20 @@ export const Contact: React.FC = () => {
               {errors.message && <span className="field__error">{errors.message}</span>}
             </div>
 
+            {/* Honeypot: off-screen and skipped by tab and screen readers, so
+                only an automated filler ever puts anything in it. */}
+            <input
+              type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden="true"
+              value={form.website} onChange={update("website")}
+              style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }}
+            />
+
             <button type="submit" className={"btn" + (state === "sent" ? " btn--sent" : "")} disabled={state !== "idle"}>
               <span>
                 {state === "idle"    && t('contact.form.submit_idle')}
                 {state === "sending" && t('contact.form.submit_sending')}
                 {state === "sent"    && t('contact.form.submit_sent')}
+                {state === "error"   && t('contact.form.submit_error')}
               </span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                 <path d="M2 12L12 2M12 2H4M12 2V10" stroke="currentColor" strokeWidth="1.2"/>
