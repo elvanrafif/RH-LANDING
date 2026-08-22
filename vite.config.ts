@@ -12,4 +12,15 @@ export default defineConfig({
       webp: { lossless: true },
     }),
   ],
+  // Dev talks to Directus same-origin through this proxy, so localhost does not
+  // have to be added to the server's CORS_ORIGIN just to run `vite dev`.
+  server: {
+    proxy: {
+      '/cms': {
+        target: 'https://cms.rhstudioarsitek.my.id',
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/cms/, ''),
+      },
+    },
+  },
 })

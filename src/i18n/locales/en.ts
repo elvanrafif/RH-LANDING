@@ -92,6 +92,7 @@ const en = {
       error_required: "Required",
       error_email: "Invalid email",
       error_message: "Tell us about your project",
+      submit_error: "Could not send — please try again",
     },
   },
   footer: {

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import Lenis from 'lenis';
 import './ProjectDetail.css';
 import { Project } from '../../types';
-import { PROJECTS } from '../../data/projects';
+import { useProjects } from '../../data/projectsApi';
 
 interface ProjectDetailProps {
   project: Project | null;
@@ -11,6 +11,7 @@ interface ProjectDetailProps {
 }
 
 export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }) => {
+  const PROJECTS = useProjects();
   const [lightbox, setLightbox] = useState<number | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -70,7 +71,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
   if (!project) return null;
   const p = project;
   const idx = PROJECTS.findIndex((x) => x.id === p.id);
-  const next = PROJECTS[(idx + 1) % PROJECTS.length];
+  const next = PROJECTS.length ? PROJECTS[(idx + 1) % PROJECTS.length] : null;
   const isEn = i18n.language === 'en';
   const brief    = isEn ? p.brief_en    : p.brief;
   const chapters = isEn ? p.chapters_en : p.chapters;
@@ -159,7 +160,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
           </div>
         </section>
 
-        <section className="pd__next" onClick={() => {
+        {next && <section className="pd__next" onClick={() => {
           onClose(); // Close current then open next
           setTimeout(() => {
             window.dispatchEvent(new CustomEvent("rh:open-project", { detail: { id: next.id } }));
@@ -173,7 +174,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
             <span className="mono pd__muted">{next.location} · {next.year}</span>
           </div>
           <img src={next.img} alt={`${next.title} ${next.titleAccent}`} className="pd__next-img"/>
-        </section>
+        </section>}
 
         <footer className="pd__foot">
           <span className="mono pd__muted">{t('pd.footer_text')}</span>
