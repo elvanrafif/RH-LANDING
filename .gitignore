@@ -24,3 +24,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local secrets (Directus token, etc) — never commit
+.env
+.env.*
+!.env.example
