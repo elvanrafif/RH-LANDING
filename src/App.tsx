@@ -33,8 +33,8 @@ function App() {
 
   const {
     activeProject,
-    setActiveProject,
     onOpenProject,
+    closeProject,
     onNav
   } = useAppHandlers(heroVersion, splashExiting, splashDone);
 
@@ -93,7 +93,7 @@ function App() {
           skipSplash={splashDone && !splashExiting}
         />
       )}
-      <ProjectDetail project={activeProject} onClose={() => setActiveProject(null)} />
+      <ProjectDetail project={activeProject} onClose={closeProject} />
       
       <Cursor />
       

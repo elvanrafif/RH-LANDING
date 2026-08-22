@@ -113,7 +113,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
         </header>
 
         <figure className="pd__figure pd__figure--lead" onClick={() => setLightbox(0)} data-cursor={t('pd.zoom_cursor')}>
-          <img src={p.gallery[0]} alt="" />
+          <img src={p.gallery[0]} alt={`${p.title} ${p.titleAccent}, ${p.location}`} />
           <figcaption className="mono pd__muted">01 — {t('pd.main_view')} · {p.location}</figcaption>
         </figure>
 
@@ -137,7 +137,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
                 <p>{c.body}</p>
               </div>
               <figure className="pd__chapter-fig" onClick={() => setLightbox(i + 1)} data-cursor={t('pd.zoom_cursor')}>
-                <img src={p.gallery[(i + 1) % p.gallery.length]} alt="" loading="lazy"/>
+                <img src={p.gallery[(i + 1) % p.gallery.length]} alt={`${p.title} — ${c.title}`} loading="lazy"/>
                 <figcaption className="mono pd__muted">0{i + 2} — {c.title}</figcaption>
               </figure>
             </div>
@@ -152,7 +152,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
           <div className="pd__gallery-grid">
             {p.gallery.map((src, i) => (
               <figure key={i} className={`pd__gallery-item pd__gallery-item--${i % 3}`} onClick={() => setLightbox(i)} data-cursor={t('pd.zoom_cursor')}>
-                <img src={src} alt="" loading="lazy"/>
+                <img src={src} alt={`${p.title} ${p.titleAccent}, gallery ${i + 1}`} loading="lazy"/>
                 <figcaption className="mono pd__muted">{String(i + 1).padStart(2, "0")}</figcaption>
               </figure>
             ))}
@@ -172,7 +172,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
             </div>
             <span className="mono pd__muted">{next.location} · {next.year}</span>
           </div>
-          <img src={next.img} alt="" className="pd__next-img"/>
+          <img src={next.img} alt={`${next.title} ${next.titleAccent}`} className="pd__next-img"/>
         </section>
 
         <footer className="pd__foot">

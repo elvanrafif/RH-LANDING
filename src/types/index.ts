@@ -25,6 +25,7 @@ export interface Service {
   desc: string;
   desc_en: string;
   tag: string;
+  contactType: string;
 }
 
 export interface Stat {

@@ -18,14 +18,28 @@ export const useAppHandlers = (heroVersion: HeroVersion, splashExiting: boolean,
     };
   }, [heroVersion, splashExiting, splashDone]);
 
-  // Project open handler
+  // Project open handler — pushes a real history entry so the browser
+  // Back button and shareable #project-N links both work.
   const onOpenProject = useCallback((p: Project) => {
     if ((window as any).__lenis) {
       (window as any).__lenis.scrollTo(0, { immediate: true });
     } else {
       window.scrollTo({ top: 0, behavior: "instant" as any });
     }
+    if (window.location.hash !== `#project-${p.id}`) {
+      window.history.pushState({ projectId: p.id }, "", `#project-${p.id}`);
+    }
     setActiveProject(p);
+  }, []);
+
+  // Closing goes back through history when the open project came from a
+  // pushed state, so Back/Forward and the in-page close control agree.
+  const closeProject = useCallback(() => {
+    if (window.location.hash.startsWith("#project-")) {
+      window.history.back();
+    } else {
+      setActiveProject(null);
+    }
   }, []);
 
   // Listen for global open-project events
@@ -38,6 +52,19 @@ export const useAppHandlers = (heroVersion: HeroVersion, splashExiting: boolean,
     window.addEventListener("rh:open-project", onOpen);
     return () => window.removeEventListener("rh:open-project", onOpen);
   }, [onOpenProject]);
+
+  // Open/close in sync with browser navigation (Back/Forward) and
+  // direct links carrying a #project-N hash.
+  useEffect(() => {
+    const applyHash = () => {
+      const match = window.location.hash.match(/^#project-(\d+)$/);
+      const p = match ? PROJECTS.find((x) => x.id === Number(match[1])) : null;
+      setActiveProject(p || null);
+    };
+    window.addEventListener("popstate", applyHash);
+    applyHash();
+    return () => window.removeEventListener("popstate", applyHash);
+  }, []);
 
   // Smooth scroll with transition
   const onNav = useCallback((id: string) => {
@@ -64,6 +91,7 @@ export const useAppHandlers = (heroVersion: HeroVersion, splashExiting: boolean,
     activeProject,
     setActiveProject,
     onOpenProject,
+    closeProject,
     onNav
   };
 };

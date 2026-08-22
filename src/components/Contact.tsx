@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Contact.css';
 
@@ -9,7 +9,16 @@ export const Contact: React.FC = () => {
   const [state, setState] = useState("idle");
 
   const update = (k: string) => (e: any) => setForm({ ...form, [k]: e.target.value });
-  const setProject = (v: string) => setForm({ ...form, project: v });
+  const setProject = (v: string) => setForm((f) => ({ ...f, project: v }));
+
+  useEffect(() => {
+    const onSetType = (e: Event) => {
+      const type = (e as CustomEvent<string>).detail;
+      if (type) setProject(type);
+    };
+    window.addEventListener('rh:set-project-type', onSetType);
+    return () => window.removeEventListener('rh:set-project-type', onSetType);
+  }, []);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -74,25 +83,26 @@ export const Contact: React.FC = () => {
           <form className="form" onSubmit={submit} noValidate>
             <div className="form__grid">
               <div className={"field" + (errors.name ? " field--error" : "")}>
-                <label className="mono">{t('contact.form.name_label')}</label>
-                <input type="text" value={form.name} onChange={update("name")} placeholder={t('contact.form.name_placeholder')} />
+                <label className="mono" htmlFor="contact-name">{t('contact.form.name_label')}</label>
+                <input id="contact-name" type="text" value={form.name} onChange={update("name")} placeholder={t('contact.form.name_placeholder')} />
                 {errors.name && <span className="field__error">{errors.name}</span>}
               </div>
               <div className={"field" + (errors.email ? " field--error" : "")}>
-                <label className="mono">{t('contact.form.email_label')}</label>
-                <input type="email" value={form.email} onChange={update("email")} placeholder={t('contact.form.email_placeholder')} />
+                <label className="mono" htmlFor="contact-email">{t('contact.form.email_label')}</label>
+                <input id="contact-email" type="email" value={form.email} onChange={update("email")} placeholder={t('contact.form.email_placeholder')} />
                 {errors.email && <span className="field__error">{errors.email}</span>}
               </div>
             </div>
 
             <div className="field">
-              <label className="mono">{t('contact.form.type_label')}</label>
-              <div className="chip-row">
+              <label className="mono" id="contact-type-label">{t('contact.form.type_label')}</label>
+              <div className="chip-row" role="group" aria-labelledby="contact-type-label">
                 {projectTypes.map((c) => (
                   <button
                     type="button"
                     key={c.k}
                     className={"chip" + (form.project === c.k ? " is-active" : "")}
+                    aria-pressed={form.project === c.k}
                     onClick={() => setProject(c.k)}
                   >{c.l}</button>
                 ))}
@@ -100,8 +110,8 @@ export const Contact: React.FC = () => {
             </div>
 
             <div className="field">
-              <label className="mono">{t('contact.form.budget_label')}</label>
-              <select value={form.budget} onChange={update("budget")}>
+              <label className="mono" htmlFor="contact-budget">{t('contact.form.budget_label')}</label>
+              <select id="contact-budget" value={form.budget} onChange={update("budget")}>
                 <option value="">{t('contact.form.budget_placeholder')}</option>
                 <option value="a">{t('contact.form.budget_a')}</option>
                 <option value="b">{t('contact.form.budget_b')}</option>
@@ -111,8 +121,8 @@ export const Contact: React.FC = () => {
             </div>
 
             <div className={"field" + (errors.message ? " field--error" : "")}>
-              <label className="mono">{t('contact.form.message_label')}</label>
-              <textarea rows={4} value={form.message} onChange={update("message")} placeholder={t('contact.form.message_placeholder')}></textarea>
+              <label className="mono" htmlFor="contact-message">{t('contact.form.message_label')}</label>
+              <textarea id="contact-message" rows={4} value={form.message} onChange={update("message")} placeholder={t('contact.form.message_placeholder')}></textarea>
               {errors.message && <span className="field__error">{errors.message}</span>}
             </div>
 

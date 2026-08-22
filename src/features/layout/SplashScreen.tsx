@@ -90,10 +90,10 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
     const heroImg = document.querySelector('.h2__bg-img');
     if (heroImg) heroImg.classList.add('h2__bg-img--hidden');
 
-    const TOP_IN  = 3500;
-    const BOT_IN  = 3200;
-    const TOP_OUT = 3500;
-    const BOT_OUT = 3200;
+    const TOP_IN  = 1100;
+    const BOT_IN  = 1000;
+    const TOP_OUT = 1100;
+    const BOT_OUT = 1000;
 
     // ── Sweep In ─────────────────────────────────────────────────
     // Top: t=0ms. Bottom: t=400ms. Hold 400ms after BOTH done.
@@ -106,7 +106,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
       t2.current = setTimeout(() => {
 
         // ── Sweep Out ───────────────────────────────────────────
-        // Top: immediately. Bottom: 400ms later.
+        // Top: immediately. Bottom: 200ms later.
         // Split when BOTH visually gone.
         let topOutDone = false;
         let botOutDone = false;
@@ -133,9 +133,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
             botOutDone = true;
             onBothOutDone();
           });
-        }, 300);
+        }, 200);
 
-      }, 400);
+      }, 250);
     }
 
     // Brief blank screen before sweep in
@@ -147,15 +147,35 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
         onBothInDone();
       });
 
-      // Bottom starts at t=300ms
+      // Bottom starts at t=200ms
       t1.current = setTimeout(() => {
         sweepEl(logoBottom, rafBot, BOT_IN, false, undefined, () => {
           botInDone = true;
           onBothInDone();
         });
-      }, 300);
+      }, 200);
 
-    }, 400);
+    }, 250);
+
+    // Skip on any pointer/key input — the sequence is decorative, not load-bearing.
+    function skip() {
+      if (cancelled) return;
+      cancelled = true;
+      cancelAnimationFrame(rafTop.id);
+      cancelAnimationFrame(rafBot.id);
+      cancelAnimationFrame(rafShine.id);
+      [t0, t1, t2, t3, t4].forEach(r => { if (r.current) clearTimeout(r.current); });
+      onExiting();
+      topPanel!.classList.add('splash__top-panel--exit');
+      botPanel!.classList.add('splash__bottom-panel--exit');
+      if (heroImg) {
+        heroImg.classList.remove('h2__bg-img--hidden');
+        heroImg.classList.add('h2__bg-img--reveal');
+      }
+      setTimeout(() => onDone(), 900);
+    }
+    window.addEventListener('pointerdown', skip, { once: true });
+    window.addEventListener('keydown', skip, { once: true });
 
     return () => {
       cancelled = true;
@@ -163,6 +183,8 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onDone, onExiting })
       cancelAnimationFrame(rafBot.id);
       cancelAnimationFrame(rafShine.id);
       [t0, t1, t2, t3, t4].forEach(r => { if (r.current) clearTimeout(r.current); });
+      window.removeEventListener('pointerdown', skip);
+      window.removeEventListener('keydown', skip);
       if (heroImg) heroImg.classList.remove('h2__bg-img--hidden');
     };
   }, [onDone, onExiting]);

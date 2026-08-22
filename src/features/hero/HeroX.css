@@ -165,7 +165,7 @@
   position: relative;
   z-index: 3;
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) auto auto;
+  grid-template-columns: minmax(0, 1.1fr) auto;
   gap: clamp(24px, 4vw, 72px);
   align-items: end;
   padding-top: 24px;
@@ -185,22 +185,6 @@
   color: var(--ink-2);
 }
 .heroX__lede-mark { color: var(--accent); margin-right: 8px; font-family: var(--font-mono); font-size: 14px; }
-
-.heroX__counters { display: flex; gap: 40px; }
-.heroX__counter { display: flex; flex-direction: column; gap: 4px; }
-.heroX__counter-num {
-  font-size: clamp(44px, 5vw, 72px);
-  line-height: 1;
-  letter-spacing: -0.03em;
-  font-family: var(--font-display);
-}
-.heroX__counter-sup {
-  font-family: var(--font-mono);
-  font-size: 16px;
-  color: var(--accent);
-  vertical-align: super;
-  margin-left: 2px;
-}
 
 .heroX__cta {
   position: relative;
@@ -250,14 +234,9 @@
 }
 .heroX__scroll-dot {
   position: absolute;
-  top: -10px; left: -1px;
+  top: 0; left: -1px;
   width: 3px; height: 10px;
   background: var(--accent);
-  animation: scrollDot 2s cubic-bezier(.7,0,.3,1) infinite;
-}
-@keyframes scrollDot {
-  0% { transform: translateY(0); }
-  100% { transform: translateY(48px); }
 }
 
 @media (max-width: 860px) {

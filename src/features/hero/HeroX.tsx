@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './HeroX.css';
 import { useHeroAnimation } from './useHeroAnimation';
-import { useCounter } from '../../hooks/useCounter';
 
 const TILES = [
   { src: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=900&q=80", label: "Rumah Kanyon", depth: 18, cls: "t1" },
@@ -16,9 +15,6 @@ export const HeroX: React.FC = () => {
   const { t } = useTranslation();
   const [loaded, setLoaded] = useState(false);
   const heroRef = useHeroAnimation();
-
-  const [projectsCount, projectsRef] = useCounter(86);
-  const [yearsCount, yearsRef] = useCounter(12);
 
   useEffect(() => {
     const t = setTimeout(() => setLoaded(true), 50);
@@ -91,17 +87,6 @@ export const HeroX: React.FC = () => {
           <span className="heroX__lede-mark">⟶</span>
           {t('hero.lede')}
         </p>
-
-        <div className="heroX__counters">
-          <div className="heroX__counter" ref={projectsRef}>
-            <span className="heroX__counter-num display">{projectsCount}</span>
-            <span className="mono heroX__muted">{t('hero.counter_projects')}</span>
-          </div>
-          <div className="heroX__counter" ref={yearsRef}>
-            <span className="heroX__counter-num display">{yearsCount}<sup className="heroX__counter-sup">+</sup></span>
-            <span className="mono heroX__muted">{t('hero.counter_years')}</span>
-          </div>
-        </div>
 
         <a href="#projects" className="heroX__cta" data-cursor={t('hero.cta_cursor')} onClick={(e) => {
           e.preventDefault();

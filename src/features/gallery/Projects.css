@@ -22,6 +22,14 @@
 }
 .projects__head-meta { grid-column: 11 / span 2; justify-self: end; text-align: right; color: #8A7F72; }
 
+@media (max-width: 860px) {
+  .projects__head-label, .projects__head-title, .projects__head-meta {
+    grid-column: 1 / -1;
+    justify-self: start;
+    text-align: left;
+  }
+}
+
 .projects__scroller {
   position: relative;
   padding-inline: var(--gutter);

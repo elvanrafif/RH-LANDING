@@ -3,6 +3,17 @@ import { useTranslation } from 'react-i18next';
 import './Services.css';
 import { SERVICES } from '../data/projects';
 
+const goToContact = (contactType: string) => {
+  window.dispatchEvent(new CustomEvent('rh:set-project-type', { detail: contactType }));
+  const el = document.getElementById('contact');
+  if (!el) return;
+  if ((window as any).__lenis) {
+    (window as any).__lenis.scrollTo(el, { offset: -20 });
+  } else {
+    window.scrollTo({ top: el.offsetTop - 20, behavior: 'smooth' });
+  }
+};
+
 export const Services: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isEn = i18n.language === 'en';
@@ -22,7 +33,13 @@ export const Services: React.FC = () => {
 
       <div>
         {SERVICES.map((s) => (
-          <div key={s.num} className="service-row" data-cursor={t('services.more')}>
+          <button
+            type="button"
+            key={s.num}
+            className="service-row"
+            data-cursor={t('services.more')}
+            onClick={() => goToContact(s.contactType)}
+          >
             <div className="service-row__num">{s.num}</div>
             <div>
               <div className="service-row__title" dangerouslySetInnerHTML={{ __html: isEn ? s.en : s.title }}></div>
@@ -35,7 +52,7 @@ export const Services: React.FC = () => {
                 <path d="M3 13L13 3M13 3H5M13 3V11" stroke="currentColor" strokeWidth="1.2"/>
               </svg>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </section>
