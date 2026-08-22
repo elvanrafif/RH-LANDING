@@ -56,8 +56,11 @@ console.log(`Creating ${PROJECTS.length} projects…`);
 for (const p of PROJECTS) {
   await api('/items/projects', {
     method: 'POST',
+    // `id` is auto-increment: inserting in order reproduces the original 1..12
+    // without leaving the Postgres sequence behind the highest row.
     body: JSON.stringify({
       ...p,
+      id: undefined,
       img: fileId.get(p.img),
       gallery: p.gallery.map((u) => ({ directus_files_id: fileId.get(u) })),
     }),
