@@ -5,7 +5,7 @@ import { CMS_URL } from '../data/projectsApi';
 
 export const Contact: React.FC = () => {
   const { t } = useTranslation();
-  const [form, setForm] = useState({ name: "", email: "", project: "residential", budget: "", message: "", website: "" });
+  const [form, setForm] = useState({ name: "", email: "", whatsapp: "", project: "residential", budget: "", message: "", website: "" });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [state, setState] = useState("idle");
 
@@ -25,15 +25,20 @@ export const Contact: React.FC = () => {
     e.preventDefault();
     const errs: {[key: string]: string} = {};
     if (!form.name.trim()) errs.name = t('contact.form.error_required');
-    if (!form.email.trim()) errs.email = t('contact.form.error_required');
-    else if (!/^[^@]+@[^@]+\.[^@]+$/.test(form.email)) errs.email = t('contact.form.error_email');
+    // WhatsApp is the channel people actually reply on here, so it carries the
+    // requirement and email is the optional extra.
+    if (!form.whatsapp.trim()) errs.whatsapp = t('contact.form.error_required');
+    else if (!/^[+\d][\d\s().-]{7,19}$/.test(form.whatsapp.trim()))
+      errs.whatsapp = t('contact.form.error_whatsapp');
+    if (form.email.trim() && !/^[^@]+@[^@]+\.[^@]+$/.test(form.email))
+      errs.email = t('contact.form.error_email');
     if (!form.message.trim()) errs.message = t('contact.form.error_message');
     setErrors(errs);
     if (Object.keys(errs).length) return;
 
     const reset = () => setTimeout(() => {
       setState("idle");
-      setForm({ name: "", email: "", project: "residential", budget: "", message: "", website: "" });
+      setForm({ name: "", email: "", whatsapp: "", project: "residential", budget: "", message: "", website: "" });
     }, 3000);
 
     // A bot that fills every field trips the honeypot. Show it the same
@@ -110,6 +115,11 @@ export const Contact: React.FC = () => {
                 <label className="mono" htmlFor="contact-email">{t('contact.form.email_label')}</label>
                 <input id="contact-email" type="email" value={form.email} onChange={update("email")} placeholder={t('contact.form.email_placeholder')} />
                 {errors.email && <span className="field__error">{errors.email}</span>}
+              </div>
+              <div className={"field" + (errors.whatsapp ? " field--error" : "")}>
+                <label className="mono" htmlFor="contact-whatsapp">{t('contact.form.whatsapp_label')}</label>
+                <input id="contact-whatsapp" type="tel" inputMode="tel" autoComplete="tel" value={form.whatsapp} onChange={update("whatsapp")} placeholder={t('contact.form.whatsapp_placeholder')} />
+                {errors.whatsapp && <span className="field__error">{errors.whatsapp}</span>}
               </div>
             </div>
 

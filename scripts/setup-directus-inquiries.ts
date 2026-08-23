@@ -53,6 +53,7 @@ const fields: any[] = [
       { text: 'Residential', value: 'residential' }, { text: 'Interior', value: 'interior' },
       { text: 'Renovation', value: 'renovation' }, { text: 'Consult', value: 'consult' },
     ] } } },
+  { field: 'whatsapp', type: 'string', meta: { interface: 'input', width: 'half', note: 'Nomor WhatsApp, opsional', options: { iconLeft: 'chat' } } },
   { field: 'budget', type: 'string', meta: { interface: 'input', width: 'half' } },
   { field: 'message', type: 'text', meta: { interface: 'input-multiline' } },
 ];
@@ -66,7 +67,7 @@ await api('/permissions', 'POST', {
   policy: publicPolicy.id, collection: 'inquiries', action: 'create',
   // Only the fields the form owns. `handled` and `date_created` are not in this
   // list, so a crafted request cannot pre-archive itself or forge a timestamp.
-  fields: ['name', 'email', 'project', 'budget', 'message'],
+  fields: ['name', 'email', 'whatsapp', 'project', 'budget', 'message'],
   permissions: {}, validation: {},
 });
 console.log('+ public create (no read)');

@@ -71,8 +71,11 @@ const en = {
     form: {
       name_label: "Name",
       name_placeholder: "Your full name",
-      email_label: "Email",
+      email_label: "Email (optional)",
       email_placeholder: "you@example.com",
+      whatsapp_label: "WhatsApp",
+      whatsapp_placeholder: "+62 8xx xxxx xxxx",
+      error_whatsapp: "Invalid number",
       type_label: "Project type",
       type_residential: "Residential",
       type_interior: "Interior",

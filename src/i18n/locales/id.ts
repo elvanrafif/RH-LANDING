@@ -71,8 +71,11 @@ const id = {
     form: {
       name_label: "Nama / Name",
       name_placeholder: "Nama lengkap Anda",
-      email_label: "Email",
+      email_label: "Email (opsional)",
       email_placeholder: "anda@contoh.com",
+      whatsapp_label: "WhatsApp",
+      whatsapp_placeholder: "08xx xxxx xxxx",
+      error_whatsapp: "Nomor tidak valid",
       type_label: "Jenis Proyek / Project type",
       type_residential: "Rumah Tinggal",
       type_interior: "Interior",
