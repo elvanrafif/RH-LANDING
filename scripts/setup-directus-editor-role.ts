@@ -31,6 +31,9 @@ const GRANTS: Record<string, string[]> = {
   projects:       ['create', 'read', 'update', 'delete'],
   projects_files: ['create', 'read', 'update', 'delete'],
   directus_files: ['create', 'read', 'update', 'delete'],
+  // The File Library page always lists folders, so read access to files alone
+  // makes it error out; full access also lets the client tidy images away.
+  directus_folders: ['create', 'read', 'update', 'delete'],
   // No `create`: enquiries come from the public form, so anything appearing
   // here is genuinely from a visitor. Delete is for clearing spam.
   inquiries:      ['read', 'update', 'delete'],
