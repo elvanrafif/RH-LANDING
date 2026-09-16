@@ -8,10 +8,10 @@ export const SERVICES: Service[] = [
 ];
 
 export const STATS: Stat[] = [
-  { num: 12, sup: "+", label: "Tahun Berkarya", en: "Years of practice" },
-  { num: 86, sup: "", label: "Proyek Selesai", en: "Completed projects" },
-  { num: 24, sup: "", label: "Penghargaan", en: "Awards & features" },
-  { num: 9, sup: "", label: "Arsitek & Desainer", en: "Architects & designers" },
+  { num: "12", sup: "+", label: "Tahun Berkarya", en: "Years of practice" },
+  { num: "86", sup: "", label: "Proyek Selesai", en: "Completed projects" },
+  { num: "24", sup: "", label: "Penghargaan", en: "Awards & features" },
+  { num: "9", sup: "", label: "Arsitek & Desainer", en: "Architects & designers" },
 ];
 
 export const MARQUEE_WORDS = [

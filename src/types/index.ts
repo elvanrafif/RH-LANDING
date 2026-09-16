@@ -29,7 +29,7 @@ export interface Service {
 }
 
 export interface Stat {
-  num: number;
+  num: string | number;
   sup: string;
   label: string;
   en: string;

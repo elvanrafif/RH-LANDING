@@ -4,7 +4,7 @@ import './Stats.css';
 import { STATS } from '../data/projects';
 import { useCounter } from '../hooks/useCounter';
 
-const StatCell: React.FC<{ num: number; sup: string; label: string; en: string }> = ({ num, sup, label, en }) => {
+const StatCell: React.FC<{ num: string | number; sup: string; label: string; en: string }> = ({ num, sup, label, en }) => {
   const { i18n } = useTranslation();
   const [val, ref] = useCounter(num);
   const primary   = i18n.language === 'en' ? en    : label;
