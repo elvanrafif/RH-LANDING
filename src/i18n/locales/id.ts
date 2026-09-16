@@ -43,7 +43,7 @@ const id = {
     title_accent: "kerjakan",
     title_after: ".",
     meta_label: "Services",
-    meta_count: "04 disiplin",
+    meta_count: "03 disiplin",
     more: "Selengkapnya →",
   },
   projects: {

@@ -43,7 +43,7 @@ const en = {
     title_accent: "do",
     title_after: ".",
     meta_label: "Services",
-    meta_count: "04 disciplines",
+    meta_count: "03 disciplines",
     more: "Learn more →",
   },
   projects: {
