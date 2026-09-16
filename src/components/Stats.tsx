@@ -7,16 +7,14 @@ import { useCounter } from '../hooks/useCounter';
 const StatCell: React.FC<{ num: string | number; sup: string; label: string; en: string }> = ({ num, sup, label, en }) => {
   const { i18n } = useTranslation();
   const [val, ref] = useCounter(num);
-  const primary   = i18n.language === 'en' ? en    : label;
-  const secondary = i18n.language === 'en' ? label : en;
+  const text = i18n.language === 'en' ? en : label;
   return (
     <div className="stat" ref={ref as any}>
       <div className="stat__num">
         {val}
         {sup && <span className="stat__num-sup">{sup}</span>}
       </div>
-      <div className="stat__label">{primary}</div>
-      <div className="stat__en mono">{secondary}</div>
+      <div className="stat__label">{text}</div>
     </div>
   );
 };
