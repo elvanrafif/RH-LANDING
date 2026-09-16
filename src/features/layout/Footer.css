@@ -38,7 +38,9 @@
   width: 100%;
   justify-content: space-between;
 }
-.footer__float .h2__row {
+.footer__float .h2__row,
+.footer__static-hero .h2__row,
+.footer__big-text-row .h2__row {
   color: #F5F1EB;
 }
 .footer__big-studio {
@@ -46,8 +48,22 @@
   justify-content: flex-end;
   gap: 0.01em;
 }
-.footer__float .h2__row--studio {
+.footer__float .h2__row--studio,
+.footer__static-hero .h2__row--studio,
+.footer__big-text-row .h2__row--studio {
   justify-content: flex-end;
+}
+
+/* Ensure letters in footer are always 100% visible and not hidden by hero animation */
+.footer .h2__c,
+.footer__float .h2__c,
+.footer__static-hero .h2__c,
+.footer__big-text-row .h2__c {
+  opacity: 1 !important;
+  transform: none !important;
+  animation: none !important;
+  display: inline-block;
+  color: #F5F1EB;
 }
 
 .footer__grid {
@@ -94,9 +110,9 @@
 
 /* Static version inside footer on mobile */
 .footer__static-hero {
-  display: none;
+  display: block;
   width: 100%;
-  padding-bottom: clamp(40px, 6vw, 80px);
+  padding-bottom: clamp(32px, 5vw, 60px);
 }
 
 @media (max-width: 860px), (pointer: coarse) {

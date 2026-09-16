@@ -58,19 +58,20 @@
 .h2__row {
   display: flex;
   align-items: baseline;
-  font-family: var(--font-display);
+  font-family: var(--font-sans);
+  font-weight: 600;
   color: #F5F1EB;
   line-height: .88;
 }
 .h2__row--rh {
   font-size: clamp(100px, 19vw, 290px);
-  letter-spacing: -0.03em;
+  letter-spacing: -0.04em;
   gap: 6px;
 }
 .h2__row--studio {
   font-size: clamp(56px, 13vw, 196px);
   font-style: normal;
-  letter-spacing: 0;
+  letter-spacing: -0.02em;
   justify-content: space-between;
 }
 

@@ -43,8 +43,11 @@ export const Footer: React.FC = () => {
       const row    = rowRef.current;
       const inner  = innerRef.current;
       if (!spacer || !row || !inner) return;
-      const pb = parseFloat(getComputedStyle(inner).paddingBottom) || 0;
-      spacer.style.height = `${Math.round(row.offsetHeight + pb)}px`;
+      const h = row.offsetHeight;
+      if (h > 0) {
+        const pb = parseFloat(getComputedStyle(inner).paddingBottom) || 0;
+        spacer.style.height = `${Math.round(h + pb)}px`;
+      }
     };
 
     if (document.fonts?.ready) {
@@ -75,11 +78,12 @@ export const Footer: React.FC = () => {
         const spacerBottom = spacer.getBoundingClientRect().bottom;
         const vh           = window.innerHeight;
 
+        // Gunakan visibility: hidden agar layout/offsetHeight tetap bisa diukur akurat
         if (footerTop >= vh) {
-          outer.style.display = 'none';
+          outer.style.visibility = 'hidden';
           return;
         } else {
-          outer.style.display = '';
+          outer.style.visibility = 'visible';
         }
 
         const clipTop = Math.max(0, footerTop);
