@@ -43,7 +43,6 @@ export const Services: React.FC = () => {
             <div className="service-row__num">{s.num}</div>
             <div>
               <div className="service-row__title" dangerouslySetInnerHTML={{ __html: isEn ? s.en : s.title }}></div>
-              <div className="mono" style={{color: "var(--muted)", marginTop: 6}}>{isEn ? s.title.replace('<br/>', ' ') : s.en}</div>
             </div>
             <div className="service-row__desc">{isEn ? s.desc_en : s.desc}</div>
             <div className="service-row__tag">{s.tag}</div>
