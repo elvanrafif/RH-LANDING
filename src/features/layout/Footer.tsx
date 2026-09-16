@@ -1,22 +1,42 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Footer.css';
 
 export const Footer: React.FC = () => {
   const { t } = useTranslation();
   const footerRef = useRef<HTMLElement>(null);
-  const outerRef  = useRef<HTMLDivElement>(null); // fixed: clipPath saja
-  const innerRef  = useRef<HTMLDivElement>(null); // absolute: transform saja
+  const outerRef  = useRef<HTMLDivElement>(null);
+  const innerRef  = useRef<HTMLDivElement>(null);
   const spacerRef = useRef<HTMLDivElement>(null);
   const rowRef    = useRef<HTMLDivElement>(null);
 
-  // Sync spacer height ke tinggi floating row (hanya desktop/mouse pointer)
+  // Deteksi mobile/touch dengan aman
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === 'undefined') return false;
+    return (
+      window.innerWidth <= 860 ||
+      window.matchMedia('(pointer: coarse)').matches ||
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0
+    );
+  });
+
   useEffect(() => {
-    const isTouch = window.matchMedia('(pointer: coarse)').matches;
-    if (isTouch) {
-      if (spacerRef.current) spacerRef.current.style.height = '0px';
-      return;
-    }
+    const check = () => {
+      setIsMobile(
+        window.innerWidth <= 860 ||
+        window.matchMedia('(pointer: coarse)').matches ||
+        'ontouchstart' in window ||
+        navigator.maxTouchPoints > 0
+      );
+    };
+    window.addEventListener('resize', check);
+    return () => window.removeEventListener('resize', check);
+  }, []);
+
+  // Sync spacer height ke tinggi floating row (HANYA desktop non-touch)
+  useEffect(() => {
+    if (isMobile) return;
 
     const syncHeight = () => {
       const spacer = spacerRef.current;
@@ -26,6 +46,7 @@ export const Footer: React.FC = () => {
       const pb = parseFloat(getComputedStyle(inner).paddingBottom) || 0;
       spacer.style.height = `${Math.round(row.offsetHeight + pb)}px`;
     };
+
     if (document.fonts?.ready) {
       document.fonts.ready.then(syncHeight);
     } else {
@@ -33,12 +54,11 @@ export const Footer: React.FC = () => {
     }
     window.addEventListener('resize', syncHeight);
     return () => window.removeEventListener('resize', syncHeight);
-  }, []);
+  }, [isMobile]);
 
-  // Scroll reveal + overshoot positioning (hanya desktop/mouse pointer)
+  // Scroll reveal + overshoot positioning (HANYA desktop non-touch)
   useEffect(() => {
-    const isTouch = window.matchMedia('(pointer: coarse)').matches;
-    if (isTouch) return;
+    if (isMobile) return;
 
     let rafId = 0;
     const handle = () => {
@@ -76,7 +96,7 @@ export const Footer: React.FC = () => {
       window.removeEventListener('scroll', handle);
       if (rafId) cancelAnimationFrame(rafId);
     };
-  }, []);
+  }, [isMobile]);
 
   const rhStudioContent = (
     <div className="footer__big-text-row">
@@ -99,23 +119,29 @@ export const Footer: React.FC = () => {
 
   return (
     <>
-      {/* Desktop only: Floating overlay with clip-path transition */}
-      <div ref={outerRef} className="footer__float footer__float--desktop" aria-hidden="true">
-        <div ref={innerRef} className="footer__float-inner">
-          <div ref={rowRef} className="footer__float-row">
-            {rhStudioContent}
+      {/* Desktop ONLY: Floating overlay with clip-path transition. DI MOBILE TIDAK DI-RENDER SAMA SEKALI */}
+      {!isMobile && (
+        <div ref={outerRef} className="footer__float footer__float--desktop" aria-hidden="true">
+          <div ref={innerRef} className="footer__float-inner">
+            <div ref={rowRef} className="footer__float-row">
+              {rhStudioContent}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       <footer ref={footerRef} className="footer">
-        {/* Mobile only: Static text directly in DOM flow, perfectly responsive & zero phantom whitespace */}
-        <div className="footer__static-hero">
-          {rhStudioContent}
-        </div>
+        {/* Mobile ONLY: Static text in DOM flow. DI DESKTOP TIDAK DI-RENDER SAMA SEKALI */}
+        {isMobile && (
+          <div className="footer__static-hero">
+            {rhStudioContent}
+          </div>
+        )}
 
-        {/* Desktop spacer */}
-        <div ref={spacerRef} className="footer__big-clip" aria-hidden="true" />
+        {/* Desktop spacer: DI MOBILE TIDAK DI-RENDER SAMA SEKALI */}
+        {!isMobile && (
+          <div ref={spacerRef} className="footer__big-clip" aria-hidden="true" />
+        )}
 
         <div className="footer__grid">
           <div className="footer__col">
