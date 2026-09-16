@@ -80,21 +80,47 @@
   letter-spacing: .1em;
   text-transform: uppercase;
 }
-@media (max-width: 860px) {
+
+.footer__big-text-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.04em;
+  width: 100%;
+  justify-content: space-between;
+}
+.footer__big-text-row .h2__row {
+  color: #F5F1EB;
+}
+
+/* Static version inside footer on mobile */
+.footer__static-hero {
+  display: none;
+  width: 100%;
+  padding-bottom: clamp(40px, 6vw, 80px);
+}
+
+@media (max-width: 860px), (pointer: coarse) {
+  /* Hide desktop fixed floating overlay on mobile */
+  .footer__float--desktop {
+    display: none !important;
+  }
+  .footer__big-clip {
+    display: none !important;
+    height: 0 !important;
+  }
+  /* Show clean static hero text on mobile inside footer flow */
+  .footer__static-hero {
+    display: block;
+    padding-bottom: clamp(32px, 5vw, 60px);
+  }
   .footer {
     padding-bottom: max(32px, env(safe-area-inset-bottom));
   }
   .footer__grid { grid-template-columns: 1fr 1fr; }
-  .footer__float-inner {
-    padding-bottom: clamp(16px, 4vw, 32px);
-  }
-  /* Scale down floating RH STUDIO text di footer untuk layar mobile */
-  .footer__float .h2__row--rh,
-  .footer__float-inner .h2__row--rh {
+  .footer__static-hero .h2__row--rh {
     font-size: clamp(48px, 13vw, 84px) !important;
   }
-  .footer__float .h2__row--studio,
-  .footer__float-inner .h2__row--studio {
+  .footer__static-hero .h2__row--studio {
     font-size: clamp(28px, 9vw, 48px) !important;
   }
 }
