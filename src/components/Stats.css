@@ -33,6 +33,13 @@
   color: var(--accent);
   margin-left: 4px;
 }
+.stat__infinity-icon {
+  width: clamp(64px, 6.8vw, 108px);
+  height: auto;
+  display: block;
+  stroke: currentColor;
+  margin-top: 6px;
+}
 .stat__label { color: var(--muted); margin-top: auto; }
 @media (max-width: 860px) {
   .stats { grid-template-columns: repeat(2, 1fr); }
