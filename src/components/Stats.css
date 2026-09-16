@@ -1,6 +1,6 @@
 .stats {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 0;
   border-block: 1px solid var(--line);
 }
@@ -20,7 +20,7 @@
   letter-spacing: -0.02em;
 }
 .stat__num--text {
-  font-size: clamp(36px, 4.2vw, 68px);
+  font-size: clamp(28px, 3.2vw, 52px);
   line-height: 1;
   letter-spacing: -0.02em;
   margin-top: auto;
@@ -35,7 +35,13 @@
 }
 .stat__label { color: var(--muted); margin-top: auto; }
 @media (max-width: 860px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stat { border-bottom: 1px solid var(--line); }
+  .stat:nth-child(even) { border-right: none; }
+  .stat:nth-last-child(-n+2) { border-bottom: none; }
+}
+@media (max-width: 480px) {
   .stats { grid-template-columns: 1fr; }
-  .stat { border-right: none; border-bottom: 1px solid var(--line); }
-  .stat:last-child { border-bottom: none; }
+  .stat { border-right: none !important; border-bottom: 1px solid var(--line) !important; }
+  .stat:last-child { border-bottom: none !important; }
 }

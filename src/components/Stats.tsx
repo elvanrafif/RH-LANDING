@@ -10,12 +10,13 @@ const StatCell: React.FC<Stat> = ({ num, num_en, sup, label, en }) => {
   const isEn = i18n.language === 'en';
   const rawTitle = isEn && num_en ? num_en : num;
   const isNumeric = typeof rawTitle === 'number' || /^\d+/.test(String(rawTitle));
+  const isLongText = !isNumeric && String(rawTitle).length > 2;
   const [val, ref] = useCounter(isNumeric ? rawTitle : 0);
   const text = isEn ? en : label;
 
   return (
-    <div className={`stat ${!isNumeric ? 'stat--text' : ''}`} ref={ref as any}>
-      <div className={`stat__num ${!isNumeric ? 'stat__num--text' : ''}`}>
+    <div className={`stat ${isLongText ? 'stat--text' : ''}`} ref={ref as any}>
+      <div className={`stat__num ${isLongText ? 'stat__num--text' : ''}`}>
         {isNumeric ? (
           <>
             {val}
