@@ -134,6 +134,16 @@ const en = {
     next_project_cursor: "Next project →",
     zoom_cursor: "Zoom",
   },
+  marquee: [
+    "DESIGN",
+    "BUILD",
+    "ARCHITECTURE",
+    "INTERIOR",
+    "RESIDENTIAL",
+    "CRAFTED",
+    "PRECISION",
+    "TIMELESS",
+  ],
 } as const;
 
 export default en;

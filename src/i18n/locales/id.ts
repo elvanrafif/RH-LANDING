@@ -134,6 +134,16 @@ const id = {
     next_project_cursor: "Proyek selanjutnya →",
     zoom_cursor: "Perbesar",
   },
+  marquee: [
+    "DESAIN",
+    "BANGUN",
+    "ARSITEKTUR",
+    "INTERIOR",
+    "RESIDENSIAL",
+    "DETAIL",
+    "PRESISI",
+    "ESTETIKA",
+  ],
 } as const;
 
 export default id;

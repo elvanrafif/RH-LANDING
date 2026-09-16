@@ -1,10 +1,13 @@
 import React, { useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './Marquee.css';
 import { MARQUEE_WORDS } from '../data/projects';
 
 // ─── Mobile: RAF loop — kecepatan px/s tetap, immune terhadap iOS animation quirks ───
 const MobileMarquee: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
+  const words = (t('marquee', { returnObjects: true }) as string[]) || MARQUEE_WORDS;
 
   useEffect(() => {
     const track = trackRef.current;
@@ -60,11 +63,11 @@ const MobileMarquee: React.FC = () => {
       cancelAnimationFrame(raf);
       window.removeEventListener('resize', onResize);
     };
-  }, []);
+  }, [i18n.language]);
 
   const items: React.ReactNode[] = [];
   for (let i = 0; i < 2; i++) {
-    MARQUEE_WORDS.forEach((w, k) => {
+    words.forEach((w, k) => {
       items.push(
         <span key={`${i}-${k}`} className={"marquee__item" + (k % 3 === 1 ? " marquee__item--accent" : "")}>
           {w}<span className="marquee__dot"></span>
@@ -82,7 +85,9 @@ const MobileMarquee: React.FC = () => {
 
 // ─── Desktop: CSS animation + JS duration dari actual scrollWidth ───
 const DesktopMarquee: React.FC = () => {
+  const { t, i18n } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
+  const words = (t('marquee', { returnObjects: true }) as string[]) || MARQUEE_WORDS;
 
   useEffect(() => {
     const track = trackRef.current;
@@ -103,11 +108,11 @@ const DesktopMarquee: React.FC = () => {
 
     window.addEventListener('resize', applyDuration, { passive: true });
     return () => window.removeEventListener('resize', applyDuration);
-  }, []);
+  }, [i18n.language]);
 
   const items: React.ReactNode[] = [];
   for (let i = 0; i < 4; i++) {
-    MARQUEE_WORDS.forEach((w, k) => {
+    words.forEach((w, k) => {
       items.push(
         <span key={`${i}-${k}`} className={"marquee__item" + (k % 3 === 1 ? " marquee__item--accent" : "")}>
           {w}<span className="marquee__dot"></span>
