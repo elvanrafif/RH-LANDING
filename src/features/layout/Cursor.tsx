@@ -3,6 +3,9 @@ import './Cursor.css';
 
 export const Cursor: React.FC = () => {
   useEffect(() => {
+    // Tidak ada pointer di HP — stop rAF loop yang buang GPU budget
+    if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
     const cursor = document.getElementById("cursor");
     if (!cursor) return;
     const dot = cursor.querySelector(".cursor__dot") as HTMLElement;

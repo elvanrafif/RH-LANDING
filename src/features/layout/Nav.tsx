@@ -10,16 +10,19 @@ interface NavProps {
 
 export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
   const { t, i18n } = useTranslation();
-  const [scrolled, setScrolled] = useState(window.scrollY > window.innerHeight * 0.85);
+  const [scrolled, setScrolled] = useState(window.scrollY > 80);
   const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const heroDark = heroVersion === "2";
   const lastY = useRef(0);
 
   useEffect(() => {
+    // Pakai threshold px tetap (bukan innerHeight * multiplier) agar stabil
+    // saat browser chrome mobile muncul/hilang dan innerHeight berubah
+    const SCROLL_THRESHOLD = 80;
     const onScroll = () => {
       const y = window.scrollY;
-      setScrolled(y > window.innerHeight * 0.85);
+      setScrolled(y > SCROLL_THRESHOLD);
       if (y > 240 && y > lastY.current + 4) setHidden(true);
       else if (y < lastY.current - 4) setHidden(false);
       lastY.current = y;

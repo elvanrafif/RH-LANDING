@@ -13,9 +13,18 @@
 /* Background */
 .h2__bg {
   position: absolute;
-  inset: 0;
+  inset: -8%; /* ruang ekstra untuk translateY parallax di desktop */
   margin: 0;
   overflow: hidden;
+  will-change: transform;
+}
+
+/* Di mobile tidak ada parallax — kembalikan ke inset: 0, hapus will-change */
+@media (pointer: coarse) {
+  .h2__bg {
+    inset: 0;
+    will-change: auto;
+  }
 }
 .h2__bg-img {
   width: 100%;
@@ -30,6 +39,16 @@
 @keyframes h2-kenburns {
   from { transform: scale(1.0) translate(0%, 0%); }
   to   { transform: scale(1.08) translate(-1.5%, -1%); }
+}
+
+/* Di mobile, matikan kenburns — scale animation terlihat jittery/glitch di HP real
+   karena GPU mobile tidak bisa composite-nya smooth bersama parallax parent */
+@media (pointer: coarse) {
+  .h2__bg-img {
+    animation: none;
+    transform: scale(1.04) translate(0%, 0%);
+    will-change: auto;
+  }
 }
 
 /* Radial vignette — dark edges, clear centre */

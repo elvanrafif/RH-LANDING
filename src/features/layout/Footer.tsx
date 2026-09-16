@@ -5,62 +5,90 @@ import './Footer.css';
 export const Footer: React.FC = () => {
   const { t } = useTranslation();
   const footerRef = useRef<HTMLElement>(null);
-  const floatRef  = useRef<HTMLDivElement>(null);
+  const outerRef  = useRef<HTMLDivElement>(null); // fixed: clipPath saja, TIDAK ada transform
+  const innerRef  = useRef<HTMLDivElement>(null); // absolute: transform saja (aman di iOS)
   const spacerRef = useRef<HTMLDivElement>(null);
   const rowRef    = useRef<HTMLDivElement>(null);
 
+  // Sync spacer height ke tinggi floating row (setelah font load agar akurat)
   useEffect(() => {
     const syncHeight = () => {
       const spacer = spacerRef.current;
       const row    = rowRef.current;
-      const float  = floatRef.current;
-      if (!spacer || !row || !float) return;
-      const pb = parseFloat(getComputedStyle(float).paddingBottom) || 0;
+      const inner  = innerRef.current;
+      if (!spacer || !row || !inner) return;
+      const pb = parseFloat(getComputedStyle(inner).paddingBottom) || 0;
       spacer.style.height = (row.offsetHeight + pb) + 'px';
     };
-    syncHeight();
+    if (document.fonts?.ready) {
+      document.fonts.ready.then(syncHeight);
+    } else {
+      syncHeight();
+    }
     window.addEventListener('resize', syncHeight);
     return () => window.removeEventListener('resize', syncHeight);
   }, []);
 
+  // Scroll reveal + overshoot positioning
   useEffect(() => {
+    let rafId = 0;
     const handle = () => {
-      const el     = floatRef.current;
-      const footer = footerRef.current;
-      const spacer = spacerRef.current;
-      if (!el || !footer || !spacer) return;
-      const footerTop    = footer.getBoundingClientRect().top;
-      const spacerBottom = spacer.getBoundingClientRect().bottom;
-      const vh           = window.innerHeight;
+      // RAF throttle — scroll events bisa >60fps, tapi update visual cukup 1x per frame
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        const outer  = outerRef.current;
+        const inner  = innerRef.current;
+        const footer = footerRef.current;
+        const spacer = spacerRef.current;
+        if (!outer || !inner || !footer || !spacer) return;
 
-      const clipTop = Math.max(0, footerTop);
-      el.style.clipPath = clipTop > 0 ? `inset(${clipTop}px 0 0 0)` : '';
+        const footerTop    = footer.getBoundingClientRect().top;
+        const spacerBottom = spacer.getBoundingClientRect().bottom;
+        const vh           = window.visualViewport?.height ?? window.innerHeight;
 
-      const overshoot = spacerBottom < vh ? vh - spacerBottom : 0;
-      el.style.transform = overshoot > 0 ? `translateY(-${overshoot}px)` : '';
+        // clipPath pada outer FIXED element — tidak ada transform di sini
+        // → tidak terjadi iOS phantom scroll height
+        const clipTop = Math.max(0, footerTop);
+        outer.style.clipPath = clipTop > 0 ? `inset(${clipTop}px 0 0 0)` : '';
+
+        // transform pada inner ABSOLUTE element — aman di iOS, tidak inflate scroll height
+        const overshoot = spacerBottom < vh ? vh - spacerBottom : 0;
+        inner.style.transform = overshoot > 0 ? `translateY(-${overshoot}px)` : '';
+      });
     };
+
     window.addEventListener('scroll', handle, { passive: true });
+    window.visualViewport?.addEventListener('resize', handle);
     handle();
-    return () => window.removeEventListener('scroll', handle);
+    return () => {
+      window.removeEventListener('scroll', handle);
+      window.visualViewport?.removeEventListener('resize', handle);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, []);
 
   return (
     <>
-      <div ref={floatRef} className="footer__float">
-        <div ref={rowRef} className="footer__float-row">
-          <div className="h2__row h2__row--rh">
-            {['R','H'].map((ch, i) => (
-              <span key={i} className="h2__cw">
-                <span className="h2__c h2__c--settled">{ch}</span>
-              </span>
-            ))}
-          </div>
-          <div className="h2__row h2__row--studio footer__big-studio">
-            {['S','T','U','D','I','O'].map((ch, i) => (
-              <span key={i} className="h2__cw">
-                <span className="h2__c h2__c--settled">{ch}</span>
-              </span>
-            ))}
+      {/* Outer: position:fixed, HANYA clipPath — tidak ada transform agar iOS tidak inflate scroll height */}
+      <div ref={outerRef} className="footer__float">
+        {/* Inner: position:absolute, transform di sini aman untuk iOS */}
+        <div ref={innerRef} className="footer__float-inner">
+          <div ref={rowRef} className="footer__float-row">
+            <div className="h2__row h2__row--rh">
+              {['R','H'].map((ch, i) => (
+                <span key={i} className="h2__cw">
+                  <span className="h2__c h2__c--settled">{ch}</span>
+                </span>
+              ))}
+            </div>
+            <div className="h2__row h2__row--studio footer__big-studio">
+              {['S','T','U','D','I','O'].map((ch, i) => (
+                <span key={i} className="h2__cw">
+                  <span className="h2__c h2__c--settled">{ch}</span>
+                </span>
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -98,3 +126,4 @@ export const Footer: React.FC = () => {
     </>
   );
 };
+

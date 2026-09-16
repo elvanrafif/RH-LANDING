@@ -9,7 +9,9 @@
 .marquee__track {
   display: inline-flex;
   gap: 48px;
-  animation: slide 40s linear infinite;
+  /* Durasi fallback — akan di-override oleh JS setelah font load.
+     JS menghitung dari actual track scrollWidth → kecepatan px/s akurat. */
+  animation: slide 99s linear infinite;
   flex-shrink: 0;
   padding-right: 48px;
 }
@@ -31,4 +33,9 @@
 @keyframes slide {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
+}
+
+/* Mobile RAF track — animation dimatikan, transform dikontrol JS tiap frame */
+.marquee__track--js {
+  animation: none;
 }

@@ -7,17 +7,27 @@
   /* height set dynamically by JS to match floating text row */
 }
 
-/* Floating fixed text — mirrors .text-overlay--hero but anchored to bottom */
+/* Floating fixed text — outer: position:fixed, HANYA clipPath (tidak ada transform)
+   Penting: transform pada position:fixed di iOS Safari bisa inflate document scroll height.
+   Fix: pisah menjadi outer (clipPath only) + inner (transform only) */
 .footer__float {
   position: fixed;
   inset: 0;
   z-index: 50;
   pointer-events: none;
+  overflow: hidden; /* clip apapun yang overflow — extra safety untuk iOS */
+}
+
+/* Inner layer: menampung layout + menerima transform (aman karena bukan fixed element) */
+.footer__float-inner {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: flex-end;
   padding: 0 var(--gutter) clamp(40px, 6vw, 88px);
+  will-change: transform;
 }
 .footer__float-row {
   display: flex;
@@ -70,4 +80,15 @@
 }
 @media (max-width: 860px) {
   .footer__grid { grid-template-columns: 1fr 1fr; }
+  .footer__float {
+    padding-bottom: clamp(16px, 4vw, 32px);
+  }
+  /* Scale down floating RH STUDIO text di footer — clamp min terlalu besar untuk
+     layar kecil, menghasilkan spacer raksasa dan whitespace di bawah footer */
+  .footer__float .h2__row--rh {
+    font-size: clamp(52px, 14vw, 100px);
+  }
+  .footer__float .h2__row--studio {
+    font-size: clamp(32px, 10vw, 56px);
+  }
 }
