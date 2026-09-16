@@ -30,7 +30,8 @@ export interface Service {
 
 export interface Stat {
   num: string | number;
-  sup: string;
+  num_en?: string;
+  sup?: string;
   label: string;
   en: string;
 }
