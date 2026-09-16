@@ -150,18 +150,17 @@ export const Footer: React.FC = () => {
         <div className="footer__grid">
           <div className="footer__col">
             <h4>{t('footer.col_studio')}</h4>
-            <p>Jl. Senopati No. 42<br/>Jakarta Selatan 12190<br/>Indonesia</p>
+            <p>Ruko Puri Aster Jl. Boulevard Grand Depok City, Tirtajaya, Kec. Sukmajaya, Kota Depok, Jawa Barat 16412</p>
           </div>
           <div className="footer__col">
             <h4>{t('footer.col_contact')}</h4>
             <a href="mailto:halo@rhstudio.id">halo@rhstudio.id</a>
-            <a href="tel:+622175904412">+62 21 7590 4412</a>
+            <a href="tel:085810055005">085810055005</a>
           </div>
           <div className="footer__col">
             <h4>{t('footer.col_social')}</h4>
-            <a href="#">Instagram</a>
-            <a href="#">Behance</a>
-            <a href="#">LinkedIn</a>
+            <a href="https://www.instagram.com/rh.studioarsitek/" target="_blank" rel="noopener noreferrer">Instagram</a>
+            <a href="https://www.youtube.com/@rh.studioarsitek" target="_blank" rel="noopener noreferrer">YouTube</a>
           </div>
           <div className="footer__col">
             <h4>{t('footer.col_nav')}</h4>

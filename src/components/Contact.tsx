@@ -86,19 +86,19 @@ export const Contact: React.FC = () => {
           <div className="contact__details">
             <div className="contact__detail">
               <span className="contact__detail-k mono">{t('contact.detail_studio')}</span>
-              <span className="contact__detail-v">Jl. Senopati No. 42,<br/>Jakarta Selatan 12190</span>
+              <span className="contact__detail-v">Ruko Puri Aster Jl. Boulevard Grand Depok City, Tirtajaya, Kec. Sukmajaya, Kota Depok, Jawa Barat 16412</span>
             </div>
             <div className="contact__detail">
               <span className="contact__detail-k mono">{t('contact.detail_email')}</span>
-              <span className="contact__detail-v">halo@rhstudio.id</span>
+              <span className="contact__detail-v"><a href="mailto:halo@rhstudio.id">halo@rhstudio.id</a></span>
             </div>
             <div className="contact__detail">
               <span className="contact__detail-k mono">{t('contact.detail_phone')}</span>
-              <span className="contact__detail-v">+62 21 7590 4412</span>
+              <span className="contact__detail-v"><a href="tel:085810055005">085810055005</a></span>
             </div>
             <div className="contact__detail">
               <span className="contact__detail-k mono">{t('contact.detail_instagram')}</span>
-              <span className="contact__detail-v">@rhstudio.arsitek</span>
+              <span className="contact__detail-v"><a href="https://www.instagram.com/rh.studioarsitek/" target="_blank" rel="noopener noreferrer">@rh.studioarsitek</a></span>
             </div>
           </div>
         </div>
