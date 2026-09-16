@@ -8,7 +8,7 @@ export const SERVICES: Service[] = [
 
 export const STATS: Stat[] = [
   { num: "10", sup: "+", label: "Tahun Pengalaman", en: "Years of Practice" },
-  { num: "Jabodetabek & Sekitarnya", num_en: "Jabodetabek & Beyond", label: "Wilayah Jangkauan", en: "Areas Covered" },
+  { num: "Jabodetabek", label: "Wilayah Jangkauan", en: "Areas Covered" },
   { num: "100", sup: "+", label: "Proyek Selesai", en: "Completed Projects" },
 ];
 

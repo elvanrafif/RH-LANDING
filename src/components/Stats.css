@@ -20,10 +20,9 @@
   letter-spacing: -0.02em;
 }
 .stat__num--text {
-  font-size: clamp(26px, 2.8vw, 42px);
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  font-weight: 500;
+  font-size: clamp(36px, 4.2vw, 68px);
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 .stat__num-sup {
   font-family: var(--font-mono);
