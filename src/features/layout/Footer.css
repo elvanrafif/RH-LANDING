@@ -2,6 +2,8 @@
   background: var(--ink);
   color: var(--cream);
   padding: clamp(60px, 8vw, 100px) var(--gutter) 32px;
+  position: relative;
+  overflow: hidden;
 }
 .footer__big-clip {
   /* height set dynamically by JS to match floating text row */
@@ -79,16 +81,21 @@
   text-transform: uppercase;
 }
 @media (max-width: 860px) {
+  .footer {
+    padding-bottom: max(32px, env(safe-area-inset-bottom));
+  }
   .footer__grid { grid-template-columns: 1fr 1fr; }
-  .footer__float {
+  .footer__float-inner {
     padding-bottom: clamp(16px, 4vw, 32px);
   }
-  /* Scale down floating RH STUDIO text di footer — clamp min terlalu besar untuk
-     layar kecil, menghasilkan spacer raksasa dan whitespace di bawah footer */
-  .footer__float .h2__row--rh {
-    font-size: clamp(52px, 14vw, 100px);
+  /* Scale down floating RH STUDIO text di footer untuk layar mobile */
+  .footer__float .h2__row--rh,
+  .footer__float-inner .h2__row--rh {
+    font-size: clamp(48px, 13vw, 84px) !important;
   }
-  .footer__float .h2__row--studio {
-    font-size: clamp(32px, 10vw, 56px);
+  .footer__float .h2__row--studio,
+  .footer__float-inner .h2__row--studio {
+    font-size: clamp(28px, 9vw, 48px) !important;
   }
 }
+

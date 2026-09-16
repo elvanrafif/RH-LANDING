@@ -18,7 +18,9 @@ export const Footer: React.FC = () => {
       const inner  = innerRef.current;
       if (!spacer || !row || !inner) return;
       const pb = parseFloat(getComputedStyle(inner).paddingBottom) || 0;
-      spacer.style.height = (row.offsetHeight + pb) + 'px';
+      // Gunakan Math.round dan pastikan tidak melebihi tinggi wajar baris teks
+      const calculatedHeight = Math.round(row.offsetHeight + pb);
+      spacer.style.height = `${calculatedHeight}px`;
     };
     if (document.fonts?.ready) {
       document.fonts.ready.then(syncHeight);
@@ -26,7 +28,11 @@ export const Footer: React.FC = () => {
       syncHeight();
     }
     window.addEventListener('resize', syncHeight);
-    return () => window.removeEventListener('resize', syncHeight);
+    window.visualViewport?.addEventListener('resize', syncHeight);
+    return () => {
+      window.removeEventListener('resize', syncHeight);
+      window.visualViewport?.removeEventListener('resize', syncHeight);
+    };
   }, []);
 
   // Scroll reveal + overshoot positioning
@@ -47,6 +53,14 @@ export const Footer: React.FC = () => {
         const spacerBottom = spacer.getBoundingClientRect().bottom;
         const vh           = window.visualViewport?.height ?? window.innerHeight;
 
+        // Jika footer belum terlihat sama sekali, sembunyikan outer floating container
+        if (footerTop >= vh) {
+          outer.style.display = 'none';
+          return;
+        } else {
+          outer.style.display = '';
+        }
+
         // clipPath pada outer FIXED element — tidak ada transform di sini
         // → tidak terjadi iOS phantom scroll height
         const clipTop = Math.max(0, footerTop);
@@ -54,7 +68,7 @@ export const Footer: React.FC = () => {
 
         // transform pada inner ABSOLUTE element — aman di iOS, tidak inflate scroll height
         const overshoot = spacerBottom < vh ? vh - spacerBottom : 0;
-        inner.style.transform = overshoot > 0 ? `translateY(-${overshoot}px)` : '';
+        inner.style.transform = overshoot > 0 ? `translate3d(0, -${overshoot}px, 0)` : '';
       });
     };
 

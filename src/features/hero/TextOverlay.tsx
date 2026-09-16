@@ -25,20 +25,41 @@ export const TextOverlay: React.FC<TextOverlayProps> = ({ isExiting, skipSplash 
 
   useEffect(() => {
     if (!heroMode) return;
+    let rafId = 0;
     const handle = () => {
-      const el = containerRef.current;
-      if (!el) return;
-      const marquee = document.querySelector('.marquee');
-      if (!marquee) return;
-      const marqueeTop = marquee.getBoundingClientRect().top;
-      const clipBottom = Math.max(0, window.innerHeight - marqueeTop);
-      el.style.clipPath = clipBottom > 0 ? `inset(0 0 ${clipBottom}px 0)` : '';
-      el.style.opacity  = '';
-      el.style.transform = '';
+      if (rafId) return;
+      rafId = requestAnimationFrame(() => {
+        rafId = 0;
+        const el = containerRef.current;
+        if (!el) return;
+        const marquee = document.querySelector('.marquee');
+        if (!marquee) return;
+        const marqueeTop = marquee.getBoundingClientRect().top;
+        const vh = window.visualViewport?.height ?? window.innerHeight;
+
+        // Jika marquee sudah di atas layar (hero sudah lewat), sembunyikan untuk performa
+        if (marqueeTop <= 0) {
+          el.style.display = 'none';
+          return;
+        } else {
+          el.style.display = '';
+        }
+
+        const clipBottom = Math.max(0, vh - marqueeTop);
+        el.style.clipPath = clipBottom > 0 ? `inset(0 0 ${clipBottom}px 0)` : '';
+        el.style.opacity  = '';
+        el.style.transform = '';
+      });
     };
+
     window.addEventListener('scroll', handle, { passive: true });
+    window.visualViewport?.addEventListener('resize', handle);
     handle();
-    return () => window.removeEventListener('scroll', handle);
+    return () => {
+      window.removeEventListener('scroll', handle);
+      window.visualViewport?.removeEventListener('resize', handle);
+      if (rafId) cancelAnimationFrame(rafId);
+    };
   }, [heroMode]);
 
   useEffect(() => {
