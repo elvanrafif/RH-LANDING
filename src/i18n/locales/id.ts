@@ -135,14 +135,14 @@ const id = {
     zoom_cursor: "Perbesar",
   },
   marquee: [
-    "DESAIN",
-    "BANGUN",
-    "ARSITEKTUR",
-    "INTERIOR",
-    "RESIDENSIAL",
-    "DETAIL",
-    "PRESISI",
-    "ESTETIKA",
+    "Desain",
+    "Bangun",
+    "Arsitektur",
+    "Interior",
+    "Residensial",
+    "Detail",
+    "Presisi",
+    "Estetika",
   ],
 } as const;
 

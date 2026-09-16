@@ -135,14 +135,14 @@ const en = {
     zoom_cursor: "Zoom",
   },
   marquee: [
-    "DESIGN",
-    "BUILD",
-    "ARCHITECTURE",
-    "INTERIOR",
-    "RESIDENTIAL",
-    "CRAFTED",
-    "PRECISION",
-    "TIMELESS",
+    "Design",
+    "Build",
+    "Architecture",
+    "Interior",
+    "Residential",
+    "Crafted",
+    "Precision",
+    "Timeless",
   ],
 } as const;
 

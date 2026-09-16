@@ -15,7 +15,7 @@ export const STATS: Stat[] = [
 ];
 
 export const MARQUEE_WORDS = [
-  "DESIGN", "BUILD", "ARCHITECTURE", "INTERIOR", "RESIDENTIAL", "CRAFTED", "PRECISION", "TIMELESS",
+  "Design", "Build", "Architecture", "Interior", "Residential", "Crafted", "Precision", "Timeless",
 ];
 
 export const ROTATING_WORDS = ["Tenang", "Terang", "Membumi", "Puitis"];
