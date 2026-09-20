@@ -8,8 +8,13 @@ export const CMS_URL = import.meta.env.VITE_DIRECTUS_URL
   ?? (import.meta.env.DEV ? '/cms' : 'https://cms.rhstudioarsitek.my.id');
 const BASE = CMS_URL;
 
-const asset = (id: string, width?: number) =>
-  `${BASE}/assets/${id}${width ? `?width=${width}` : ''}`;
+const asset = (id: string, width?: number, format?: string) => {
+  const params = new URLSearchParams();
+  if (width) params.set('width', String(width));
+  if (format) params.set('format', format);
+  const query = params.toString();
+  return `${BASE}/assets/${id}${query ? `?${query}` : ''}`;
+};
 
 // Directus hands back `img` as a file id and `gallery` as junction rows; the
 // components want plain URLs, so the shape they see stays exactly as it was
@@ -64,7 +69,7 @@ export const loadHeroImages = (): Promise<string[]> =>
       return (heroSettled = rows
         .map((item: any) => item.image ?? item.img ?? item.file ?? item.asset)
         .filter(Boolean)
-        .map((id: string | { id?: string }) => asset(typeof id === 'string' ? id : id.id ?? '', 900)));
+        .map((id: string | { id?: string }) => asset(typeof id === 'string' ? id : id.id ?? '', undefined, 'webp')));
     })
     .catch((err) => {
       console.error('[hero_image] gagal memuat dari Directus:', err);

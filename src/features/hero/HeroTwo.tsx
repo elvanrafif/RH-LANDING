@@ -29,11 +29,14 @@ export const HeroTwo: React.FC = () => {
   return (
     <section id="top" className="h2">
       <figure ref={bgRef} className="h2__bg" aria-hidden="true">
-        <img
-          className="h2__bg-img"
-          src={heroImages[0] ?? heroBg}
-          alt=""
-        />
+        <picture>
+          {heroImages[0] && <source media="(max-width: 700px)" srcSet={heroImages[0]} />}
+          <img
+            className="h2__bg-img"
+            src={heroImages[0] ?? heroBg}
+            alt=""
+          />
+        </picture>
         <div className="h2__vignette" />
         <div className="h2__overlay" />
       </figure>
