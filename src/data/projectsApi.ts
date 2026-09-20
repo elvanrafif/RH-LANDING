@@ -59,10 +59,13 @@ export const loadHeroImages = (): Promise<string[]> =>
       if (!r.ok) throw new Error(`Directus ${r.status}`);
       return r.json();
     })
-    .then((json) => (heroSettled = json.data
-      .map((item: any) => item.image ?? item.img ?? item.file ?? item.asset)
-      .filter(Boolean)
-      .map((id: string | { id?: string }) => asset(typeof id === 'string' ? id : id.id ?? '', 900))))
+    .then((json) => {
+      const rows = Array.isArray(json.data) ? json.data : [json.data];
+      return (heroSettled = rows
+        .map((item: any) => item.image ?? item.img ?? item.file ?? item.asset)
+        .filter(Boolean)
+        .map((id: string | { id?: string }) => asset(typeof id === 'string' ? id : id.id ?? '', 900)));
+    })
     .catch((err) => {
       console.error('[hero_image] gagal memuat dari Directus:', err);
       heroInFlight = null;
