@@ -50,7 +50,7 @@ const en = {
     kicker: "03 / Works",
     title_before: "{{count}} selected",
     title_accent: "works",
-    title_after: ", 2021–2025.",
+    title_after: "",
     meta_label: "Selected works",
     meta_count: "{{count}} projects",
     drag_hint: "Drag, scroll, or use arrows",

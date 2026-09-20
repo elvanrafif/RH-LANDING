@@ -7,7 +7,9 @@
 }
 .services__head-num { grid-column: 1 / span 2; }
 .services__head-title {
-  grid-column: 3 / span 7;
+  grid-column: 3 / span 10;
+  justify-self: end;
+  text-align: right;
   font-family: var(--font-display);
   font-size: clamp(40px, 6vw, 96px);
   line-height: .95;

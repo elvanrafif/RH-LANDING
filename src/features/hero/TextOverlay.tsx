@@ -26,30 +26,46 @@ export const TextOverlay: React.FC<TextOverlayProps> = ({ isExiting, skipSplash 
   useEffect(() => {
     if (!heroMode) return;
     let rafId = 0;
-    const handle = () => {
-      if (rafId) return;
-      rafId = requestAnimationFrame(() => {
-        rafId = 0;
-        const el = containerRef.current;
-        if (!el) return;
-        const marquee = document.querySelector('.marquee');
-        if (!marquee) return;
-        const marqueeTop = marquee.getBoundingClientRect().top;
-        const vh = window.visualViewport?.height ?? window.innerHeight;
+    let targetClip = 0;
+    let currentClip = 0;
+    const isTouchDevice =
+      'ontouchstart' in window ||
+      navigator.maxTouchPoints > 0 ||
+      window.matchMedia('(pointer: coarse)').matches;
 
-        // Jika marquee sudah di atas layar (hero sudah lewat), sembunyikan untuk performa
-        if (marqueeTop <= 0) {
-          el.style.display = 'none';
-          return;
-        } else {
-          el.style.display = '';
+    const render = () => {
+      rafId = 0;
+      const el = containerRef.current;
+      if (!el) return;
+      const marquee = document.querySelector('.marquee');
+      if (!marquee) return;
+      const marqueeTop = marquee.getBoundingClientRect().top;
+      const vh = window.visualViewport?.height ?? window.innerHeight;
+
+      // Jika marquee sudah di atas layar (hero sudah lewat), sembunyikan untuk performa
+      if (marqueeTop <= 0) {
+        el.style.display = 'none';
+        return;
+      }
+      el.style.display = '';
+
+      targetClip = Math.max(0, vh - marqueeTop);
+      if (isTouchDevice) {
+        currentClip += (targetClip - currentClip) * 0.16;
+        if (Math.abs(targetClip - currentClip) > 0.5) {
+          rafId = requestAnimationFrame(render);
         }
+      } else {
+        currentClip = targetClip;
+      }
 
-        const clipBottom = Math.max(0, vh - marqueeTop);
-        el.style.clipPath = clipBottom > 0 ? `inset(0 0 ${clipBottom}px 0)` : '';
-        el.style.opacity  = '';
-        el.style.transform = '';
-      });
+      el.style.clipPath = currentClip > 0 ? `inset(0 0 ${currentClip}px 0)` : '';
+      el.style.opacity = '';
+      el.style.transform = '';
+    };
+
+    const handle = () => {
+      if (!rafId) rafId = requestAnimationFrame(render);
     };
 
     window.addEventListener('scroll', handle, { passive: true });

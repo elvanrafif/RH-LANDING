@@ -46,10 +46,6 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
         <h2 className="projects__head-title">
           {t('projects.title_before', { count: PROJECTS.length })} <em style={{color: "var(--accent)", fontStyle: "italic"}}>{t('projects.title_accent')}</em><br/>{t('projects.title_after')}
         </h2>
-        <div className="projects__head-meta mono">
-          <div>{t('projects.meta_label')}</div>
-          <div>{t('projects.meta_count', { count: String(PROJECTS.length).padStart(2, "0") })}</div>
-        </div>
       </div>
 
       <div className="projects__scroller">

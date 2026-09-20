@@ -50,7 +50,7 @@ const id = {
     kicker: "03 / Karya",
     title_before: "{{count}}",
     title_accent: "karya",
-    title_after: "pilihan, 2021–2025.",
+    title_after: "pilihan",
     meta_label: "Karya pilihan",
     meta_count: "{{count}} proyek",
     drag_hint: "Seret, geser, atau gunakan panah",

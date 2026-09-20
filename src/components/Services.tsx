@@ -25,10 +25,6 @@ export const Services: React.FC = () => {
         <h2 className="services__head-title">
           {t('services.title_before')} <em style={{fontStyle: "italic", color: "var(--accent)"}}>{t('services.title_accent')}</em>{t('services.title_after')}
         </h2>
-        <div className="services__head-meta mono" style={{color: "var(--muted)"}}>
-          <div>{t('services.meta_label')}</div>
-          <div>{t('services.meta_count')}</div>
-        </div>
       </div>
 
       <div>

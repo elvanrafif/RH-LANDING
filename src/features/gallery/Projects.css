@@ -13,7 +13,9 @@
 }
 .projects__head-label { grid-column: 1 / span 4; color: #8A7F72; }
 .projects__head-title {
-  grid-column: 5 / span 6;
+  grid-column: 5 / span 8;
+  justify-self: end;
+  text-align: right;
   font-family: var(--font-display);
   font-size: clamp(40px, 6vw, 96px);
   line-height: .95;
@@ -27,6 +29,10 @@
     grid-column: 1 / -1;
     justify-self: start;
     text-align: left;
+  }
+  .projects__head-title {
+    justify-self: end;
+    text-align: right;
   }
 }
 
