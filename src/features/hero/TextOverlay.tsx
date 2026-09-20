@@ -28,6 +28,7 @@ export const TextOverlay: React.FC<TextOverlayProps> = ({ isExiting, skipSplash 
     let rafId = 0;
     let targetClip = 0;
     let currentClip = 0;
+    let previousMarqueeTop: number | null = null;
     const isTouchDevice =
       'ontouchstart' in window ||
       navigator.maxTouchPoints > 0 ||
@@ -41,22 +42,35 @@ export const TextOverlay: React.FC<TextOverlayProps> = ({ isExiting, skipSplash 
       if (!marquee) return;
       const marqueeTop = marquee.getBoundingClientRect().top;
       const vh = window.visualViewport?.height ?? window.innerHeight;
+      const scrollingDown = previousMarqueeTop !== null && marqueeTop < previousMarqueeTop;
+      previousMarqueeTop = marqueeTop;
 
-      // Jika marquee sudah di atas layar (hero sudah lewat), sembunyikan untuk performa
-      if (marqueeTop <= 0) {
-        el.style.display = 'none';
-        return;
-      }
-      el.style.display = '';
-
-      targetClip = Math.max(0, vh - marqueeTop);
-      if (isTouchDevice) {
-        currentClip += (targetClip - currentClip) * 0.16;
-        if (Math.abs(targetClip - currentClip) > 0.5) {
-          rafId = requestAnimationFrame(render);
+      // Desktop keeps the original direct clip/hide behavior.
+      if (!isTouchDevice) {
+        if (marqueeTop <= 0) {
+          el.style.display = 'none';
+          return;
         }
+        el.style.display = '';
+        currentClip = Math.max(0, vh - marqueeTop);
       } else {
-        currentClip = targetClip;
+        el.style.display = '';
+        targetClip = Math.max(0, vh - marqueeTop);
+
+        // On mobile, slow only the exit while scrolling down. Reveal stays direct.
+        if (scrollingDown) {
+          currentClip += (targetClip - currentClip) * 0.08;
+          if (Math.abs(targetClip - currentClip) > 0.5) {
+            rafId = requestAnimationFrame(render);
+          }
+        } else {
+          currentClip = targetClip;
+        }
+
+        if (currentClip >= vh - 1) {
+          el.style.display = 'none';
+          return;
+        }
       }
 
       el.style.clipPath = currentClip > 0 ? `inset(0 0 ${currentClip}px 0)` : '';

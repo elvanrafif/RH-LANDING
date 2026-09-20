@@ -36,7 +36,10 @@ export const Footer: React.FC = () => {
 
   // Sync spacer height ke tinggi floating row (HANYA desktop non-touch)
   useEffect(() => {
-    if (isMobile) return;
+    if (isMobile) {
+      spacerRef.current?.style.removeProperty('height');
+      return;
+    }
 
     const syncHeight = () => {
       const spacer = spacerRef.current;
