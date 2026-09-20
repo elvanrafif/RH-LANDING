@@ -8,7 +8,6 @@ import { SplashScreen } from './features/layout/SplashScreen';
 import { TextOverlay } from './features/hero/TextOverlay';
 import { Cursor } from './features/layout/Cursor';
 import { Nav } from './features/layout/Nav';
-import { HeroX } from './features/hero/HeroX';
 import { HeroTwo } from './features/hero/HeroTwo';
 import { Marquee } from './components/Marquee';
 import { About } from './components/About';
@@ -99,7 +98,7 @@ function App() {
       
       {!activeProject && <Nav onNav={onNav} heroVersion={heroVersion} />}
       
-      {heroVersion === "2" ? <HeroTwo /> : <HeroX />}
+      <HeroTwo />
       <Marquee />
       <About />
       <Stats />

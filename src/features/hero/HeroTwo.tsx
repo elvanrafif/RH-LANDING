@@ -1,8 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import './HeroTwo.css';
 import heroBg from '../../assets/hero-bg.webp';
+import { useHeroImages } from '../../data/projectsApi';
+
 
 export const HeroTwo: React.FC = () => {
+  const heroImages = useHeroImages();
   const bgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -28,7 +31,7 @@ export const HeroTwo: React.FC = () => {
       <figure ref={bgRef} className="h2__bg" aria-hidden="true">
         <img
           className="h2__bg-img"
-          src={heroBg}
+          src={heroImages[0] ?? heroBg}
           alt=""
         />
         <div className="h2__vignette" />
