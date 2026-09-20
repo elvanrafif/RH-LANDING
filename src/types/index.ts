@@ -1,5 +1,6 @@
 export interface Project {
   id: number;
+  is_active: boolean;
   title: string;
   titleAccent: string;
   location: string;

@@ -37,7 +37,7 @@ export const loadProjects = (): Promise<Project[]> =>
       if (!r.ok) throw new Error(`Directus ${r.status}`);
       return r.json();
     })
-    .then((json) => (settled = json.data.map(toProject)))
+    .then((json) => (settled = json.data.filter((raw: any) => raw.is_active !== false).map(toProject)))
     .catch((err) => {
       console.error('[projects] gagal memuat dari Directus:', err);
       inFlight = null; // let a later mount retry
