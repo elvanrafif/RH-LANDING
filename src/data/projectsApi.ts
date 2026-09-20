@@ -49,3 +49,33 @@ export const useProjects = (): Project[] => {
   }, []);
   return projects;
 };
+
+let heroInFlight: Promise<string[]> | null = null;
+let heroSettled: string[] | null = null;
+
+export const loadHeroImages = (): Promise<string[]> =>
+  (heroInFlight ??= fetch(`${BASE}/items/hero_image?limit=-1&sort=id&fields=*`)
+    .then((r) => {
+      if (!r.ok) throw new Error(`Directus ${r.status}`);
+      return r.json();
+    })
+    .then((json) => (heroSettled = json.data
+      .map((item: any) => item.image ?? item.img ?? item.file ?? item.asset)
+      .filter(Boolean)
+      .map((id: string | { id?: string }) => asset(typeof id === 'string' ? id : id.id ?? '', 900))))
+    .catch((err) => {
+      console.error('[hero_image] gagal memuat dari Directus:', err);
+      heroInFlight = null;
+      return [];
+    }));
+
+export const useHeroImages = (): string[] => {
+  const [images, setImages] = useState<string[]>(heroSettled ?? []);
+  useEffect(() => {
+    if (heroSettled) return;
+    let alive = true;
+    loadHeroImages().then((loaded) => alive && setImages(loaded));
+    return () => { alive = false; };
+  }, []);
+  return images;
+};
