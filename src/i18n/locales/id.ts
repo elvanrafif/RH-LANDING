@@ -48,10 +48,10 @@ const id = {
   },
   projects: {
     kicker: "03 / Karya",
-    title_before: "Dua belas",
+    title_before: "{{count}}",
     title_accent: "karya",
     title_after: "pilihan, 2021–2025.",
-    meta_label: "Selected works",
+    meta_label: "Karya pilihan",
     meta_count: "{{count}} proyek",
     drag_hint: "Seret, geser, atau gunakan panah",
     prev: "Sebelumnya",
