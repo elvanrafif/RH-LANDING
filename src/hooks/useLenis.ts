@@ -9,7 +9,6 @@ export const useLenis = () => {
       duration: 1.5,
       easing: (t) => 1 - Math.pow(1 - t, 4),
       smoothWheel: true,
-      smoothTouch: true,
       wheelMultiplier: 0.85,
     });
 
