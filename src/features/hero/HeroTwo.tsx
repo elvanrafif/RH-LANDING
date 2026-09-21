@@ -36,6 +36,8 @@ export const HeroTwo: React.FC = () => {
             className="h2__bg-img"
             src={heroImage?.desktop ?? heroBg}
             alt=""
+            fetchPriority="high"
+            decoding="async"
           />
         </picture>
         <div className="h2__vignette" />

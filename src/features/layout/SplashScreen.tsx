@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import './SplashScreen.css';
-import rhLogo from '../../assets/rh-studio.png';
+const rhLogo = '/logo-512.png';
 
 interface SplashScreenProps {
   onDone: () => void;

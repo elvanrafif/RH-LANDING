@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Projects.css';
-import { useProjects } from '../../data/projectsApi';
+import { responsiveSrcSet, useProjects } from '../../data/projectsApi';
 import { Project } from '../../types';
 
 interface ProjectsProps {
@@ -56,7 +56,14 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
               onOpenProject(p);
             }} data-cursor={t('projects.view_cursor')}>
               <div className="project__media">
-                <img src={p.img} alt={`${p.title} ${p.titleAccent}`} loading="lazy" />
+                <img
+                  src={p.img}
+                  srcSet={responsiveSrcSet(p.img)}
+                  sizes="(max-width: 860px) 80vw, (max-width: 1400px) 34vw, 480px"
+                  alt={`${p.title} ${p.titleAccent}`}
+                  loading="lazy"
+                  decoding="async"
+                />
                 <span className="project__num">№ {String(i + 1).padStart(2, "0")} / {String(PROJECTS.length).padStart(2, "0")}</span>
               </div>
               <div className="project__body">

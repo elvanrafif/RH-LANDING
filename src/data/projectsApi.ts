@@ -8,21 +8,27 @@ export const CMS_URL = import.meta.env.VITE_DIRECTUS_URL
   ?? (import.meta.env.DEV ? '/cms' : 'https://cms.rhstudioarsitek.my.id');
 const BASE = CMS_URL;
 
-const asset = (id: string, width?: number, format?: string) => {
+const asset = (id: string, width?: number, format?: string, quality?: number) => {
   const params = new URLSearchParams();
   if (width) params.set('width', String(width));
   if (format) params.set('format', format);
+  if (quality) params.set('quality', String(quality));
   const query = params.toString();
   return `${BASE}/assets/${id}${query ? `?${query}` : ''}`;
 };
+
+const responsiveAsset = (id: string) => asset(id, 960, 'webp', 90);
+
+export const responsiveSrcSet = (src: string) =>
+  [640, 960, 1440].map((width) => `${src.replace('width=960', `width=${width}`)} ${width}w`).join(', ');
 
 // Directus hands back `img` as a file id and `gallery` as junction rows; the
 // components want plain URLs, so the shape they see stays exactly as it was
 // when this data was a hardcoded array.
 const toProject = (raw: any): Project => ({
   ...raw,
-  img: asset(raw.img, 1600),
-  gallery: (raw.gallery ?? []).map((g: any) => asset(g.directus_files_id, 1600)),
+  img: responsiveAsset(raw.img),
+  gallery: (raw.gallery ?? []).map((g: any) => responsiveAsset(g.directus_files_id)),
 });
 
 // One request per page load, shared by every caller. `settled` lets a
@@ -73,8 +79,8 @@ export const loadHeroImages = (): Promise<HeroImages[]> =>
       const rows = Array.isArray(json.data) ? json.data : [json.data];
       return (heroSettled = rows
         .map((item: { image?: unknown; image_responsive?: unknown }) => ({
-          desktop: asset(fileId(item.image), undefined, 'webp'),
-          responsive: item.image_responsive ? asset(fileId(item.image_responsive), undefined, 'webp') : undefined,
+          desktop: asset(fileId(item.image), 1920, 'webp', 90),
+          responsive: item.image_responsive ? asset(fileId(item.image_responsive), 960, 'webp', 90) : undefined,
         }))
         .filter((item: HeroImages) => item.desktop));
     })
