@@ -75,7 +75,7 @@
   padding-bottom: 40px;
   border-top: 1px solid #2a241f;
 }
-.footer__col h4 {
+.footer__col h2 {
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: .14em;

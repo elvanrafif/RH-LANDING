@@ -152,7 +152,7 @@ export const Footer: React.FC = () => {
 
         <div className="footer__grid">
           <div className="footer__col">
-            <h4>{t('footer.col_studio')}</h4>
+            <h2>{t('footer.col_studio')}</h2>
             <p>
               <a href="https://maps.app.goo.gl/uKBteHkghdgAUyhN7" target="_blank" rel="noopener noreferrer">
                 Ruko Puri Aster<br/>
@@ -163,17 +163,17 @@ export const Footer: React.FC = () => {
             </p>
           </div>
           <div className="footer__col">
-            <h4>{t('footer.col_contact')}</h4>
+            <h2>{t('footer.col_contact')}</h2>
             <a href="mailto:arsitekrhstudio@gmail.com">arsitekrhstudio@gmail.com</a>
             <a href="https://wa.me/6285718212121" target="_blank" rel="noopener noreferrer">085718212121</a>
           </div>
           <div className="footer__col">
-            <h4>{t('footer.col_social')}</h4>
+            <h2>{t('footer.col_social')}</h2>
             <a href="https://www.instagram.com/rh.studioarsitek/" target="_blank" rel="noopener noreferrer">Instagram</a>
             <a href="https://www.youtube.com/@rh.studioarsitek" target="_blank" rel="noopener noreferrer">YouTube</a>
           </div>
           <div className="footer__col">
-            <h4>{t('footer.col_nav')}</h4>
+            <h2>{t('footer.col_nav')}</h2>
             <a href="#about">{t('footer.nav_studio')}</a>
             <a href="#services">{t('footer.nav_services')}</a>
             <a href="#projects">{t('footer.nav_projects')}</a>

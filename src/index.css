@@ -3,9 +3,9 @@
   --cream-2: #EDE6DB;
   --ink: #1A1714;
   --ink-2: #2E2925;
-  --muted: #7A716A;
+  --muted: #625A54;
   --line: #D9D2C7;
-  --accent: #d2a95d;
+  --accent: #765A1F;
   --accent-deep: #b18b43;
   --bg: var(--cream);
   --fg: var(--ink);
@@ -25,8 +25,9 @@
   --cream-2: #262019;
   --ink: #F0E9DD;
   --ink-2: #D8CFC1;
-  --muted: #8A7F72;
+  --muted: #B5AA9A;
   --line: #322B24;
+  --accent: #d2a95d;
   --surface: #1B1612;
 }
 
