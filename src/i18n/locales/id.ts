@@ -63,7 +63,6 @@ const id = {
     title_line1: "Mari kita",
     title_line2: "mulai",
     title_accent: "bersama",
-    subtitle: "Kami menerima proyek baru untuk kuartal ketiga 2026. Ceritakan tentang lokasi, brief, dan garis waktu Anda — kami akan membalas dalam tiga hari kerja.",
     detail_studio: "Studio",
     detail_email: "Email",
     detail_phone: "Telepon",

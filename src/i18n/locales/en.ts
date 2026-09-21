@@ -63,7 +63,6 @@ const en = {
     title_line1: "Let's",
     title_line2: "begin",
     title_accent: "together",
-    subtitle: "We are accepting new projects for the third quarter of 2026. Tell us about the location, brief, and timeline — we will respond within three working days.",
     detail_studio: "Studio",
     detail_email: "Email",
     detail_phone: "Phone",

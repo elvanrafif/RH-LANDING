@@ -5,7 +5,7 @@ import { CMS_URL } from '../data/projectsApi';
 
 export const Contact: React.FC = () => {
   const { t } = useTranslation();
-  const [form, setForm] = useState({ name: "", email: "", whatsapp: "", project: "residential", budget: "", message: "", website: "" });
+  const [form, setForm] = useState({ name: "", whatsapp: "", project: "residential", budget: "", message: "", website: "" });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [state, setState] = useState("idle");
 
@@ -25,20 +25,17 @@ export const Contact: React.FC = () => {
     e.preventDefault();
     const errs: {[key: string]: string} = {};
     if (!form.name.trim()) errs.name = t('contact.form.error_required');
-    // WhatsApp is the channel people actually reply on here, so it carries the
-    // requirement and email is the optional extra.
+    // WhatsApp is the channel people actually reply on here, so it carries the requirement.
     if (!form.whatsapp.trim()) errs.whatsapp = t('contact.form.error_required');
     else if (!/^[+\d][\d\s().-]{7,19}$/.test(form.whatsapp.trim()))
       errs.whatsapp = t('contact.form.error_whatsapp');
-    if (form.email.trim() && !/^[^@]+@[^@]+\.[^@]+$/.test(form.email))
-      errs.email = t('contact.form.error_email');
     if (!form.message.trim()) errs.message = t('contact.form.error_message');
     setErrors(errs);
     if (Object.keys(errs).length) return;
 
     const reset = () => setTimeout(() => {
       setState("idle");
-      setForm({ name: "", email: "", whatsapp: "", project: "residential", budget: "", message: "", website: "" });
+      setForm({ name: "", whatsapp: "", project: "residential", budget: "", message: "", website: "" });
     }, 3000);
 
     // A bot that fills every field trips the honeypot. Show it the same
@@ -80,9 +77,6 @@ export const Contact: React.FC = () => {
               {t('contact.title_line1')}<br/>{t('contact.title_line2')} <em>{t('contact.title_accent')}</em>.
             </h2>
           </div>
-          <p style={{maxWidth: "40ch", color: "var(--ink-2)", fontSize: 18, lineHeight: 1.5}}>
-            {t('contact.subtitle')}
-          </p>
           <div className="contact__details">
             <div className="contact__detail">
               <span className="contact__detail-k mono">{t('contact.detail_studio')}</span>
@@ -99,7 +93,7 @@ export const Contact: React.FC = () => {
             </div>
             <div className="contact__detail">
               <span className="contact__detail-k mono">{t('contact.detail_phone')}</span>
-              <span className="contact__detail-v"><a href="tel:085810055005">085810055005</a></span>
+              <span className="contact__detail-v"><a href="https://wa.me/6285718212121" target="_blank" rel="noopener noreferrer">085718212121</a></span>
             </div>
             <div className="contact__detail">
               <span className="contact__detail-k mono">{t('contact.detail_instagram')}</span>
@@ -115,11 +109,6 @@ export const Contact: React.FC = () => {
                 <label className="mono" htmlFor="contact-name">{t('contact.form.name_label')}</label>
                 <input id="contact-name" type="text" value={form.name} onChange={update("name")} placeholder={t('contact.form.name_placeholder')} />
                 {errors.name && <span className="field__error">{errors.name}</span>}
-              </div>
-              <div className={"field" + (errors.email ? " field--error" : "")}>
-                <label className="mono" htmlFor="contact-email">{t('contact.form.email_label')}</label>
-                <input id="contact-email" type="email" value={form.email} onChange={update("email")} placeholder={t('contact.form.email_placeholder')} />
-                {errors.email && <span className="field__error">{errors.email}</span>}
               </div>
               <div className={"field" + (errors.whatsapp ? " field--error" : "")}>
                 <label className="mono" htmlFor="contact-whatsapp">{t('contact.form.whatsapp_label')}</label>
