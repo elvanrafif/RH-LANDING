@@ -17,6 +17,7 @@ import { Projects } from './features/gallery/Projects';
 import { Contact } from './components/Contact';
 import { Footer } from './features/layout/Footer';
 import { ProjectDetail } from './features/gallery/ProjectDetail';
+import { SEO } from './components/SEO';
 
 function App() {
   const [splashDone, setSplashDone] = useState(false);
@@ -80,6 +81,7 @@ function App() {
 
   return (
     <React.Fragment>
+      <SEO />
       {heroVersion === "2" && !splashDone && (
         <SplashScreen
           onDone={handleSplashDone}
