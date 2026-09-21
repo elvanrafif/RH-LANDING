@@ -103,7 +103,7 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
 
         <header className="pd__hero">
           <div className="pd__hero-meta">
-            <span className="mono pd__muted">{p.type} · {p.year}</span>
+            <span className="mono pd__muted">{p.year}</span>
             <span className="mono pd__muted">{p.location}</span>
           </div>
           <h1 className="pd__title display">
@@ -119,14 +119,9 @@ export const ProjectDetail: React.FC<ProjectDetailProps> = ({ project, onClose }
         </figure>
 
         <section className="pd__specs">
-          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_client')}</span><span>{p.client}</span></div>
           <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_location')}</span><span>{p.location}</span></div>
           <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_area')}</span><span>{p.area}</span></div>
           <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_year')}</span><span>{p.year}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_duration')}</span><span>{p.duration}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_team')}</span><span>{p.team}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_status')}</span><span>{p.status}</span></div>
-          <div className="pd__spec"><span className="mono pd__muted">{t('pd.spec_type')}</span><span>{p.type}</span></div>
         </section>
 
         <section className="pd__chapters">

@@ -44,7 +44,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
       <div className="projects__head">
         <div className="projects__head-label mono"><span className="kicker">{t('projects.kicker')}</span></div>
         <h2 className="projects__head-title">
-          {t('projects.title_before', { count: PROJECTS.length })} <em style={{color: "var(--accent)", fontStyle: "italic"}}>{t('projects.title_accent')}</em>{t('projects.title_after')}
+          {t('projects.title_before', { count: PROJECTS.length })} <em style={{color: "var(--accent)", fontStyle: "italic"}}>{t('projects.title_accent')}</em>{t('projects.title_after') ? ` ${t('projects.title_after')}` : ''}
         </h2>
       </div>
 
@@ -57,7 +57,6 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
             }} data-cursor={t('projects.view_cursor')}>
               <div className="project__media">
                 <img src={p.img} alt={`${p.title} ${p.titleAccent}`} loading="lazy" />
-                <span className="project__tag">{p.type}</span>
                 <span className="project__num">№ {String(i + 1).padStart(2, "0")} / {String(PROJECTS.length).padStart(2, "0")}</span>
               </div>
               <div className="project__body">

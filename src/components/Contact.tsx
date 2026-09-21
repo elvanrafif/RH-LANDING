@@ -81,10 +81,12 @@ export const Contact: React.FC = () => {
             <div className="contact__detail">
               <span className="contact__detail-k mono">{t('contact.detail_studio')}</span>
               <span className="contact__detail-v">
-                Ruko Puri Aster<br/>
-                Jl. Boulevard Grand Depok City<br/>
-                Sukmajaya, Kota Depok<br/>
-                Jawa Barat 16412
+                <a href="https://maps.app.goo.gl/uKBteHkghdgAUyhN7" target="_blank" rel="noopener noreferrer">
+                  Ruko Puri Aster<br/>
+                  Jl. Boulevard Grand Depok City<br/>
+                  Sukmajaya, Kota Depok<br/>
+                  Jawa Barat 16412
+                </a>
               </span>
             </div>
             <div className="contact__detail">

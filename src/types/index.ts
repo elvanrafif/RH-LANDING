@@ -6,12 +6,7 @@ export interface Project {
   location: string;
   year: number;
   area: string;
-  type: string;
   img: string;
-  client: string;
-  status: string;
-  duration: string;
-  team: string;
   brief: string;
   brief_en: string;
   chapters: { title: string; body: string }[];

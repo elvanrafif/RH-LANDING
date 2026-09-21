@@ -123,7 +123,7 @@
 /* Specs */
 .pd__specs {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   border-block: 1px solid var(--line);
   margin: 0 var(--gutter);
 }
@@ -135,8 +135,7 @@
   gap: 6px;
   padding-inline: 16px;
 }
-.pd__spec:nth-child(4n) { border-right: none; }
-.pd__spec:nth-child(n+5) { border-top: 1px solid var(--line); }
+.pd__spec:nth-child(3n) { border-right: none; }
 .pd__spec span:last-child { font-family: var(--font-display); font-size: 20px; }
 @media (max-width: 760px) {
   .pd__specs { grid-template-columns: repeat(2, 1fr); }

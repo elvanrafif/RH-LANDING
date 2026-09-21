@@ -26,7 +26,7 @@ const publicPolicy = policies.find((p: any) => p.name.includes('public'));
 if (!publicPolicy) throw new Error('No public policy found.');
 
 const grants = [
-  { collection: 'projects', fields: ['*'] },
+  { collection: 'projects', fields: ['id', 'is_active', 'title', 'titleAccent', 'location', 'year', 'area', 'img', 'brief', 'brief_en', 'chapters', 'chapters_en'] },
   { collection: 'marquee_items', fields: ['id', 'text_id', 'text_en', 'sort', 'status'] },
   { collection: 'services', fields: ['id', 'title_id', 'title_en', 'desc_id', 'desc_en', 'tag_id', 'tag_en', 'contact_type', 'sort', 'status'] },
   { collection: 'projects_files', fields: ['id', 'projects_id', 'directus_files_id'] },

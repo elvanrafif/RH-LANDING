@@ -154,10 +154,12 @@ export const Footer: React.FC = () => {
           <div className="footer__col">
             <h4>{t('footer.col_studio')}</h4>
             <p>
-              Ruko Puri Aster<br/>
-              Jl. Boulevard Grand Depok City<br/>
-              Sukmajaya, Kota Depok<br/>
-              Jawa Barat 16412
+              <a href="https://maps.app.goo.gl/uKBteHkghdgAUyhN7" target="_blank" rel="noopener noreferrer">
+                Ruko Puri Aster<br/>
+                Jl. Boulevard Grand Depok City<br/>
+                Sukmajaya, Kota Depok<br/>
+                Jawa Barat 16412
+              </a>
             </p>
           </div>
           <div className="footer__col">
