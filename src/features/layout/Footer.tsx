@@ -162,7 +162,7 @@ export const Footer: React.FC = () => {
           </div>
           <div className="footer__col">
             <h4>{t('footer.col_contact')}</h4>
-            <a href="mailto:halo@rhstudio.id">halo@rhstudio.id</a>
+            <a href="mailto:arsitekrhstudio@gmail.com">arsitekrhstudio@gmail.com</a>
             <a href="https://wa.me/6285718212121" target="_blank" rel="noopener noreferrer">085718212121</a>
           </div>
           <div className="footer__col">

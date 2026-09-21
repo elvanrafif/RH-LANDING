@@ -27,6 +27,8 @@ if (!publicPolicy) throw new Error('No public policy found.');
 
 const grants = [
   { collection: 'projects', fields: ['*'] },
+  { collection: 'marquee_items', fields: ['id', 'text_id', 'text_en', 'sort', 'status'] },
+  { collection: 'services', fields: ['id', 'title_id', 'title_en', 'desc_id', 'desc_en', 'tag_id', 'tag_en', 'contact_type', 'sort', 'status'] },
   { collection: 'projects_files', fields: ['id', 'projects_id', 'directus_files_id'] },
   // Only what an <img> needs — not filename_disk, storage or uploader.
   { collection: 'directus_files', fields: ['id', 'title', 'type', 'width', 'height'] },

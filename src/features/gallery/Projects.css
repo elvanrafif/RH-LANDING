@@ -20,6 +20,7 @@
   font-size: clamp(40px, 6vw, 96px);
   line-height: .95;
   letter-spacing: -0.02em;
+  white-space: nowrap;
   color: var(--cream);
 }
 .projects__head-meta { grid-column: 11 / span 2; justify-self: end; text-align: right; color: #8A7F72; }

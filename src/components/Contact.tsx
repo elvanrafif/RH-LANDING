@@ -89,7 +89,7 @@ export const Contact: React.FC = () => {
             </div>
             <div className="contact__detail">
               <span className="contact__detail-k mono">{t('contact.detail_email')}</span>
-              <span className="contact__detail-v"><a href="mailto:halo@rhstudio.id">halo@rhstudio.id</a></span>
+              <span className="contact__detail-v"><a href="mailto:arsitekrhstudio@gmail.com">arsitekrhstudio@gmail.com</a></span>
             </div>
             <div className="contact__detail">
               <span className="contact__detail-k mono">{t('contact.detail_phone')}</span>

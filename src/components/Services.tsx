@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import './Services.css';
+import { useServices } from '../data/projectsApi';
 import { SERVICES } from '../data/projects';
 
 const goToContact = (contactType: string) => {
@@ -17,6 +18,17 @@ const goToContact = (contactType: string) => {
 export const Services: React.FC = () => {
   const { t, i18n } = useTranslation();
   const isEn = i18n.language === 'en';
+  const cmsServices = useServices();
+  const services = cmsServices.length
+    ? cmsServices.map((s) => ({
+        title: s.title_id,
+        en: s.title_en,
+        desc: s.desc_id,
+        desc_en: s.desc_en,
+        tag: isEn ? s.tag_en : s.tag_id,
+        contactType: s.contact_type,
+      }))
+    : SERVICES;
 
   return (
     <section id="services" className="section container divider-top">
@@ -28,15 +40,15 @@ export const Services: React.FC = () => {
       </div>
 
       <div>
-        {SERVICES.map((s) => (
+        {services.map((s, index) => (
           <button
             type="button"
-            key={s.num}
+            key={s.contactType}
             className="service-row"
             data-cursor={t('services.more')}
             onClick={() => goToContact(s.contactType)}
           >
-            <div className="service-row__num">{s.num}</div>
+            <div className="service-row__num">{String(index + 1).padStart(2, '0')}</div>
             <div>
               <div className="service-row__title" dangerouslySetInnerHTML={{ __html: isEn ? s.en : s.title }}></div>
             </div>

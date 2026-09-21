@@ -44,7 +44,7 @@ export const Projects: React.FC<ProjectsProps> = ({ onOpenProject }) => {
       <div className="projects__head">
         <div className="projects__head-label mono"><span className="kicker">{t('projects.kicker')}</span></div>
         <h2 className="projects__head-title">
-          {t('projects.title_before', { count: PROJECTS.length })} <em style={{color: "var(--accent)", fontStyle: "italic"}}>{t('projects.title_accent')}</em><br/>{t('projects.title_after')}
+          {t('projects.title_before', { count: PROJECTS.length })} <em style={{color: "var(--accent)", fontStyle: "italic"}}>{t('projects.title_accent')}</em>{t('projects.title_after')}
         </h2>
       </div>
 

@@ -1,13 +1,17 @@
 import React, { useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Marquee.css';
+import { useMarqueeItems } from '../data/projectsApi';
 import { MARQUEE_WORDS } from '../data/projects';
 
 // ─── Mobile: RAF loop — kecepatan px/s tetap, immune terhadap iOS animation quirks ───
 const MobileMarquee: React.FC = () => {
   const { t, i18n } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
-  const words = (t('marquee', { returnObjects: true }) as string[]) || MARQUEE_WORDS;
+  const marqueeItems = useMarqueeItems();
+  const words = marqueeItems.length
+    ? marqueeItems.map((item) => i18n.language.startsWith('id') ? item.text_id : item.text_en)
+    : (t('marquee', { returnObjects: true }) as string[]) || MARQUEE_WORDS;
 
   useEffect(() => {
     const track = trackRef.current;
@@ -87,7 +91,10 @@ const MobileMarquee: React.FC = () => {
 const DesktopMarquee: React.FC = () => {
   const { t, i18n } = useTranslation();
   const trackRef = useRef<HTMLDivElement>(null);
-  const words = (t('marquee', { returnObjects: true }) as string[]) || MARQUEE_WORDS;
+  const marqueeItems = useMarqueeItems();
+  const words = marqueeItems.length
+    ? marqueeItems.map((item) => i18n.language.startsWith('id') ? item.text_id : item.text_en)
+    : (t('marquee', { returnObjects: true }) as string[]) || MARQUEE_WORDS;
 
   useEffect(() => {
     const track = trackRef.current;

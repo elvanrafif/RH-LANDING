@@ -87,3 +87,68 @@ export const useHeroImages = (): string[] => {
   }, []);
   return images;
 };
+
+export type MarqueeItem = { text_id: string; text_en: string };
+export type ServiceItem = {
+  title_id: string;
+  title_en: string;
+  desc_id: string;
+  desc_en: string;
+  tag_id: string;
+  tag_en: string;
+  contact_type: string;
+};
+
+let marqueeInFlight: Promise<MarqueeItem[]> | null = null;
+let marqueeSettled: MarqueeItem[] | null = null;
+
+export const loadMarqueeItems = (): Promise<MarqueeItem[]> =>
+  (marqueeInFlight ??= fetch(`${BASE}/items/marquee_items?filter[status][_eq]=published&sort=sort&fields=text_id,text_en`)
+    .then((r) => {
+      if (!r.ok) throw new Error(`Directus ${r.status}`);
+      return r.json();
+    })
+    .then((json) => (marqueeSettled = Array.isArray(json.data) ? json.data : []))
+    .catch((err) => {
+      console.error('[marquee_items] gagal memuat dari Directus:', err);
+      marqueeInFlight = null;
+      return [];
+    }));
+
+export const useMarqueeItems = (): MarqueeItem[] => {
+  const [items, setItems] = useState<MarqueeItem[]>(marqueeSettled ?? []);
+  useEffect(() => {
+    if (marqueeSettled) return;
+    let alive = true;
+    loadMarqueeItems().then((loaded) => alive && setItems(loaded));
+    return () => { alive = false; };
+  }, []);
+  return items;
+};
+
+let servicesInFlight: Promise<ServiceItem[]> | null = null;
+let servicesSettled: ServiceItem[] | null = null;
+
+export const loadServices = (): Promise<ServiceItem[]> =>
+  (servicesInFlight ??= fetch(`${BASE}/items/services?filter[status][_eq]=published&sort=sort&fields=title_id,title_en,desc_id,desc_en,tag_id,tag_en,contact_type`)
+    .then((r) => {
+      if (!r.ok) throw new Error(`Directus ${r.status}`);
+      return r.json();
+    })
+    .then((json) => (servicesSettled = Array.isArray(json.data) ? json.data : []))
+    .catch((err) => {
+      console.error('[services] gagal memuat dari Directus:', err);
+      servicesInFlight = null;
+      return [];
+    }));
+
+export const useServices = (): ServiceItem[] => {
+  const [items, setItems] = useState<ServiceItem[]>(servicesSettled ?? []);
+  useEffect(() => {
+    if (servicesSettled) return;
+    let alive = true;
+    loadServices().then((loaded) => alive && setItems(loaded));
+    return () => { alive = false; };
+  }, []);
+  return items;
+};

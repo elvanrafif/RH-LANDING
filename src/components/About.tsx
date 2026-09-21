@@ -26,16 +26,6 @@ export const About: React.FC = () => {
             <p>{t('about.p4')}</p>
           </div>
         </div> */}
-        <div className="about__signature reveal">
-          <div>
-            <div className="mono" style={{color: "var(--muted)"}}>{t('about.principal')}</div>
-            <div className="display" style={{fontSize: 28, marginTop: 4}}>Ismail Deyrian A</div>
-          </div>
-          <div style={{textAlign: "right"}}>
-            <div className="mono" style={{color: "var(--muted)"}}>{t('about.founded')}</div>
-            <div className="display" style={{fontSize: 28, marginTop: 4}}>MMXI</div>
-          </div>
-        </div>
       </div>
     </section>
   );
