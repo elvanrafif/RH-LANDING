@@ -9,8 +9,7 @@ export const SERVICES: Service[] = [
 export const STATS: Stat[] = [
   { num: "10", sup: "+", label: "Tahun Pengalaman", en: "Years of Practice" },
   { num: "100", sup: "+", label: "Proyek Selesai", en: "Completed Projects" },
-  { num: "Jabodetabek", label: "Wilayah Jangkauan", en: "Areas Covered" },
-  { num: "∞", label: "Kepuasan Klien", en: "Client Satisfaction" },
+  { num: "Indonesia", label: "Cakupan Wilayah", en: "Areas Covered" },
 ];
 
 export const MARQUEE_WORDS = [

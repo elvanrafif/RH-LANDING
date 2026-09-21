@@ -1,6 +1,6 @@
 .stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0;
   border-block: 1px solid var(--line);
 }
@@ -20,10 +20,10 @@
   letter-spacing: -0.02em;
 }
 .stat__num--text {
-  font-size: clamp(28px, 3.2vw, 52px);
+  font-size: clamp(40px, 5vw, 80px);
   line-height: 1;
   letter-spacing: -0.02em;
-  font-weight: 700;
+  font-weight: 400;
   margin-top: auto;
   margin-bottom: auto;
 }
