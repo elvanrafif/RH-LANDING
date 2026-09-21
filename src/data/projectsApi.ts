@@ -55,11 +55,16 @@ export const useProjects = (): Project[] => {
   return projects;
 };
 
-let heroInFlight: Promise<string[]> | null = null;
-let heroSettled: string[] | null = null;
+export type HeroImages = { desktop: string; responsive?: string };
 
-export const loadHeroImages = (): Promise<string[]> =>
-  (heroInFlight ??= fetch(`${BASE}/items/hero_image?limit=-1&sort=id&fields=*`)
+let heroInFlight: Promise<HeroImages[]> | null = null;
+let heroSettled: HeroImages[] | null = null;
+
+const fileId = (value: unknown) =>
+  typeof value === 'string' ? value : (value as { id?: string } | null)?.id ?? '';
+
+export const loadHeroImages = (): Promise<HeroImages[]> =>
+  (heroInFlight ??= fetch(`${BASE}/items/hero_image?limit=-1&sort=id&fields=image,image_responsive`)
     .then((r) => {
       if (!r.ok) throw new Error(`Directus ${r.status}`);
       return r.json();
@@ -67,9 +72,11 @@ export const loadHeroImages = (): Promise<string[]> =>
     .then((json) => {
       const rows = Array.isArray(json.data) ? json.data : [json.data];
       return (heroSettled = rows
-        .map((item: any) => item.image ?? item.img ?? item.file ?? item.asset)
-        .filter(Boolean)
-        .map((id: string | { id?: string }) => asset(typeof id === 'string' ? id : id.id ?? '', undefined, 'webp')));
+        .map((item: { image?: unknown; image_responsive?: unknown }) => ({
+          desktop: asset(fileId(item.image), undefined, 'webp'),
+          responsive: item.image_responsive ? asset(fileId(item.image_responsive), undefined, 'webp') : undefined,
+        }))
+        .filter((item: HeroImages) => item.desktop));
     })
     .catch((err) => {
       console.error('[hero_image] gagal memuat dari Directus:', err);
@@ -77,8 +84,8 @@ export const loadHeroImages = (): Promise<string[]> =>
       return [];
     }));
 
-export const useHeroImages = (): string[] => {
-  const [images, setImages] = useState<string[]>(heroSettled ?? []);
+export const useHeroImages = (): HeroImages[] => {
+  const [images, setImages] = useState<HeroImages[]>(heroSettled ?? []);
   useEffect(() => {
     if (heroSettled) return;
     let alive = true;

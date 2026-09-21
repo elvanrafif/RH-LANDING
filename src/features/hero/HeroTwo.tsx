@@ -6,6 +6,7 @@ import { useHeroImages } from '../../data/projectsApi';
 
 export const HeroTwo: React.FC = () => {
   const heroImages = useHeroImages();
+  const heroImage = heroImages[0];
   const bgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -30,10 +31,10 @@ export const HeroTwo: React.FC = () => {
     <section id="top" className="h2">
       <figure ref={bgRef} className="h2__bg" aria-hidden="true">
         <picture>
-          {heroImages[0] && <source media="(max-width: 700px)" srcSet={heroImages[0]} />}
+          {heroImage?.responsive && <source media="(max-width: 700px)" srcSet={heroImage.responsive} />}
           <img
             className="h2__bg-img"
-            src={heroImages[0] ?? heroBg}
+            src={heroImage?.desktop ?? heroBg}
             alt=""
           />
         </picture>

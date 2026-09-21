@@ -32,6 +32,7 @@ const grants = [
   { collection: 'projects_files', fields: ['id', 'projects_id', 'directus_files_id'] },
   // Only what an <img> needs — not filename_disk, storage or uploader.
   { collection: 'directus_files', fields: ['id', 'title', 'type', 'width', 'height'] },
+  { collection: 'hero_image', fields: ['id', 'image', 'image_responsive'] },
 ];
 
 const existing = await api('/permissions?limit=-1&fields=id,collection,action,policy');
