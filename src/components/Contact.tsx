@@ -1,70 +1,103 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import './Contact.css';
 import { CMS_URL } from '../data/projectsApi';
 
+const MAX_NAME_LENGTH = 50;
+const MAX_WHATSAPP_LENGTH = 11;
+const MAX_AREA_LENGTH = 50;
+const MAX_ADDRESS_LENGTH = 500;
+const INDONESIAN_WHATSAPP = /^8\d{8,10}$/;
+const UNSAFE_TEXT = /[<>]/;
+const FIELD_LIMITS: Record<string, number> = {
+  name: MAX_NAME_LENGTH,
+  whatsapp: MAX_WHATSAPP_LENGTH,
+  area: MAX_AREA_LENGTH,
+  address: MAX_ADDRESS_LENGTH,
+};
+
+const clean = (value: string) => value.trim().replace(/\s+/g, ' ');
+const normalizedPhone = (value: string) => value.replace(/[\s().-]/g, '');
+
 export const Contact: React.FC = () => {
   const { t } = useTranslation();
-  const [form, setForm] = useState({ name: "", whatsapp: "", project: "residential", budget: "", message: "", website: "" });
+  const [form, setForm] = useState({ name: "", whatsapp: "", area: "", need: "design", address: "", website: "" });
   const [errors, setErrors] = useState<{[key: string]: string}>({});
   const [state, setState] = useState("idle");
 
-  const update = (k: string) => (e: any) => setForm({ ...form, [k]: e.target.value });
-  const setProject = (v: string) => setForm((f) => ({ ...f, project: v }));
-
-  useEffect(() => {
-    const onSetType = (e: Event) => {
-      const type = (e as CustomEvent<string>).detail;
-      if (type) setProject(type);
-    };
-    window.addEventListener('rh:set-project-type', onSetType);
-    return () => window.removeEventListener('rh:set-project-type', onSetType);
-  }, []);
+  const update = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const limit = FIELD_LIMITS[k];
+    const rawValue = k === 'whatsapp' ? e.target.value.replace(/\D/g, '') : e.target.value;
+    const value = limit ? rawValue.slice(0, limit) : rawValue;
+    setForm((current) => ({ ...current, [k]: value }));
+  };
+  const setNeed = (v: string) => setForm((f) => ({ ...f, need: v }));
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     const errs: {[key: string]: string} = {};
-    if (!form.name.trim()) errs.name = t('contact.form.error_required');
+    const name = clean(form.name);
+    const whatsapp = normalizedPhone(clean(form.whatsapp));
+    const fullWhatsapp = `+62${whatsapp}`;
+    const area = clean(form.area);
+    const address = clean(form.address);
+    if (!name) errs.name = t('contact.form.error_required');
+    else if (name.length > MAX_NAME_LENGTH || UNSAFE_TEXT.test(name)) errs.name = t('contact.form.error_name');
     // WhatsApp is the channel people actually reply on here, so it carries the requirement.
-    if (!form.whatsapp.trim()) errs.whatsapp = t('contact.form.error_required');
-    else if (!/^[+\d][\d\s().-]{7,19}$/.test(form.whatsapp.trim()))
+    if (!whatsapp) errs.whatsapp = t('contact.form.error_required');
+    else if (!INDONESIAN_WHATSAPP.test(whatsapp))
       errs.whatsapp = t('contact.form.error_whatsapp');
-    if (!form.message.trim()) errs.message = t('contact.form.error_message');
+    if (!area) errs.area = t('contact.form.error_required');
+    else if (area.length > MAX_AREA_LENGTH || UNSAFE_TEXT.test(area)) errs.area = t('contact.form.error_area');
+    if (!address) errs.address = t('contact.form.error_required');
+    else if (address.length > MAX_ADDRESS_LENGTH || UNSAFE_TEXT.test(address)) errs.address = t('contact.form.error_address');
     setErrors(errs);
     if (Object.keys(errs).length) return;
 
     const reset = () => setTimeout(() => {
       setState("idle");
-      setForm({ name: "", whatsapp: "", project: "residential", budget: "", message: "", website: "" });
+      setForm({ name: "", whatsapp: "", area: "", need: "design", address: "", website: "" });
     }, 3000);
 
     // A bot that fills every field trips the honeypot. Show it the same
     // success it would have got, so it has nothing to probe against.
     if (form.website) { setState("sent"); reset(); return; }
 
+    const text = [
+      `Nama: ${name}`,
+      `No. Whatsapp: ${fullWhatsapp}`,
+      `Luas area: ${area}`,
+      `Kebutuhan: ${t(`contact.form.need_${form.need}`)}`,
+      `Alamat: ${address}`,
+    ].join('\n');
     setState("sending");
+    window.open(`https://wa.me/6285718212121?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
     try {
-      const { website: _honeypot, ...payload } = form;
       const res = await fetch(`${CMS_URL}/items/inquiries`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
+        body: JSON.stringify({
+          name,
+          whatsapp: fullWhatsapp,
+          area,
+          need: ['design', 'build', 'design_build'].includes(form.need) ? form.need : 'design',
+          address,
+        }),
       });
       if (!res.ok) throw new Error(`Directus ${res.status}`);
       setState("sent");
       reset();
     } catch (err) {
-      console.error('[contact] gagal mengirim:', err);
+      console.error('[contact] gagal menyimpan inquiry:', err);
       setState("error");
       setTimeout(() => setState("idle"), 5000);
     }
   };
 
-  const projectTypes = [
-    { k: "residential", l: t('contact.form.type_residential') },
-    { k: "interior",    l: t('contact.form.type_interior') },
-    { k: "renovation",  l: t('contact.form.type_renovation') },
-    { k: "consult",     l: t('contact.form.type_consult') },
+  const needs = [
+    { k: "design", l: t('contact.form.need_design') },
+    { k: "build", l: t('contact.form.need_build') },
+    { k: "design_build", l: t('contact.form.need_design_build') },
   ];
 
   return (
@@ -109,46 +142,44 @@ export const Contact: React.FC = () => {
             <div className="form__grid">
               <div className={"field" + (errors.name ? " field--error" : "")}>
                 <label className="mono" htmlFor="contact-name">{t('contact.form.name_label')}</label>
-                <input id="contact-name" type="text" value={form.name} onChange={update("name")} placeholder={t('contact.form.name_placeholder')} />
+                <input id="contact-name" type="text" maxLength={MAX_NAME_LENGTH} value={form.name} onChange={update("name")} placeholder={t('contact.form.name_placeholder')} />
                 {errors.name && <span className="field__error">{errors.name}</span>}
               </div>
               <div className={"field" + (errors.whatsapp ? " field--error" : "")}>
                 <label className="mono" htmlFor="contact-whatsapp">{t('contact.form.whatsapp_label')}</label>
-                <input id="contact-whatsapp" type="tel" inputMode="tel" autoComplete="tel" value={form.whatsapp} onChange={update("whatsapp")} placeholder={t('contact.form.whatsapp_placeholder')} />
+                <div className="phone-input">
+                  <span className="phone-input__prefix" aria-hidden="true">+62</span>
+                  <input id="contact-whatsapp" type="tel" inputMode="numeric" autoComplete="tel-national" maxLength={MAX_WHATSAPP_LENGTH} value={form.whatsapp} onChange={update("whatsapp")} placeholder={t('contact.form.whatsapp_placeholder')} />
+                </div>
                 {errors.whatsapp && <span className="field__error">{errors.whatsapp}</span>}
               </div>
             </div>
 
+            <div className={"field" + (errors.area ? " field--error" : "")}>
+              <label className="mono" htmlFor="contact-area">{t('contact.form.area_label')}</label>
+              <input id="contact-area" type="text" maxLength={MAX_AREA_LENGTH} value={form.area} onChange={update("area")} placeholder={t('contact.form.area_placeholder')} />
+              {errors.area && <span className="field__error">{errors.area}</span>}
+            </div>
+
             <div className="field">
-              <label className="mono" id="contact-type-label">{t('contact.form.type_label')}</label>
-              <div className="chip-row" role="group" aria-labelledby="contact-type-label">
-                {projectTypes.map((c) => (
+              <label className="mono" id="contact-need-label">{t('contact.form.need_label')}</label>
+              <div className="chip-row" role="group" aria-labelledby="contact-need-label">
+                {needs.map((c) => (
                   <button
                     type="button"
                     key={c.k}
-                    className={"chip" + (form.project === c.k ? " is-active" : "")}
-                    aria-pressed={form.project === c.k}
-                    onClick={() => setProject(c.k)}
+                    className={"chip" + (form.need === c.k ? " is-active" : "")}
+                    aria-pressed={form.need === c.k}
+                    onClick={() => setNeed(c.k)}
                   >{c.l}</button>
                 ))}
               </div>
             </div>
 
-            <div className="field">
-              <label className="mono" htmlFor="contact-budget">{t('contact.form.budget_label')}</label>
-              <select id="contact-budget" value={form.budget} onChange={update("budget")}>
-                <option value="">{t('contact.form.budget_placeholder')}</option>
-                <option value="a">{t('contact.form.budget_a')}</option>
-                <option value="b">{t('contact.form.budget_b')}</option>
-                <option value="c">{t('contact.form.budget_c')}</option>
-                <option value="d">{t('contact.form.budget_d')}</option>
-              </select>
-            </div>
-
-            <div className={"field" + (errors.message ? " field--error" : "")}>
-              <label className="mono" htmlFor="contact-message">{t('contact.form.message_label')}</label>
-              <textarea id="contact-message" rows={4} value={form.message} onChange={update("message")} placeholder={t('contact.form.message_placeholder')}></textarea>
-              {errors.message && <span className="field__error">{errors.message}</span>}
+            <div className={"field" + (errors.address ? " field--error" : "")}>
+              <label className="mono" htmlFor="contact-address">{t('contact.form.address_label')}</label>
+              <textarea id="contact-address" rows={4} maxLength={MAX_ADDRESS_LENGTH} value={form.address} onChange={update("address")} placeholder={t('contact.form.address_placeholder')}></textarea>
+              {errors.address && <span className="field__error">{errors.address}</span>}
             </div>
 
             {/* Honeypot: off-screen and skipped by tab and screen readers, so

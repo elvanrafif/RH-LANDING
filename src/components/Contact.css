@@ -35,6 +35,10 @@
   transition: border-color .3s;
 }
 .field input:focus, .field textarea:focus, .field select:focus { border-color: var(--accent); }
+.phone-input { display: flex; align-items: center; border-bottom: 1px solid var(--line); }
+.phone-input:focus-within { border-color: var(--accent); }
+.phone-input__prefix { padding: 12px 8px 12px 0; color: var(--muted); font-family: var(--font-sans); }
+.phone-input input { flex: 1; border-bottom: 0; }
 .field input::placeholder, .field textarea::placeholder { color: var(--muted); opacity: .6; }
 .field textarea { resize: vertical; min-height: 100px; font-family: var(--font-sans); }
 .field--error input, .field--error textarea { border-color: #c85353; }

@@ -11,7 +11,7 @@ collections:
       collapse: open
       collection: inquiries
       color: null
-      display_template: '{{name}} — {{project}}'
+      display_template: '{{name}} — {{need}}'
       group: null
       hidden: false
       icon: mail
@@ -237,22 +237,21 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: inquiries
-    field: email
+    field: area
     type: string
     meta:
       collection: inquiries
       conditions: null
       display: null
       display_options: null
-      field: email
+      field: area
       group: null
       hidden: false
       interface: input
-      note: Opsional
-      options:
-        iconLeft: alternate_email
+      note: Luas area proyek
+      options: null
       readonly: false
-      required: false
+      required: true
       searchable: true
       sort: 5
       special: null
@@ -261,7 +260,7 @@ fields:
       validation_message: null
       width: half
     schema:
-      name: email
+      name: area
       table: inquiries
       data_type: character varying
       default_value: null
@@ -278,30 +277,28 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: inquiries
-    field: project
+    field: need
     type: string
     meta:
       collection: inquiries
       conditions: null
       display: null
       display_options: null
-      field: project
+      field: need
       group: null
       hidden: false
       interface: select-dropdown
-      note: null
+      note: Jenis kebutuhan proyek
       options:
         choices:
-          - text: Residential
-            value: residential
-          - text: Interior
-            value: interior
-          - text: Renovation
-            value: renovation
-          - text: Consult
-            value: consult
+          - text: Design
+            value: design
+          - text: Build
+            value: build
+          - text: Design + Build
+            value: design_build
       readonly: false
-      required: false
+      required: true
       searchable: true
       sort: 6
       special: null
@@ -310,10 +307,10 @@ fields:
       validation_message: null
       width: half
     schema:
-      name: project
+      name: need
       table: inquiries
       data_type: character varying
-      default_value: null
+      default_value: design
       max_length: 255
       numeric_precision: null
       numeric_scale: null
@@ -327,70 +324,30 @@ fields:
       foreign_key_table: null
       foreign_key_column: null
   - collection: inquiries
-    field: budget
-    type: string
-    meta:
-      collection: inquiries
-      conditions: null
-      display: null
-      display_options: null
-      field: budget
-      group: null
-      hidden: false
-      interface: input
-      note: null
-      options: null
-      readonly: false
-      required: false
-      searchable: true
-      sort: 7
-      special: null
-      translations: null
-      validation: null
-      validation_message: null
-      width: half
-    schema:
-      name: budget
-      table: inquiries
-      data_type: character varying
-      default_value: null
-      max_length: 255
-      numeric_precision: null
-      numeric_scale: null
-      is_nullable: true
-      is_unique: false
-      is_indexed: false
-      is_primary_key: false
-      is_generated: false
-      generation_expression: null
-      has_auto_increment: false
-      foreign_key_table: null
-      foreign_key_column: null
-  - collection: inquiries
-    field: message
+    field: address
     type: text
     meta:
       collection: inquiries
       conditions: null
       display: null
       display_options: null
-      field: message
+      field: address
       group: null
       hidden: false
       interface: input-multiline
-      note: null
+      note: Alamat lokasi proyek
       options: null
       readonly: false
-      required: false
+      required: true
       searchable: true
-      sort: 8
+      sort: 7
       special: null
       translations: null
       validation: null
       validation_message: null
       width: full
     schema:
-      name: message
+      name: address
       table: inquiries
       data_type: text
       default_value: null
