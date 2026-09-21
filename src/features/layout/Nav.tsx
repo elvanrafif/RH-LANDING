@@ -93,7 +93,9 @@ export const Nav: React.FC<NavProps> = ({ onNav, heroVersion }) => {
               onClick={toggleLang}
               aria-label="Toggle language"
             >
-              {i18n.language === 'id' ? 'ID' : 'EN'}
+              <span className={i18n.language === 'en' ? 'is-active' : ''}>EN</span>
+              <span className="nav__lang-separator">/</span>
+              <span className={i18n.language === 'id' ? 'is-active' : ''}>ID</span>
             </button>
             <button
               className="nav__toggle"

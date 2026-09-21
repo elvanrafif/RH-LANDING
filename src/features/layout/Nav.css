@@ -39,17 +39,25 @@
 
 .nav__lang {
   background: none;
-  border: 1px solid currentColor;
+  border: none;
   color: inherit;
   cursor: pointer;
   font-family: var(--font-mono);
   font-size: 11px;
   letter-spacing: .1em;
-  opacity: .7;
+  opacity: 1;
   padding: 4px 8px;
-  border-radius: 2px;
   transition: opacity .2s;
 }
+.nav__lang span { transition: color .2s, opacity .2s; }
+.nav__lang .is-active {
+  color: var(--accent);
+  opacity: 1;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.nav__lang-separator { margin-inline: 4px; opacity: .5; }
 .nav__lang:hover { opacity: 1; }
 
 .nav__logo {
