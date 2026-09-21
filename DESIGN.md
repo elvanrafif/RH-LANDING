@@ -8,8 +8,8 @@ colors:
   ink-2: "#2E2925"
   muted: "#7A716A"
   line: "#D9D2C7"
-  accent: "#C96F4A"
-  accent-deep: "#A75834"
+  accent: "#d2a95d"
+  accent-deep: "#b18b43"
   surface: "#FFFFFF"
   error: "#C85353"
 typography:
@@ -86,8 +86,8 @@ This system explicitly rejects the SaaS-template reflex (no hero-metric blocks, 
 The palette is Restrained: tinted cream-and-ink neutrals carrying the page, terracotta appearing only as the single accent.
 
 ### Primary
-- **Terracotta** (`#C96F4A`): the one saturated color in the system. Used for italic emphasis words in headlines, active chip/tag states, link hovers, selection highlight, and the hover-wipe fill on the primary button. Never used as a background for body text or large surfaces.
-- **Deep Terracotta** (`#A75834`): hover/pressed state for the primary accent where a darker step is needed (rare; most hovers use the full accent).
+- **Terracotta** (`#d2a95d`): the one saturated color in the system. Used for italic emphasis words in headlines, active chip/tag states, link hovers, selection highlight, and the hover-wipe fill on the primary button. Never used as a background for body text or large surfaces.
+- **Deep Terracotta** (`#b18b43`): hover/pressed state for the primary accent where a darker step is needed (rare; most hovers use the full accent).
 
 ### Neutral
 - **Cream** (`#F5F1EB`): primary background. In dark mode this role flips to a near-black `#1E1915`.

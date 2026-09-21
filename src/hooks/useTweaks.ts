@@ -6,7 +6,7 @@ export const useTweaks = () => {
     const saved = (window as any).__TWEAKS__ || {};
     return {
       mode: saved.mode || 'light',
-      accent: saved.accent || '#C96F4A',
+      accent: saved.accent || '#d2a95d',
       heroVersion: (saved.heroVersion as HeroVersion) || '1',
     };
   });

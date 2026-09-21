@@ -8,7 +8,7 @@ export const Tweaks: React.FC = () => {
     const saved = (window as any).__TWEAKS__ || {};
     return {
       mode: saved.mode || 'light',
-      accent: saved.accent || '#C96F4A',
+      accent: saved.accent || '#d2a95d',
       heroVersion: (saved.heroVersion as HeroVersion) || '1',
     };
   });
@@ -73,7 +73,7 @@ export const Tweaks: React.FC = () => {
       <div className="tweaks__group">
         <div className="tweaks__label">Accent</div>
         <div className="tweaks__swatches">
-          {["#C96F4A", "#A75834", "#D98F6A", "#6E5B4E", "#2E2925"].map((c) => (
+          {["#d2a95d", "#b18b43", "#D98F6A", "#6E5B4E", "#2E2925"].map((c) => (
             <button
               key={c}
               className={"tweaks__swatch" + (state.accent === c ? " is-active" : "")}
