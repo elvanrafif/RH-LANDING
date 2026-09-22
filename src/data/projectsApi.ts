@@ -61,7 +61,7 @@ export const useProjects = (): Project[] => {
   return projects;
 };
 
-export type HeroImages = { desktop: string; responsive?: string };
+export type HeroImages = { desktop: string; desktopSrcSet: string; responsive?: string };
 
 let heroInFlight: Promise<HeroImages[]> | null = null;
 let heroSettled: HeroImages[] | null = null;
@@ -78,10 +78,16 @@ export const loadHeroImages = (): Promise<HeroImages[]> =>
     .then((json) => {
       const rows = Array.isArray(json.data) ? json.data : [json.data];
       return (heroSettled = rows
-        .map((item: { image?: unknown; image_responsive?: unknown }) => ({
-          desktop: asset(fileId(item.image), 1920, 'webp', 90),
-          responsive: item.image_responsive ? asset(fileId(item.image_responsive), 960, 'webp', 90) : undefined,
-        }))
+        .map((item: { image?: unknown; image_responsive?: unknown }) => {
+          const imageId = fileId(item.image);
+          return {
+            desktop: asset(imageId, 1920, 'webp', 90),
+            desktopSrcSet: [960, 1440, 1920]
+              .map((width) => `${asset(imageId, width, 'webp', 90)} ${width}w`)
+              .join(', '),
+            responsive: item.image_responsive ? asset(fileId(item.image_responsive), 960, 'webp', 90) : undefined,
+          };
+        })
         .filter((item: HeroImages) => item.desktop));
     })
     .catch((err) => {
